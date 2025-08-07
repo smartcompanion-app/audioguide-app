@@ -1,0 +1,45 @@
+@use "~@ionic/core/css/core.css";
+@use "~@ionic/core/css/normalize.css";
+@use "~@ionic/core/css/structure.css";
+@use "~@ionic/core/css/typography.css";
+@use "~@ionic/core/css/padding.css";
+@use "~@ionic/core/css/float-elements.css";
+@use "~@ionic/core/css/text-alignment.css";
+@use "~@ionic/core/css/text-transformation.css";
+@use "~@ionic/core/css/flex-utils.css";
+@use "~@ionic/core/css/display.css";
+
+// adapt colors for customization
+$background-color: #faefdc;
+$card-background-color: #f7e6c7;
+$station-icon-color: #305653;
+$menu-border-color: #f4dcb3;
+
+:root {
+
+	// Use Ionic color generator and copy below:
+	// https://ionicframework.com/docs/theming/colors#new-color-creator
+	--ion-color-primary: #8fc0bd;
+	--ion-color-primary-rgb: 143,192,189;
+	--ion-color-primary-contrast: white;
+	--ion-color-primary-contrast-rgb: 255,255,255;
+	--ion-color-primary-shade: #7ea9a6;
+	--ion-color-primary-tint: #9ac6c4;
+  
+	--ion-background-color: #{$background-color};
+	--ion-toolbar-background: #{$background-color};
+
+  --sc-station-icon-dark: #{$station-icon-color};
+  --sc-station-icon-background: #{$card-background-color};
+}
+
+ion-card {
+  --background: #{$card-background-color};
+}
+
+ion-item {
+  --background: #{$background-color};
+  --border-color: #{$menu-border-color};
+  --border-width: 0 0 2px 0 !important;
+}
+

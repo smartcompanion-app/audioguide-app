@@ -1,0 +1,13 @@
+{
+  "name": "Animals",
+  "short_name": "Animals",
+  "start_url": "/",
+  "display": "standalone",
+  "icons": [{
+    "src": "assets/icon/icon.png",
+    "sizes": "512x512",
+    "type": "image/png"
+  }],
+  "background_color": "#faefdc",
+  "theme_color": "#faefdc"
+}
