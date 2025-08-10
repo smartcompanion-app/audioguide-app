@@ -35,8 +35,8 @@ $primary-color-tint: #9ac6c4;
 	--sc-primary-color-rgb: #{color.channel($primary-color, "red", $space: rgb)},#{color.channel($primary-color, "green", $space: rgb)},#{color.channel($primary-color, "blue", $space: rgb)};
 	--sc-primary-color-contrast: #{$primary-color-contrast};
 	--sc-primary-color-contrast-rgb: #{color.channel($primary-color-contrast, "red", $space: rgb)},#{color.channel($primary-color-contrast, "green", $space: rgb)},#{color.channel($primary-color-contrast, "blue", $space: rgb)};
-	--sc-primary-color-shade: $primary-color-shade;
-	--sc-primary-color-tint: $primary-color-tint;
+	--sc-primary-color-shade: #{$primary-color-shade};
+	--sc-primary-color-tint: #{$primary-color-tint};
 
 	--ion-color-primary: var(--sc-primary-color);
 	--ion-color-primary-rgb: var(--sc-primary-color-rgb);
