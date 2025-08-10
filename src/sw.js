@@ -1,7 +1,8 @@
 importScripts('workbox-v7.3.0/workbox-sw.js');
 
 workbox.routing.registerRoute(
-  ({ request }) => request.url.match(/files\/[abcdef0-9]+\./),
+  // it is assumed that cachable assets are in the 'assets' directory
+  ({ request }) => request.url.match(/assets\/.+\..{2,}/),
   new workbox.strategies.CacheFirst()
 );
 

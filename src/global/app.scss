@@ -1,3 +1,5 @@
+@use 'sass:color';
+
 @use "~@ionic/core/css/core.css";
 @use "~@ionic/core/css/normalize.css";
 @use "~@ionic/core/css/structure.css";
@@ -15,31 +17,45 @@ $card-background-color: #f7e6c7;
 $station-icon-color: #305653;
 $menu-border-color: #f4dcb3;
 
+// Use Ionic color generator to calculate shade and tint:
+// https://ionicframework.com/docs/theming/colors#new-color-creator
+$primary-color: #8fc0bd;
+$primary-color-contrast: white;
+$primary-color-shade: #7ea9a6;
+$primary-color-tint: #9ac6c4;
+
 :root {
+	--sc-background-color: #{$background-color};
+	--sc-card-background-color: #{$card-background-color};
+	--sc-menu-border-color: #{$menu-border-color};
+	--sc-station-icon-dark: #{$station-icon-color};
+  --sc-station-icon-background: var(--sc-card-background-color);
 
-	// Use Ionic color generator and copy below:
-	// https://ionicframework.com/docs/theming/colors#new-color-creator
-	--ion-color-primary: #8fc0bd;
-	--ion-color-primary-rgb: 143,192,189;
-	--ion-color-primary-contrast: white;
-	--ion-color-primary-contrast-rgb: 255,255,255;
-	--ion-color-primary-shade: #7ea9a6;
-	--ion-color-primary-tint: #9ac6c4;
-  
-	--ion-background-color: #{$background-color};
-	--ion-toolbar-background: #{$background-color};
+	--sc-primary-color: #{$primary-color};
+	--sc-primary-color-rgb: #{color.channel($primary-color, "red", $space: rgb)},#{color.channel($primary-color, "green", $space: rgb)},#{color.channel($primary-color, "blue", $space: rgb)};
+	--sc-primary-color-contrast: #{$primary-color-contrast};
+	--sc-primary-color-contrast-rgb: #{color.channel($primary-color-contrast, "red", $space: rgb)},#{color.channel($primary-color-contrast, "green", $space: rgb)},#{color.channel($primary-color-contrast, "blue", $space: rgb)};
+	--sc-primary-color-shade: $primary-color-shade;
+	--sc-primary-color-tint: $primary-color-tint;
 
-  --sc-station-icon-dark: #{$station-icon-color};
-  --sc-station-icon-background: #{$card-background-color};
+	--ion-color-primary: var(--sc-primary-color);
+	--ion-color-primary-rgb: var(--sc-primary-color-rgb);
+	--ion-color-primary-contrast: var(--sc-primary-color-contrast);
+	--ion-color-primary-contrast-rgb: var(--sc-primary-color-contrast-rgb);
+	--ion-color-primary-shade: var(--sc-primary-color-shade);
+	--ion-color-primary-tint: var(--sc-primary-color-tint);
+
+	--ion-background-color: var(--sc-background-color);
+	--ion-toolbar-background: var(--sc-background-color);  
 }
 
 ion-card {
-  --background: #{$card-background-color};
+  --background: var(--sc-card-background-color);
 }
 
 ion-item {
-  --background: #{$background-color};
-  --border-color: #{$menu-border-color};
+  --background: var(--sc-background-color);
+  --border-color: var(--sc-menu-border-color);
   --border-width: 0 0 2px 0 !important;
 }
 

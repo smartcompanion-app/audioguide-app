@@ -8,7 +8,7 @@ The content is loaded from a `data.json` file, which contains all texts and refe
 
 ### App Colors
 
- - scss variables and ionic primary color in `src/global/app.scss`
+ - scss color variables in `src/global/app.scss`
  - background_color and theme_color in `manifest.json`
  - theme_color in `index.html`
 
@@ -21,3 +21,7 @@ The content is loaded from a `data.json` file, which contains all texts and refe
 
   - `logo.png` in `assets` folder
   - `favicon.ico` and `icon.png` in `assets/icon` folder
+
+## Customize Offline Support
+
+The PWA can be used with offline support with a service worker. When using a service work the initial startup of the app takes a bit longer, since all relevant files need to be downloaded and cached. Inside the `stencil.config.ts` file `OFFLINE_SUPPORT` can be set to `true` or `false`.
