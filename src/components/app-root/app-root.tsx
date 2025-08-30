@@ -12,8 +12,9 @@ export class AppRoot {
   @State() translationMenuLanguage = serviceFacade.__('menu-language');
 
   async componentDidLoad() {
-    serviceFacade.getRoutingService().addRouteChangeListener('/stations/*', () => {
-      serviceFacade.getMenuService().enable();
+    // update language of menu items, whenever navigation goes to default page
+    // this happens after language change
+    serviceFacade.getRoutingService().addRouteChangeListener('/stations/default', () => {
       this.update();
     });
   }
@@ -26,7 +27,9 @@ export class AppRoot {
 
   async navigate(route: string) {
     await serviceFacade.getMenuService().close();
-    if (!(route == 'stations/0' && /#\/stations\/[0-9]+/.exec(window.location.hash))) {
+
+    // ignore if navigation goes to stations/default and we are already on stations page
+    if (!(route == 'stations/default' && /#\/stations\/.+/.exec(window.location.hash))) {
       await serviceFacade.getRoutingService().pushReplaceCurrent(`/${route}`);
     }
   }
@@ -38,7 +41,10 @@ export class AppRoot {
           <ion-route
             url="/"
             component="sc-page-loading"
-            componentProps={{ facade: serviceFacade, image: "assets/logo.png" }}
+            componentProps={{ 
+              facade: serviceFacade, 
+              image: "assets/logo.png"
+            }}
           />
           <ion-route
             url="/language"
@@ -51,7 +57,7 @@ export class AppRoot {
             componentProps={{ facade: serviceFacade }}
           />
           <ion-route
-            url="/stations/:stationIndex"
+            url="/stations/:stationId"
             component="sc-page-stations"
             componentProps={{ facade: serviceFacade }}
           />
@@ -72,7 +78,7 @@ export class AppRoot {
             <ion-content>
               <img id="main-menu-image" src="assets/logo.png"></img>
               <ion-list lines="full">
-                <ion-item onClick={() => this.navigate("stations/0")}>
+                <ion-item onClick={() => this.navigate("stations/default")}>
                   <ion-icon name="list" slot="start"></ion-icon>
                   <ion-label>{this.translationMenuOverview}</ion-label>
                 </ion-item>
