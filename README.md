@@ -4,7 +4,7 @@
 
 ---
 
-SmartCompanion is a free and open-source Progressive Web App (PWA) that delivers interactive audioguide experiences for museums and cultural institutions. It runs seamlessly in any modern mobile browser — no installation required.
+The SmartCompanion Audioguide App is a free and open-source Progressive Web App (PWA) that delivers interactive audioguide experiences for museums and cultural institutions. It runs seamlessly in any modern mobile browser — no installation required.
 
 The app is fully customizable, allowing you to adapt content, colors, text, and images to fit your institution’s needs. It also includes offline functionality powered by a service worker, ensuring smooth use even without an internet connection.
 
