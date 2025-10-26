@@ -55,16 +55,19 @@ export class AppRoot {
             url="/selection"
             component="sc-page-selection"
             componentProps={{ facade: serviceFacade }}
+            beforeEnter={() => serviceFacade.canLoadRoute()}
           />
           <ion-route
             url="/stations/:stationId"
             component="sc-page-stations"
             componentProps={{ facade: serviceFacade }}
+            beforeEnter={() => serviceFacade.canLoadRoute()}
           />
           <ion-route
             url="/pin"
             component="sc-page-pin"
             componentProps={{ facade: serviceFacade }}
+            beforeEnter={() => serviceFacade.canLoadRoute()}
           />
           <ion-route
             url="/error"
