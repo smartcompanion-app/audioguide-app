@@ -85,8 +85,9 @@ function validateColor(color) {
     const gNum = parseInt(g, 10);
     const bNum = parseInt(b, 10);
     
-    // Check RGB values are in range 0-255
-    if (rNum > 255 || gNum > 255 || bNum > 255) {
+    // Check RGB values are valid and in range 0-255
+    if (isNaN(rNum) || isNaN(gNum) || isNaN(bNum) ||
+        rNum < 0 || rNum > 255 || gNum < 0 || gNum > 255 || bNum < 0 || bNum > 255) {
       return false;
     }
     
@@ -109,8 +110,9 @@ function validateColor(color) {
     const sNum = parseInt(s, 10);
     const lNum = parseInt(l, 10);
     
-    // Check hue is 0-359, saturation and lightness are 0-100
-    if (hNum > 359 || sNum > 100 || lNum > 100) {
+    // Check values are valid and in proper ranges
+    if (isNaN(hNum) || isNaN(sNum) || isNaN(lNum) ||
+        hNum < 0 || hNum > 359 || sNum < 0 || sNum > 100 || lNum < 0 || lNum > 100) {
       return false;
     }
     
