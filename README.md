@@ -30,6 +30,69 @@ The app is fully customizable, allowing you to adapt content, colors, text, and 
 
 ## Customization
 
+The app provides two ways to customize its appearance and content:
+
+### Option 1: Using the Customization Script (Recommended)
+
+The recommended way to customize the app is using the built-in customization script. This ensures all related files are updated consistently.
+
+1. Create a `config.json` file in the project root (use `config.example.json` as a template):
+
+```json
+{
+  "app": {
+    "title": "My Museum",
+    "description": "An audioguide app for My Museum",
+    "dataUrl": "https://example.com/data.json",
+    "offlineSupport": false
+  },
+  "colors": {
+    "background": "#faefdc",
+    "cardBackground": "#f7e6c7",
+    "stationIcon": "#305653",
+    "menuBorder": "#f4dcb3",
+    "primary": "#8fc0bd",
+    "primaryContrast": "white",
+    "primaryShade": "#7ea9a6",
+    "primaryTint": "#9ac6c4"
+  },
+  "images": {
+    "logo": "path/to/your/logo.png",
+    "icon": "path/to/your/icon.png",
+    "favicon": "path/to/your/favicon.ico"
+  }
+}
+```
+
+2. Run the customization script:
+
+```bash
+npm run customize
+```
+
+Or specify a custom config file path:
+
+```bash
+npm run customize path/to/my-config.json
+```
+
+3. Build your customized app:
+
+```bash
+npm run build
+```
+
+The script will update the following files automatically:
+- `stencil.config.ts` - App title, data URL, and offline support settings
+- `src/index.html` - HTML title, description, and theme color
+- `src/manifest.json` - PWA manifest name and colors
+- `src/global/app.scss` - Color scheme variables
+- `src/assets/` - Logo and icon files (if custom paths are provided)
+
+### Option 2: Manual Customization
+
+You can also manually customize individual aspects of the app:
+
 ### App Content
 
 The content is loaded from a `data.json` file, which contains all texts and references to assets like images and audio files. Inside the `stencil.config.ts` the `DATA_URL` should point to your `data.json` file. The sample data, which is used for the demo of the app can be found [here](https://github.com/smartcompanion-app/sample-data/tree/main/animals). Custom data needs to be structured according to the example.

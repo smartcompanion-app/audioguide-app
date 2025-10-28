@@ -1,0 +1,23 @@
+{
+  "app": {
+    "title": "Animals",
+    "description": "A sample audioguide app for animals",
+    "dataUrl": "https://smartcompanion-app.github.io/sample-data/animals/data.json",
+    "offlineSupport": false
+  },
+  "colors": {
+    "background": "#faefdc",
+    "cardBackground": "#f7e6c7",
+    "stationIcon": "#305653",
+    "menuBorder": "#f4dcb3",
+    "primary": "#8fc0bd",
+    "primaryContrast": "white",
+    "primaryShade": "#7ea9a6",
+    "primaryTint": "#9ac6c4"
+  },
+  "images": {
+    "logo": "src/assets/logo.png",
+    "icon": "src/assets/icon/icon.png",
+    "favicon": "src/assets/icon/favicon.ico"
+  }
+}

@@ -24,3 +24,6 @@ $RECYCLE.BIN/
 Thumbs.db
 UserInterfaceState.xcuserstate
 .env
+
+# Customization config (use config.example.json as template)
+config.json
