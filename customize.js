@@ -29,10 +29,38 @@ function loadConfig() {
 
   try {
     const configContent = fs.readFileSync(configPath, 'utf8');
-    return JSON.parse(configContent);
+    const config = JSON.parse(configContent);
+    validateConfig(config);
+    return config;
   } catch (error) {
     console.error(`Error reading or parsing config file: ${error.message}`);
     process.exit(1);
+  }
+}
+
+// Validate configuration structure
+function validateConfig(config) {
+  const required = {
+    app: ['title', 'description', 'dataUrl', 'offlineSupport'],
+    colors: ['background', 'cardBackground', 'stationIcon', 'menuBorder', 
+             'primary', 'primaryContrast', 'primaryShade', 'primaryTint'],
+    images: ['logo', 'icon', 'favicon']
+  };
+
+  for (const [section, fields] of Object.entries(required)) {
+    if (!config[section]) {
+      throw new Error(`Missing required section: ${section}`);
+    }
+    for (const field of fields) {
+      if (config[section][field] === undefined) {
+        throw new Error(`Missing required field: ${section}.${field}`);
+      }
+    }
+  }
+
+  // Validate offline support is boolean
+  if (typeof config.app.offlineSupport !== 'boolean') {
+    throw new Error('app.offlineSupport must be true or false');
   }
 }
 

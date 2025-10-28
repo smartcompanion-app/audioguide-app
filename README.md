@@ -89,6 +89,8 @@ The script will update the following files automatically:
 - `src/global/app.scss` - Color scheme variables
 - `src/assets/` - Logo and icon files (if custom paths are provided)
 
+For detailed information about configuration options, see [CUSTOMIZATION.md](CUSTOMIZATION.md).
+
 ### Option 2: Manual Customization
 
 You can also manually customize individual aspects of the app:
