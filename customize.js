@@ -16,6 +16,21 @@ const path = require('path');
 
 const CONFIG_FILE = process.argv[2] || 'config.json';
 
+// Escape string for use in JavaScript code
+function escapeJs(str) {
+  return str.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
+}
+
+// Escape string for use in HTML attributes
+function escapeHtml(str) {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 // Load configuration
 function loadConfig() {
   const configPath = path.resolve(CONFIG_FILE);
@@ -72,13 +87,13 @@ function updateStencilConfig(config) {
   // Update TITLE
   content = content.replace(
     /const TITLE = ".*?";/,
-    `const TITLE = "${config.app.title}";`
+    `const TITLE = "${escapeJs(config.app.title)}";`
   );
 
   // Update DATA_URL
   content = content.replace(
     /const DATA_URL = ".*?";/,
-    `const DATA_URL = "${config.app.dataUrl}";`
+    `const DATA_URL = "${escapeJs(config.app.dataUrl)}";`
   );
 
   // Update OFFLINE_SUPPORT
@@ -99,19 +114,19 @@ function updateIndexHtml(config) {
   // Update title
   content = content.replace(
     /<title>.*?<\/title>/,
-    `<title>${config.app.title}</title>`
+    `<title>${escapeHtml(config.app.title)}</title>`
   );
 
   // Update description
   content = content.replace(
     /<meta name="Description" content=".*?">/,
-    `<meta name="Description" content="${config.app.description}">`
+    `<meta name="Description" content="${escapeHtml(config.app.description)}">`
   );
 
-  // Update theme-color
+  // Update theme-color (colors should be validated CSS, but we'll escape for safety)
   content = content.replace(
     /<meta name="theme-color" content=".*?">/,
-    `<meta name="theme-color" content="${config.colors.background}">`
+    `<meta name="theme-color" content="${escapeHtml(config.colors.background)}">`
   );
 
   fs.writeFileSync(htmlPath, content, 'utf8');
@@ -137,44 +152,44 @@ function updateAppScss(config) {
   const scssPath = path.resolve('src/global/app.scss');
   let content = fs.readFileSync(scssPath, 'utf8');
 
-  // Update color variables
+  // Update color variables - use flexible pattern to match any color format
   content = content.replace(
-    /\$background-color: #[0-9a-fA-F]{6};/,
+    /\$background-color: [^;]+;/,
     `$background-color: ${config.colors.background};`
   );
 
   content = content.replace(
-    /\$card-background-color: #[0-9a-fA-F]{6};/,
+    /\$card-background-color: [^;]+;/,
     `$card-background-color: ${config.colors.cardBackground};`
   );
 
   content = content.replace(
-    /\$station-icon-color: #[0-9a-fA-F]{6};/,
+    /\$station-icon-color: [^;]+;/,
     `$station-icon-color: ${config.colors.stationIcon};`
   );
 
   content = content.replace(
-    /\$menu-border-color: #[0-9a-fA-F]{6};/,
+    /\$menu-border-color: [^;]+;/,
     `$menu-border-color: ${config.colors.menuBorder};`
   );
 
   content = content.replace(
-    /\$primary-color: #[0-9a-fA-F]{6};/,
+    /\$primary-color: [^;]+;/,
     `$primary-color: ${config.colors.primary};`
   );
 
   content = content.replace(
-    /\$primary-color-contrast: .*?;/,
+    /\$primary-color-contrast: [^;]+;/,
     `$primary-color-contrast: ${config.colors.primaryContrast};`
   );
 
   content = content.replace(
-    /\$primary-color-shade: #[0-9a-fA-F]{6};/,
+    /\$primary-color-shade: [^;]+;/,
     `$primary-color-shade: ${config.colors.primaryShade};`
   );
 
   content = content.replace(
-    /\$primary-color-tint: #[0-9a-fA-F]{6};/,
+    /\$primary-color-tint: [^;]+;/,
     `$primary-color-tint: ${config.colors.primaryTint};`
   );
 
