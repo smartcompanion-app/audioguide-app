@@ -77,13 +77,51 @@ function validateColor(color) {
     return true;
   }
   
-  // Allow rgb/rgba colors
-  if (/^rgba?\(\s*\d+\s*,\s*\d+\s*,\s*\d+\s*(,\s*[\d.]+\s*)?\)$/.test(color)) {
+  // Allow rgb/rgba colors with proper value ranges
+  const rgbMatch = color.match(/^rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*(?:,\s*([\d.]+)\s*)?\)$/);
+  if (rgbMatch) {
+    const [, r, g, b, a] = rgbMatch;
+    const rNum = parseInt(r, 10);
+    const gNum = parseInt(g, 10);
+    const bNum = parseInt(b, 10);
+    
+    // Check RGB values are in range 0-255
+    if (rNum < 0 || rNum > 255 || gNum < 0 || gNum > 255 || bNum < 0 || bNum > 255) {
+      return false;
+    }
+    
+    // Check alpha is in range 0-1 if present
+    if (a !== undefined) {
+      const aNum = parseFloat(a);
+      if (isNaN(aNum) || aNum < 0 || aNum > 1) {
+        return false;
+      }
+    }
+    
     return true;
   }
   
-  // Allow hsl/hsla colors
-  if (/^hsla?\(\s*\d+\s*,\s*\d+%\s*,\s*\d+%\s*(,\s*[\d.]+\s*)?\)$/.test(color)) {
+  // Allow hsl/hsla colors with proper value ranges
+  const hslMatch = color.match(/^hsla?\(\s*(\d+)\s*,\s*(\d+)%\s*,\s*(\d+)%\s*(?:,\s*([\d.]+)\s*)?\)$/);
+  if (hslMatch) {
+    const [, h, s, l, a] = hslMatch;
+    const hNum = parseInt(h, 10);
+    const sNum = parseInt(s, 10);
+    const lNum = parseInt(l, 10);
+    
+    // Check hue is 0-360, saturation and lightness are 0-100
+    if (hNum < 0 || hNum > 360 || sNum < 0 || sNum > 100 || lNum < 0 || lNum > 100) {
+      return false;
+    }
+    
+    // Check alpha is in range 0-1 if present
+    if (a !== undefined) {
+      const aNum = parseFloat(a);
+      if (isNaN(aNum) || aNum < 0 || aNum > 1) {
+        return false;
+      }
+    }
+    
     return true;
   }
   
