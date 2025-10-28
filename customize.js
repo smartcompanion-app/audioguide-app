@@ -18,7 +18,15 @@ const CONFIG_FILE = process.argv[2] || 'config.json';
 
 // Escape string for use in JavaScript code
 function escapeJs(str) {
-  return str.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
+  return str
+    .replace(/\\/g, '\\\\')
+    .replace(/"/g, '\\"')
+    .replace(/'/g, "\\'")
+    .replace(/\n/g, '\\n')
+    .replace(/\r/g, '\\r')
+    .replace(/\t/g, '\\t')
+    .replace(/\f/g, '\\f')
+    .replace(/\v/g, '\\v');
 }
 
 // Escape string for use in HTML attributes
@@ -29,6 +37,57 @@ function escapeHtml(str) {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
+}
+
+// Validate CSS color value to prevent SCSS injection
+function validateColor(color) {
+  // Allow hex colors (3 or 6 digits with optional alpha)
+  if (/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/.test(color)) {
+    return true;
+  }
+  
+  // Allow named colors (common CSS color names)
+  const namedColors = [
+    'aliceblue', 'antiquewhite', 'aqua', 'aquamarine', 'azure', 'beige', 'bisque', 'black',
+    'blanchedalmond', 'blue', 'blueviolet', 'brown', 'burlywood', 'cadetblue', 'chartreuse',
+    'chocolate', 'coral', 'cornflowerblue', 'cornsilk', 'crimson', 'cyan', 'darkblue',
+    'darkcyan', 'darkgoldenrod', 'darkgray', 'darkgrey', 'darkgreen', 'darkkhaki',
+    'darkmagenta', 'darkolivegreen', 'darkorange', 'darkorchid', 'darkred', 'darksalmon',
+    'darkseagreen', 'darkslateblue', 'darkslategray', 'darkslategrey', 'darkturquoise',
+    'darkviolet', 'deeppink', 'deepskyblue', 'dimgray', 'dimgrey', 'dodgerblue',
+    'firebrick', 'floralwhite', 'forestgreen', 'fuchsia', 'gainsboro', 'ghostwhite',
+    'gold', 'goldenrod', 'gray', 'grey', 'green', 'greenyellow', 'honeydew', 'hotpink',
+    'indianred', 'indigo', 'ivory', 'khaki', 'lavender', 'lavenderblush', 'lawngreen',
+    'lemonchiffon', 'lightblue', 'lightcoral', 'lightcyan', 'lightgoldenrodyellow',
+    'lightgray', 'lightgrey', 'lightgreen', 'lightpink', 'lightsalmon', 'lightseagreen',
+    'lightskyblue', 'lightslategray', 'lightslategrey', 'lightsteelblue', 'lightyellow',
+    'lime', 'limegreen', 'linen', 'magenta', 'maroon', 'mediumaquamarine', 'mediumblue',
+    'mediumorchid', 'mediumpurple', 'mediumseagreen', 'mediumslateblue', 'mediumspringgreen',
+    'mediumturquoise', 'mediumvioletred', 'midnightblue', 'mintcream', 'mistyrose',
+    'moccasin', 'navajowhite', 'navy', 'oldlace', 'olive', 'olivedrab', 'orange',
+    'orangered', 'orchid', 'palegoldenrod', 'palegreen', 'paleturquoise', 'palevioletred',
+    'papayawhip', 'peachpuff', 'peru', 'pink', 'plum', 'powderblue', 'purple', 'red',
+    'rosybrown', 'royalblue', 'saddlebrown', 'salmon', 'sandybrown', 'seagreen', 'seashell',
+    'sienna', 'silver', 'skyblue', 'slateblue', 'slategray', 'slategrey', 'snow',
+    'springgreen', 'steelblue', 'tan', 'teal', 'thistle', 'tomato', 'turquoise', 'violet',
+    'wheat', 'white', 'whitesmoke', 'yellow', 'yellowgreen', 'transparent'
+  ];
+  
+  if (namedColors.includes(color.toLowerCase())) {
+    return true;
+  }
+  
+  // Allow rgb/rgba colors
+  if (/^rgba?\(\s*\d+\s*,\s*\d+\s*,\s*\d+\s*(,\s*[\d.]+\s*)?\)$/.test(color)) {
+    return true;
+  }
+  
+  // Allow hsl/hsla colors
+  if (/^hsla?\(\s*\d+\s*,\s*\d+%\s*,\s*\d+%\s*(,\s*[\d.]+\s*)?\)$/.test(color)) {
+    return true;
+  }
+  
+  return false;
 }
 
 // Load configuration
@@ -76,6 +135,17 @@ function validateConfig(config) {
   // Validate offline support is boolean
   if (typeof config.app.offlineSupport !== 'boolean') {
     throw new Error('app.offlineSupport must be true or false');
+  }
+
+  // Validate color values
+  for (const [colorName, colorValue] of Object.entries(config.colors)) {
+    if (!validateColor(colorValue)) {
+      throw new Error(
+        `Invalid color value for colors.${colorName}: "${colorValue}". ` +
+        'Color must be a hex color (#fff or #ffffff), named color (e.g., white), ' +
+        'rgb/rgba (e.g., rgb(255,255,255)), or hsl/hsla (e.g., hsl(0,0%,100%)).'
+      );
+    }
   }
 }
 
