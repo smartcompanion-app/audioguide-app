@@ -2,7 +2,7 @@ import { Config } from '@stencil/core';
 import { sass } from '@stencil/sass';
 
 const TITLE = "Animals";
-const DATA_URL = "https://smartcompanion-app.github.io/sample-data/animals/data.json";
+const DATA_URL = "https://smartcompanion-app.github.io/data-format/animals/data.json";
 const OFFLINE_SUPPORT = false; 
 
 export const config: Config = {
