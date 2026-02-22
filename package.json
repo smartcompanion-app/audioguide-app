@@ -4,9 +4,8 @@
   "scripts": {
     "build": "stencil build",
     "start": "stencil build --dev --watch --serve",
-    "test": "stencil test --spec --e2e",
-    "test.watch": "stencil test --spec --e2e --watchAll",
-    "generate": "stencil generate"
+    "test": "npm run build && wdio run wdio.conf.ts",
+    "test:dev": "wdio run wdio.conf.ts --baseUrl=http://localhost:3333"
   },
   "devDependencies": {
     "@ionic/core": "^8.6.0",
@@ -16,7 +15,14 @@
     "@smartcompanion/ui": "*",
     "@stencil/core": "^4.39.0",
     "@stencil/sass": "^3.0.12",
+    "@types/mocha": "^10.0.10",
+    "@wdio/cli": "^9.24.0",
+    "@wdio/local-runner": "^9.24.0",
+    "@wdio/mocha-framework": "^9.24.0",
+    "@wdio/spec-reporter": "^9.24.0",
+    "@wdio/static-server-service": "^9.24.0",
     "swiper": "^11.2.10",
+    "typescript": "^5.9.3",
     "workbox-build": "^7.3.0"
   },
   "license": "BSD-2-Clause"
