@@ -23,6 +23,13 @@ class MenuComponent {
   async getMenuItemLabel(index: number): Promise<string> {
     await this.open();
     const labels = await this.menuLabels;
+    await browser.waitUntil(
+      async () => {
+        const text = await browser.execute((el: Element) => el.textContent || '', labels[index] as any);
+        return !text.trim().startsWith('menu-');
+      },
+      { timeout: 10000, timeoutMsg: 'Menu label translation not loaded' },
+    );
     const text = await browser.execute((el: Element) => el.textContent || '', labels[index] as any);
     return text.trim();
   }

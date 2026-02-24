@@ -15,7 +15,7 @@ describe('Language selection', () => {
   });
 
   it('selects Deutsch and navigates to player page', async () => {
-    await languagePage.selectLanguageByIndex(0);
+    await languagePage.selectLanguageByText('DEUTSCH');
     await playerPage.waitForPage();
     await menu.waitForMenuVisible();
   });
@@ -31,7 +31,7 @@ describe('Language selection', () => {
   });
 
   it('selects English and shows English menu labels', async () => {
-    await languagePage.selectLanguageByIndex(1);
+    await languagePage.selectLanguageByText('ENGLISH');
     await playerPage.waitForPage();
     await menu.waitForMenuVisible();
     const label = await menu.getMenuItemLabel(0);

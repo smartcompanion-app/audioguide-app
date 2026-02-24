@@ -21,6 +21,18 @@ class LanguagePage {
     const buttons = await this.getLanguageButtons();
     await buttons[index].click();
   }
+
+  async selectLanguageByText(text: string) {
+    const buttons = await this.getLanguageButtons();
+    for (const button of buttons) {
+      const buttonText = await button.getText();
+      if (buttonText.trim() === text) {
+        await button.click();
+        return;
+      }
+    }
+    throw new Error(`Language button with text "${text}" not found`);
+  }
 }
 
 export default new LanguagePage();
