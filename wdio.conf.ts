@@ -1,6 +1,10 @@
 import { join } from 'node:path';
 import type { Options } from '@wdio/types';
 
+const chromeArgs = process.env.CI
+  ? ['--headless', '--disable-gpu', '--disable-web-security', '--no-sandbox', '--disable-dev-shm-usage', '--window-size=1280,800']
+  : ['--auto-open-devtools-for-tabs', '--disable-web-security', '--no-sandbox', '--disable-dev-shm-usage', '--window-size=1280,800'];
+
 export const config: Options.Testrunner = {
   runner: 'local',
   specs: ['./test/specs/**/*.spec.ts'],
@@ -11,7 +15,7 @@ export const config: Options.Testrunner = {
   capabilities: [{
     browserName: 'chrome',
     'goog:chromeOptions': {
-      args: ['--auto-open-devtools-for-tabs', '--disable-web-security', '--no-sandbox', '--disable-dev-shm-usage', '--window-size=1280,800'],
+      args: chromeArgs,
     },
   }],
 
