@@ -34,7 +34,7 @@ describe('Language selection', () => {
     await languagePage.selectLanguageByText('ENGLISH');
     await playerPage.waitForPage();
     await menu.waitForMenuVisible();
-    const label = await menu.getMenuItemLabel(0);
+    const label = await menu.getMenuItemLabel(0, 'Übersicht');
     expect(label).toBe('Overview');
   });
 
