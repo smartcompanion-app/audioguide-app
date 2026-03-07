@@ -23,7 +23,7 @@ export const config: Options.Testrunner = {
   mochaOpts: { ui: 'bdd', timeout: 60000 },
 
   reporters: ['spec'],
-  logLevel: 'warn',
+  logLevel: 'error',
 
   services: [[
     'static-server',
