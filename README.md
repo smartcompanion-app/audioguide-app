@@ -36,8 +36,7 @@ The app is fully customizable, allowing you to adapt content, colors, text, and 
 npm start          # Dev server with hot reload
 npm run build      # Production build → www/
 npm test           # Run spec & e2e tests
-npm run test.watch # Continuous test watching
-npm run generate   # Generate new Stencil component boilerplate
+npm run test:dev   # Continuous test watching
 ```
 
 ## Deployment Options
