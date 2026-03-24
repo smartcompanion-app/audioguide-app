@@ -65,11 +65,12 @@ The content is loaded from a `data.json` file, which contains all texts and refe
 
 - Title and description in `index.html`
 - Title in `stencil.config.ts` (`Env.TITLE`)
+- `name`, `short_name` and `description` in the `manifest.json`
 
 #### Images
 
 - `logo.png` in `assets` folder
-- `favicon.ico` and `icon.png` in `assets/icon` folder
+- `favicon.ico`, `icon-192.png`, `icon-512.png` in `assets/icon` folder
 
 ### Offline Support
 
