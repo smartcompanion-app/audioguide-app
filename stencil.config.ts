@@ -3,7 +3,7 @@ import { sass } from '@stencil/sass';
 
 const TITLE = "Animals";
 const DATA_URL = "https://smartcompanion-app.github.io/data-format/animals/data.json";
-const OFFLINE_SUPPORT = false; 
+const OFFLINE_SUPPORT = process.env.OFFLINE_SUPPORT === 'true' || false;
 
 export const config: Config = {
   globalStyle: 'src/global/app.scss',
@@ -35,7 +35,7 @@ export const config: Config = {
           '**/send-outline.svg',
         ]
       } : null,
-      baseUrl: 'https://myapp.local/',
+      baseUrl: '/',
     },
   ],
   plugins: [    
