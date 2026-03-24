@@ -8,27 +8,40 @@ const isServiceWorkerReady = () =>
       return;
     }
 
-    navigator.serviceWorker.getRegistration().then((registration) => {
-      if (!registration) {
-        console.warn('No service worker registration found.');
-        resolve();
-        return;
-      }
+    navigator.serviceWorker
+      .getRegistration()
+      .then((registration) => {
+        if (!registration) {
+          console.warn('No service worker registration found.');
+          resolve();
+          return;
+        }
 
-      if (navigator.serviceWorker.controller) {
-        resolve();
-        return;
-      }
+        if (navigator.serviceWorker.controller) {
+          resolve();
+          return;
+        }
 
-      // Wait for the SW to take control (fires after activate + clients.claim())
-      navigator.serviceWorker.addEventListener('controllerchange', () => resolve(), { once: true });
+        // Fallback timeout to avoid hanging indefinitely
+        const timerId = setTimeout(() => {
+          console.warn('Service worker controller timed out, proceeding anyway.');
+          resolve();
+        }, 10000);
 
-      // Fallback timeout to avoid hanging indefinitely
-      setTimeout(() => {
-        console.warn('Service worker controller timed out, proceeding anyway.');
+        // Wait for the SW to take control (fires after activate + clients.claim())
+        navigator.serviceWorker.addEventListener(
+          'controllerchange',
+          () => {
+            clearTimeout(timerId);
+            resolve();
+          },
+          { once: true },
+        );
+      })
+      .catch(() => {
+        console.warn('Service worker registration check failed, proceeding anyway.');
         resolve();
-      }, 10000);
-    });
+      });
   });
 
 const serviceFacade = new ServiceFacade();
