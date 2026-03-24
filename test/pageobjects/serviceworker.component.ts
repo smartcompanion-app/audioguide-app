@@ -29,7 +29,7 @@ class ServiceWorkerComponent {
 
   async isControllingPage(): Promise<boolean> {
     return browser.execute(() => {
-      return navigator.serviceWorker?.controller !== null;
+      return 'serviceWorker' in navigator && navigator.serviceWorker.controller != null;
     });
   }
 
