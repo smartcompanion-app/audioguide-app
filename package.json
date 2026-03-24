@@ -5,7 +5,9 @@
     "build": "stencil build",
     "start": "stencil build --dev --watch --serve",
     "test": "npm run build && wdio run wdio.conf.ts",
-    "test:dev": "wdio run wdio.conf.ts --baseUrl=http://localhost:3333"
+    "test:dev": "wdio run wdio.conf.ts --baseUrl=http://localhost:3333",
+    "build:offline": "OFFLINE_SUPPORT=true stencil build",
+    "test:offline": "npm run build:offline && TEST_OFFLINE=true wdio run wdio.conf.ts"
   },
   "devDependencies": {
     "@ionic/core": "^8.6.0",
@@ -21,6 +23,7 @@
     "@wdio/mocha-framework": "^9.24.0",
     "@wdio/spec-reporter": "^9.24.0",
     "@wdio/static-server-service": "^9.24.0",
+    "puppeteer-core": "^24.40.0",
     "swiper": "^11.2.10",
     "typescript": "^5.9.3",
     "workbox-build": "^7.3.0"
