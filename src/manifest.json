@@ -3,7 +3,7 @@
   "short_name": "Animals",
   "description": "A sample audioguide app for animals",
   "lang": "en",
-  "start_url": "/",
+  "start_url": ".",
   "display": "standalone",
   "orientation": "portrait",
   "icons": [{

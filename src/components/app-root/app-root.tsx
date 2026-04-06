@@ -10,6 +10,7 @@ export class AppRoot {
   @State() translationMenuOverview = serviceFacade.__('menu-overview');
   @State() translationMenuSelection = serviceFacade.__('menu-selection');
   @State() translationMenuLanguage = serviceFacade.__('menu-language');
+  @State() requireLanguageSelection = true;
 
   async componentDidLoad() {
     // update language of menu items, whenever navigation goes to default page
@@ -23,11 +24,16 @@ export class AppRoot {
     this.translationMenuOverview = serviceFacade.__('menu-overview');
     this.translationMenuSelection = serviceFacade.__('menu-selection');
     this.translationMenuLanguage = serviceFacade.__('menu-language');
+
+    const languages = serviceFacade.getLanguageService().getLanguages();
+    if (languages.length <= 1) {
+      this.requireLanguageSelection = false;
+    }
   }
 
   async navigate(route: string) {
     await serviceFacade.getMenuService().close();
-
+    
     // ignore if navigation goes to stations/default and we are already on stations page
     if (!(route == 'stations/default' && /#\/stations\/.+/.exec(window.location.hash))) {
       await serviceFacade.getRoutingService().pushReplaceCurrent(`/${route}`);
@@ -89,10 +95,12 @@ export class AppRoot {
                   <ion-icon name="keypad" slot="start"></ion-icon>
                   <ion-label>{this.translationMenuSelection}</ion-label>
                 </ion-item>
-                <ion-item onClick={() => this.navigate("language")}>
-                  <ion-icon name="chatbubbles" slot="start"></ion-icon>
-                  <ion-label>{this.translationMenuLanguage}</ion-label>
-                </ion-item>
+                {this.requireLanguageSelection && (
+                  <ion-item onClick={() => this.navigate("language")}>
+                    <ion-icon name="chatbubbles" slot="start"></ion-icon>
+                    <ion-label>{this.translationMenuLanguage}</ion-label>
+                  </ion-item>
+                )}
               </ion-list>
             </ion-content>
           </ion-menu>
