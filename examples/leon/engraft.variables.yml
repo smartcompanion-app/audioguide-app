@@ -1,0 +1,18 @@
+title_short: Leon
+title: Leon Audioguide
+description: Leon - Audiotour durch die Ortschaft Bruck an der Glocknerstraße
+lang: de
+data_url: https://smartcompanion-app.github.io/data-format/leon/data.json
+offline_support: "false"
+background_color: "#f5f5f5"
+card_background_color: "#ebebeb"
+station_icon_color: "#333333"
+menu_border_color: "#d9d9d9"
+primary_color: "#737373"
+primary_color_contrast: "#ffffff"
+primary_color_shade: "#656565"
+primary_color_tint: "#818181"
+logo: assets/logo.png
+favicon: assets/favicon.ico
+icon_192: assets/app-icon-192.png
+icon_512: assets/app-icon-512.png

@@ -1,0 +1,130 @@
+variables:
+  title_short:
+    description: Short app title
+    default: Animals
+  title:
+    description: App title
+    default: Animals Audioguide
+  description:
+    description: App description
+    default: A sample audioguide app for animals
+  lang:
+    description: Language code for manifest.json
+    default: en
+  data_url:
+    description: URL to the audioguide data JSON
+    default: https://smartcompanion-app.github.io/data-format/animals/data.json
+  offline_support:
+    description: Enable offline support (true/false)
+    default: "false"
+  background_color:
+    description: App background color
+    default: "#faefdc"
+  card_background_color:
+    description: Card background color
+    default: "#f7e6c7"
+  station_icon_color:
+    description: Station icon color
+    default: "#305653"
+  menu_border_color:
+    description: Menu item border color
+    default: "#f4dcb3"
+  primary_color:
+    description: Primary brand color
+    default: "#8fc0bd"
+  primary_color_contrast:
+    description: Text color on primary color
+    default: "#ffffff"
+  primary_color_shade:
+    description: Darker shade of primary color, use https://ionicframework.com/docs/theming/colors#new-color-creator to calculate
+    default: "#7ea9a6"
+  primary_color_tint:
+    description: Lighter tint of primary color, use https://ionicframework.com/docs/theming/colors#new-color-creator to calculate
+    default: "#9ac6c4"
+  logo:
+    description: Path to app logo image
+    default: src/assets/logo.png
+  favicon:
+    description: Path to favicon file
+    default: src/assets/icon/favicon.ico
+  icon_192:
+    description: Path to 192x192 PWA icon
+    default: src/assets/icon/icon-192.png
+  icon_512:
+    description: Path to 512x512 PWA icon
+    default: src/assets/icon/icon-512.png
+
+customizations:
+  - action: regex_replace
+    file: stencil.config.ts
+    replace:
+      - selector: '(const TITLE\s*=\s*")(?P<value>[^"]*)'
+        variable: title
+      - selector: '(const DATA_URL\s*=\s*")(?P<value>[^"]*)'
+        variable: data_url
+      - selector: '(process\.env\.OFFLINE_SUPPORT\s*===\s*''true''\s*\|\|\s*)(?P<value>\w+)'
+        variable: offline_support
+
+  - action: html_replace
+    file: src/index.html
+    replace:
+      - selector: //title
+        variable: title
+      - selector: //meta[@name='Description']/@content
+        variable: description
+      - selector: //meta[@name='theme-color']/@content
+        variable: background_color
+      - selector: //html/@lang
+        variable: lang
+
+  - action: json_replace
+    file: src/manifest.json
+    replace:
+      - selector: $.name
+        variable: title
+      - selector: $.short_name
+        variable: title_short
+      - selector: $.description
+        variable: description
+      - selector: $.lang
+        variable: lang
+      - selector: $.background_color
+        variable: background_color
+      - selector: $.theme_color
+        variable: background_color
+
+  - action: regex_replace
+    file: src/global/app.scss
+    replace:
+      - selector: '(\$background-color:\s*)(?P<value>[^;]+)'
+        variable: background_color
+      - selector: '(\$card-background-color:\s*)(?P<value>[^;]+)'
+        variable: card_background_color
+      - selector: '(\$station-icon-color:\s*)(?P<value>[^;]+)'
+        variable: station_icon_color
+      - selector: '(\$menu-border-color:\s*)(?P<value>[^;]+)'
+        variable: menu_border_color
+      - selector: '(\$primary-color:\s*)(?P<value>[^;]+)'
+        variable: primary_color
+      - selector: '(\$primary-color-contrast:\s*)(?P<value>[^;]+)'
+        variable: primary_color_contrast
+      - selector: '(\$primary-color-shade:\s*)(?P<value>[^;]+)'
+        variable: primary_color_shade
+      - selector: '(\$primary-color-tint:\s*)(?P<value>[^;]+)'
+        variable: primary_color_tint
+
+  - action: file_replace
+    file: src/assets/logo.png
+    variable: logo
+
+  - action: file_replace
+    file: src/assets/icon/favicon.ico
+    variable: favicon
+
+  - action: file_replace
+    file: src/assets/icon/icon-192.png
+    variable: icon_192
+
+  - action: file_replace
+    file: src/assets/icon/icon-512.png
+    variable: icon_512

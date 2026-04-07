@@ -1,0 +1,67 @@
+name: release
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  pages: write
+  id-token: write
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run test:offline
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: npm ci
+      - run: pip install engraft
+
+      # Build default "animals" variant
+      - run: npm run build
+      - run: |
+          sed -i 's|"/build/|"build/|g' www/index.html
+          sed -i "s|'/sw.js'|'/audioguide-app/animals/sw.js'|" www/index.html
+      - run: mv www animals
+
+      # Build "leon" variant via engraft
+      - run: engraft apply --template engraft.template.yml --values examples/leon/engraft.variables.yml
+      - run: npm run build
+      - run: |
+          sed -i 's|"/build/|"build/|g' www/index.html
+          sed -i "s|'/sw.js'|'/audioguide-app/leon/sw.js'|" www/index.html
+      - run: mv www leon
+
+      # Assemble deployment directory
+      - run: |
+          mkdir _site
+          mv animals _site/animals
+          mv leon _site/leon
+
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+      - id: deployment
+        uses: actions/deploy-pages@v4
