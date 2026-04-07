@@ -20,7 +20,7 @@ The app is fully customizable, allowing you to adapt content, colors, text, and 
 
 ## Examples
 
-| [Castle Tratzberg](https://www.smartcompanion.app/projects/mobile-apps/schloss-tratzberg/) | [Museum Landeck](https://www.smartcompanion.app/projects/mobile-apps/schloss-landeck/) | [Example App (Animals)](https://smartcompanion-audioguide-app.netlify.app/audioguide-app/animals) | [Example App (Leon)](https://smartcompanion-audioguide-app.netlify.app/audioguide-app/leon) |
+| [Castle Tratzberg](https://www.smartcompanion.app/projects/mobile-apps/schloss-tratzberg/) | [Museum Landeck](https://www.smartcompanion.app/projects/mobile-apps/schloss-landeck/) | [Example App (Animals)](https://smartcompanion-app.github.io/audioguide-app/animals) | [Example App (Leon)](https://smartcompanion-app.github.io/audioguide-app/leon) |
 |---|---|---|---|
 | ![Castle Tratzberg App](docs/tratzberg-app.png) | ![Museum Landeck App](docs/landeck-app.png) | ![Example App (Animals)](docs/animals-app.png) | ![Example App (Leon)](docs/leon-app.png) |
 
