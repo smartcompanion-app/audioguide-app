@@ -59,7 +59,7 @@ Customization is handled via [engraft](https://github.com/smartcompanion-app/eng
 | `offline_support` | Enable offline support (true/false) | `false` |
 | `background_color` | App background color | `#faefdc` |
 | `card_background_color` | Card background color | `#f7e6c7` |
-| `station_icon_color` | Station icon color | `#305653` |
+| `station_icon_progress_color` | Station icon progress color | `#305653` |
 | `menu_border_color` | Menu item border color | `#f4dcb3` |
 | `primary_color` | Primary brand color | `#8fc0bd` |
 | `primary_color_contrast` | Text color on primary color | `#ffffff` |

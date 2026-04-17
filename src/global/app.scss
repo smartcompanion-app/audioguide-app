@@ -14,7 +14,7 @@
 // adapt colors for customization
 $background-color: #faefdc;
 $card-background-color: #f7e6c7;
-$station-icon-color: #305653;
+$station-icon-progress-color: #305653;
 $menu-border-color: #f4dcb3;
 
 // Use Ionic color generator to calculate shade and tint:
@@ -28,8 +28,7 @@ $primary-color-tint: #9ac6c4;
 	--sc-background-color: #{$background-color};
 	--sc-card-background-color: #{$card-background-color};
 	--sc-menu-border-color: #{$menu-border-color};
-	--sc-station-icon-dark: #{$station-icon-color};
-  --sc-station-icon-background: var(--sc-card-background-color);
+	--sc-station-icon-progress: #{$station-icon-progress-color};
 
 	--sc-primary-color: #{$primary-color};
 	--sc-primary-color-rgb: #{color.channel($primary-color, "red", $space: rgb)},#{color.channel($primary-color, "green", $space: rgb)},#{color.channel($primary-color, "blue", $space: rgb)};
