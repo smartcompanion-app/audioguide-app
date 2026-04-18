@@ -105,7 +105,7 @@ customizations:
         variable: background_color
       - selector: '(\$card-background-color:\s*)(?P<value>[^;]+)'
         variable: card_background_color
-      - selector: '(\$station-icon-color:\s*)(?P<value>[^;]+)'
+      - selector: '(\$station-icon-progress-color:\s*)(?P<value>[^;]+)'
         variable: station_icon_progress_color
       - selector: '(\$menu-border-color:\s*)(?P<value>[^;]+)'
         variable: menu_border_color
