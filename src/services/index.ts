@@ -49,6 +49,29 @@ const serviceFacade = new ServiceFacade();
 serviceFacade.registerDefaultServices();
 serviceFacade.registerCollectibleAudioPlayerService(Env.TITLE);
 
+if (Env.MESSAGING_SUPPORT === 'enabled') {
+  globalThis.addEventListener('message', (event) => {  
+    if (
+      event?.data?.type === 'UPDATE_CSS_VARIABLES' &&
+      typeof event?.data?.payload === 'object'
+    ) {
+      const payload = event.data.payload;
+
+      for (const [variable, value] of Object.entries(payload)) {
+        if (typeof value === 'string') {
+          document.documentElement.style.setProperty(variable, value);
+        }
+      }
+    } else if (
+      event?.data?.type === 'UPDATE_MENU_IMAGE' &&
+      typeof event?.data?.payload === 'string'
+    ) {
+      const menuImage = document.querySelector('#main-menu-image') as HTMLImageElement;
+      menuImage.src = event.data.payload;
+    }  
+  });
+}
+
 if (Env.OFFLINE_SUPPORT === 'enabled') {
   serviceFacade.registerOfflineLoadService(
     () =>
