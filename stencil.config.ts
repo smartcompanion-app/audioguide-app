@@ -4,6 +4,7 @@ import { sass } from '@stencil/sass';
 const TITLE = "Animals";
 const DATA_URL = "https://smartcompanion-app.github.io/data-format/animals/data.json";
 const OFFLINE_SUPPORT = process.env.OFFLINE_SUPPORT === 'true' || false;
+const MESSAGING_SUPPORT = true;
 
 export const config: Config = {
   globalStyle: 'src/global/app.scss',
@@ -13,6 +14,7 @@ export const config: Config = {
     TITLE: TITLE,
     DATA_URL: DATA_URL,
     OFFLINE_SUPPORT: OFFLINE_SUPPORT ? "enabled" : "disabled",
+    MESSAGING_SUPPORT: MESSAGING_SUPPORT ? "enabled" : "disabled",
   },
   outputTargets: [
     {

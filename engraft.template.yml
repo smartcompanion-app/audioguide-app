@@ -17,14 +17,17 @@ variables:
   offline_support:
     description: Enable offline support (true/false)
     default: "false"
+  messaging_support:
+    description: Enable messaging support / postMessage listener (true/false)
+    default: "true"
   background_color:
     description: App background color
     default: "#faefdc"
   card_background_color:
     description: Card background color
     default: "#f7e6c7"
-  station_icon_color:
-    description: Station icon color
+  station_icon_progress_color:
+    description: Station icon progress color
     default: "#305653"
   menu_border_color:
     description: Menu item border color
@@ -64,6 +67,8 @@ customizations:
         variable: data_url
       - selector: '(process\.env\.OFFLINE_SUPPORT\s*===\s*''true''\s*\|\|\s*)(?P<value>\w+)'
         variable: offline_support
+      - selector: '(const MESSAGING_SUPPORT\s*=\s*)(?P<value>\w+)'
+        variable: messaging_support
 
   - action: html_replace
     file: src/index.html
@@ -101,7 +106,7 @@ customizations:
       - selector: '(\$card-background-color:\s*)(?P<value>[^;]+)'
         variable: card_background_color
       - selector: '(\$station-icon-color:\s*)(?P<value>[^;]+)'
-        variable: station_icon_color
+        variable: station_icon_progress_color
       - selector: '(\$menu-border-color:\s*)(?P<value>[^;]+)'
         variable: menu_border_color
       - selector: '(\$primary-color:\s*)(?P<value>[^;]+)'
