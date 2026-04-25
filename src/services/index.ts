@@ -68,6 +68,16 @@ if (Env.MESSAGING_SUPPORT === 'enabled') {
     ) {
       const menuImage = document.querySelector('#main-menu-image') as HTMLImageElement;
       menuImage.src = event.data.payload;
+    } else if (
+      event?.data?.type === 'UPDATE_DARK_MODE' &&
+      typeof event?.data?.payload === 'string'
+    ) {
+      const prefersDarkMode = event.data.payload === 'dark';
+      if (prefersDarkMode) {
+        document.documentElement.classList.add('ion-palette-dark');
+      } else {
+        document.documentElement.classList.remove('ion-palette-dark');
+      }
     }  
   });
 }

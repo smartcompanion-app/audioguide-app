@@ -23,15 +23,27 @@ variables:
   background_color:
     description: App background color
     default: "#faefdc"
+  background_color_dark:
+    description: App background color (dark mode)
+    default: "#2a1f0f"
   card_background_color:
     description: Card background color
     default: "#f7e6c7"
+  card_background_color_dark:
+    description: Card background color (dark mode)
+    default: "#3d2e1a"
   station_icon_progress_color:
     description: Station icon progress color
     default: "#305653"
+  station_icon_progress_color_dark:
+    description: Station icon progress color (dark mode)
+    default: "#1e3735"
   menu_border_color:
     description: Menu item border color
     default: "#f4dcb3"
+  menu_border_color_dark:
+    description: Menu item border color (dark mode)
+    default: "#4a3820"
   primary_color:
     description: Primary brand color
     default: "#8fc0bd"
@@ -44,9 +56,30 @@ variables:
   primary_color_tint:
     description: Lighter tint of primary color, use https://ionicframework.com/docs/theming/colors#new-color-creator to calculate
     default: "#9ac6c4"
+  light_color:
+    description: Light color
+    default: "#faefdc"
+  light_color_dark:
+    description: Light color (dark mode)
+    default: "#2a1f0f"
+  light_color_shade:
+    description: Darker shade of light color, use https://ionicframework.com/docs/theming/colors#new-color-creator to calculate
+    default: "#dcd2c2"
+  light_color_shade_dark:
+    description: Darker shade of light color (dark mode), use https://ionicframework.com/docs/theming/colors#new-color-creator to calculate
+    default: "#251b0d"
+  light_color_tint:
+    description: Lighter tint of light color, use https://ionicframework.com/docs/theming/colors#new-color-creator to calculate
+    default: "#fbf1e0"
+  light_color_tint_dark:
+    description: Lighter tint of light color (dark mode), use https://ionicframework.com/docs/theming/colors#new-color-creator to calculate
+    default: "#3f3527"
   logo:
     description: Path to app logo image
     default: src/assets/logo.png
+  logo_dark:
+    description: Path to app logo image (dark mode)
+    default: src/assets/logo-dark.png
   favicon:
     description: Path to favicon file
     default: src/assets/icon/favicon.ico
@@ -77,8 +110,10 @@ customizations:
         variable: title
       - selector: //meta[@name='Description']/@content
         variable: description
-      - selector: //meta[@name='theme-color']/@content
+      - selector: '//meta[@name=''theme-color'' and @media="(prefers-color-scheme: light)"]/@content'
         variable: background_color
+      - selector: '//meta[@name=''theme-color'' and @media="(prefers-color-scheme: dark)"]/@content'
+        variable: background_color_dark
       - selector: //html/@lang
         variable: lang
 
@@ -103,12 +138,20 @@ customizations:
     replace:
       - selector: '(\$background-color:\s*)(?P<value>[^;]+)'
         variable: background_color
+      - selector: '(\$background-color-dark:\s*)(?P<value>[^;]+)'
+        variable: background_color_dark
       - selector: '(\$card-background-color:\s*)(?P<value>[^;]+)'
         variable: card_background_color
+      - selector: '(\$card-background-color-dark:\s*)(?P<value>[^;]+)'
+        variable: card_background_color_dark
       - selector: '(\$station-icon-progress-color:\s*)(?P<value>[^;]+)'
         variable: station_icon_progress_color
+      - selector: '(\$station-icon-progress-color-dark:\s*)(?P<value>[^;]+)'
+        variable: station_icon_progress_color_dark
       - selector: '(\$menu-border-color:\s*)(?P<value>[^;]+)'
         variable: menu_border_color
+      - selector: '(\$menu-border-color-dark:\s*)(?P<value>[^;]+)'
+        variable: menu_border_color_dark
       - selector: '(\$primary-color:\s*)(?P<value>[^;]+)'
         variable: primary_color
       - selector: '(\$primary-color-contrast:\s*)(?P<value>[^;]+)'
@@ -117,10 +160,26 @@ customizations:
         variable: primary_color_shade
       - selector: '(\$primary-color-tint:\s*)(?P<value>[^;]+)'
         variable: primary_color_tint
+      - selector: '(\$light-color:\s*)(?P<value>[^;]+)'
+        variable: light_color
+      - selector: '(\$light-color-dark:\s*)(?P<value>[^;]+)'
+        variable: light_color_dark
+      - selector: '(\$light-color-shade:\s*)(?P<value>[^;]+)'
+        variable: light_color_shade
+      - selector: '(\$light-color-shade-dark:\s*)(?P<value>[^;]+)'
+        variable: light_color_shade_dark
+      - selector: '(\$light-color-tint:\s*)(?P<value>[^;]+)'
+        variable: light_color_tint
+      - selector: '(\$light-color-tint-dark:\s*)(?P<value>[^;]+)'
+        variable: light_color_tint_dark
 
   - action: file_replace
     file: src/assets/logo.png
     variable: logo
+
+  - action: file_replace
+    file: src/assets/logo-dark.png
+    variable: logo_dark
 
   - action: file_replace
     file: src/assets/icon/favicon.ico
