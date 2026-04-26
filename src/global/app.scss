@@ -10,12 +10,18 @@
 @use "~@ionic/core/css/text-transformation.css";
 @use "~@ionic/core/css/flex-utils.css";
 @use "~@ionic/core/css/display.css";
+@use "~@ionic/core/css/palettes/dark.class.css";
 
 // adapt colors for customization
 $background-color: #faefdc;
 $card-background-color: #f7e6c7;
 $station-icon-progress-color: #305653;
 $menu-border-color: #f4dcb3;
+
+$background-color-dark: #2a1f0f;
+$card-background-color-dark: #3d2e1a;
+$station-icon-progress-color-dark: #1e3735;
+$menu-border-color-dark: #4a3820;
 
 // Use Ionic color generator to calculate shade and tint:
 // https://ionicframework.com/docs/theming/colors#new-color-creator
@@ -24,8 +30,19 @@ $primary-color-contrast: white;
 $primary-color-shade: #7ea9a6;
 $primary-color-tint: #9ac6c4;
 
+$light-color: #faefdc;
+$light-color-contrast: black;
+$light-color-shade: #dcd2c2;
+$light-color-tint: #fbf1e0;
+
+$light-color-dark: #2a1f0f;
+$light-color-contrast-dark: white;
+$light-color-shade-dark: #251b0d;
+$light-color-tint-dark: #3f3527;
+
 :root {
 	--sc-background-color: #{$background-color};
+	--sc-background-color-rgb: #{color.channel($background-color, "red", $space: rgb)},#{color.channel($background-color, "green", $space: rgb)},#{color.channel($background-color, "blue", $space: rgb)};
 	--sc-card-background-color: #{$card-background-color};
 	--sc-menu-border-color: #{$menu-border-color};
 	--sc-station-icon-progress: #{$station-icon-progress-color};
@@ -37,6 +54,32 @@ $primary-color-tint: #9ac6c4;
 	--sc-primary-color-shade: #{$primary-color-shade};
 	--sc-primary-color-tint: #{$primary-color-tint};
 
+	--sc-light-color: #{$light-color};
+	--sc-light-color-rgb: #{color.channel($light-color, "red", $space: rgb)},#{color.channel($light-color, "green", $space: rgb)},#{color.channel($light-color, "blue", $space: rgb)};
+	--sc-light-color-contrast: #{$light-color-contrast};
+	--sc-light-color-contrast-rgb: #{color.channel($light-color-contrast, "red", $space: rgb)},#{color.channel($light-color-contrast, "green", $space: rgb)},#{color.channel($light-color-contrast, "blue", $space: rgb)};
+	--sc-light-color-shade: #{$light-color-shade};
+	--sc-light-color-tint: #{$light-color-tint};
+}
+
+:root.ion-palette-dark,
+:root.ion-palette-dark.ios,
+:root.ion-palette-dark.md {
+	--sc-background-color: #{$background-color-dark};
+	--sc-background-color-rgb: #{color.channel($background-color-dark, "red", $space: rgb)},#{color.channel($background-color-dark, "green", $space: rgb)},#{color.channel($background-color-dark, "blue", $space: rgb)};
+	--sc-card-background-color: #{$card-background-color-dark};
+	--sc-menu-border-color: #{$menu-border-color-dark};
+	--sc-station-icon-progress: #{$station-icon-progress-color-dark};
+
+	--sc-light-color: #{$light-color-dark};
+	--sc-light-color-rgb: #{color.channel($light-color-dark, "red", $space: rgb)},#{color.channel($light-color-dark, "green", $space: rgb)},#{color.channel($light-color-dark, "blue", $space: rgb)};
+	--sc-light-color-contrast: #{$light-color-contrast-dark};
+	--sc-light-color-contrast-rgb: #{color.channel($light-color-contrast-dark, "red", $space: rgb)},#{color.channel($light-color-contrast-dark, "green", $space: rgb)},#{color.channel($light-color-contrast-dark, "blue", $space: rgb)};
+	--sc-light-color-shade: #{$light-color-shade-dark};
+	--sc-light-color-tint: #{$light-color-tint-dark};
+  }
+
+:root, :root.ios, :root.md {
 	--ion-color-primary: var(--sc-primary-color);
 	--ion-color-primary-rgb: var(--sc-primary-color-rgb);
 	--ion-color-primary-contrast: var(--sc-primary-color-contrast);
@@ -44,8 +87,17 @@ $primary-color-tint: #9ac6c4;
 	--ion-color-primary-shade: var(--sc-primary-color-shade);
 	--ion-color-primary-tint: var(--sc-primary-color-tint);
 
+	--ion-color-light: var(--sc-light-color);
+	--ion-color-light-rgb: var(--sc-light-color-rgb);
+	--ion-color-light-contrast: var(--sc-light-color-contrast);
+	--ion-color-light-contrast-rgb: var(--sc-light-color-contrast-rgb);
+	--ion-color-light-shade: var(--sc-light-color-shade);
+	--ion-color-light-tint: var(--sc-light-color-tint);
+
 	--ion-background-color: var(--sc-background-color);
+	--ion-background-color-rgb: var(--sc-background-color-rgb);
 	--ion-toolbar-background: var(--sc-background-color);  
+	--ion-item-background: var(--sc-background-color);
 }
 
 ion-card {
@@ -56,5 +108,19 @@ ion-item {
   --background: var(--sc-background-color);
   --border-color: var(--sc-menu-border-color);
   --border-width: 0 0 2px 0 !important;
+}
+
+#main-menu-image-dark {
+	display: none;
+}
+
+.ion-palette-dark {
+	#main-menu-image-light {
+		display: none;
+	}
+
+	#main-menu-image-dark {
+		display: block;
+	}
 }
 

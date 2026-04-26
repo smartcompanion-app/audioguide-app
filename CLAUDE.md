@@ -33,8 +33,8 @@ src/
 │   ├── app-root.tsx        # Main component: routing, menu, navigation
 │   └── app-root.css
 ├── global/
-│   ├── app.ts              # Global initialization hook (empty)
-│   └── app.scss            # Global styles & CSS custom property (color) variables
+│   ├── app.ts              # Global initialization — applies dark mode via prefers-color-scheme
+│   └── app.scss            # Global styles & CSS custom property (color) variables (light + dark)
 ├── services/
 │   └── index.ts            # ServiceFacade initialization & export
 ├── assets/icon/            # PWA icons (favicon.ico, icon.png 512x512)
@@ -73,6 +73,13 @@ www/                        # Build output (gitignored)
 - **Offline mode**: `registerOfflineLoadService()` — fetch with service worker caching
 - Toggle via `OFFLINE_SUPPORT` in `stencil.config.ts`
 
+### Dark Mode
+- Uses Ionic's class-based dark palette (`@ionic/core/css/palettes/dark.class.css`)
+- `src/global/app.ts` listens to `prefers-color-scheme: dark` and toggles `.ion-palette-dark` on `<html>`
+- Color tokens defined twice in `src/global/app.scss`: light values on `:root`, dark overrides on `:root.ion-palette-dark`
+- Menu logo: two `<img>` elements (`#main-menu-image-light`, `#main-menu-image-dark`); CSS toggles visibility — do not use `content: url(...)` on `<img>` (unreliable cross-browser)
+- Embedders can force a palette via the `UPDATE_DARK_MODE` postMessage and swap logos via `UPDATE_MENU_IMAGE` with `{ light?, dark? }`
+
 ## Configuration & Customization
 
 All runtime configuration lives in **`stencil.config.ts`** (rebuild required to apply changes):
@@ -84,11 +91,12 @@ All runtime configuration lives in **`stencil.config.ts`** (rebuild required to 
 | `Env.OFFLINE_SUPPORT` | `"disabled"` | Enable service worker (`"enabled"`) |
 
 **Customization points:**
-1. **Colors**: SCSS variables in `src/global/app.scss` (CSS custom properties with `--sc-` prefix)
+1. **Colors**: SCSS variables in `src/global/app.scss` (CSS custom properties with `--sc-` prefix); each color has a light and a `*-dark` counterpart
 2. **Title**: `index.html`, `manifest.json`, and `stencil.config.ts`
 3. **Data URL**: `stencil.config.ts` → `DATA_URL`
 4. **Offline**: `stencil.config.ts` → `OFFLINE_SUPPORT: "enabled"`
 5. **Icons**: Replace files in `src/assets/icon/`
+6. **Logo**: Replace `src/assets/logo.png` (light) and `src/assets/logo-dark.png` (dark)
 
 ## Code Conventions
 

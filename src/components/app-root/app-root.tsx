@@ -85,7 +85,8 @@ export class AppRoot {
         <ion-split-pane when="md" content-id="main">
           <ion-menu contentId="main">
             <ion-content>
-              <img id="main-menu-image" src="assets/logo.png"></img>
+              <img id="main-menu-image-light" src="assets/logo.png"></img>
+              <img id="main-menu-image-dark" src="assets/logo-dark.png"></img>
               <ion-list lines="full">
                 <ion-item onClick={() => this.navigate("stations/default")}>
                   <ion-icon name="list" slot="start"></ion-icon>
