@@ -64,10 +64,17 @@ if (Env.MESSAGING_SUPPORT === 'enabled') {
       }
     } else if (
       event?.data?.type === 'UPDATE_MENU_IMAGE' &&
-      typeof event?.data?.payload === 'string'
+      typeof event?.data?.payload === 'object'
     ) {
-      const menuImage = document.querySelector('#main-menu-image') as HTMLImageElement;
-      menuImage.src = event.data.payload;
+      const { light, dark } = event.data.payload;
+      if (typeof light === 'string') {
+        const lightImage = document.querySelector('#main-menu-image-light') as HTMLImageElement;
+        lightImage.src = light;
+      }
+      if (typeof dark === 'string') {
+        const darkImage = document.querySelector('#main-menu-image-dark') as HTMLImageElement;
+        darkImage.src = dark;
+      }
     } else if (
       event?.data?.type === 'UPDATE_DARK_MODE' &&
       typeof event?.data?.payload === 'string'

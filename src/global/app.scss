@@ -110,7 +110,17 @@ ion-item {
   --border-width: 0 0 2px 0 !important;
 }
 
-.ion-palette-dark #main-menu-image {
-	content: url('/assets/logo-dark.png');
+#main-menu-image-dark {
+	display: none;
+}
+
+.ion-palette-dark {
+	#main-menu-image-light {
+		display: none;
+	}
+
+	#main-menu-image-dark {
+		display: block;
+	}
 }
 
