@@ -15,6 +15,7 @@ The app is fully customizable, allowing you to adapt content, colors, text, and 
 - 🌐 **Multilingual** — built-in i18n support for multiple languages
 - 📶 **Offline Support** — optional service worker caching for use without internet
 - 🎨 **Fully Customizable** — adapt colors, content, images, and branding
+- 🌗 **Light & Dark Mode** — automatically follows the user's system preference
 - ⚡ **Lightweight** — built with Stencil.js and Ionic for fast performance
 - 🆓 **Open Source** — BSD 2-Clause license
 
@@ -59,14 +60,25 @@ Customization is handled via [engraft](https://github.com/smartcompanion-app/eng
 | `offline_support` | Enable offline support (true/false) | `false` |
 | `messaging_support` | Enable postMessage listener for iframe embedding (true/false) | `true` |
 | `background_color` | App background color | `#faefdc` |
+| `background_color_dark` | App background color (dark mode) | `#2a1f0f` |
 | `card_background_color` | Card background color | `#f7e6c7` |
+| `card_background_color_dark` | Card background color (dark mode) | `#3d2e1a` |
 | `station_icon_progress_color` | Station icon progress color | `#305653` |
+| `station_icon_progress_color_dark` | Station icon progress color (dark mode) | `#1e3735` |
 | `menu_border_color` | Menu item border color | `#f4dcb3` |
+| `menu_border_color_dark` | Menu item border color (dark mode) | `#4a3820` |
 | `primary_color` | Primary brand color | `#8fc0bd` |
 | `primary_color_contrast` | Text color on primary color | `#ffffff` |
 | `primary_color_shade` | Darker shade of primary color | `#7ea9a6` |
 | `primary_color_tint` | Lighter tint of primary color | `#9ac6c4` |
+| `light_color` | Light color | `#faefdc` |
+| `light_color_dark` | Light color (dark mode) | `#2a1f0f` |
+| `light_color_shade` | Darker shade of light color | `#dcd2c2` |
+| `light_color_shade_dark` | Darker shade of light color (dark mode) | `#251b0d` |
+| `light_color_tint` | Lighter tint of light color | `#fbf1e0` |
+| `light_color_tint_dark` | Lighter tint of light color (dark mode) | `#3f3527` |
 | `logo` | Path to app logo image | `src/assets/logo.png` |
+| `logo_dark` | Path to app logo image (dark mode) | `src/assets/logo-dark.png` |
 | `favicon` | Path to favicon file | `src/assets/icon/favicon.ico` |
 | `icon_192` | Path to 192x192 PWA icon | `src/assets/icon/icon-192.png` |
 | `icon_512` | Path to 512x512 PWA icon | `src/assets/icon/icon-512.png` |
