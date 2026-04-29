@@ -34,10 +34,10 @@ variables:
     default: "#3d2e1a"
   station_icon_progress_color:
     description: Station icon progress color
-    default: "#305653"
+    default: "#698e7c"
   station_icon_progress_color_dark:
     description: Station icon progress color (dark mode)
-    default: "#1e3735"
+    default: "#698e7c"
   menu_border_color:
     description: Menu item border color
     default: "#f4dcb3"
