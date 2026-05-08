@@ -1,5 +1,5 @@
 import { Component, State, h } from '@stencil/core';
-import { Share } from '@capacitor/share'
+import { Share } from '@capacitor/share';
 import { serviceFacade } from '../../services';
 
 @Component({
