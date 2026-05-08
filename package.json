@@ -13,7 +13,7 @@
     "@capacitor/share": "^8.0.1",
     "@ionic/core": "^8.6.0",
     "@smartcompanion/data": "^0.8.0",
-    "@smartcompanion/engraft": "^0.2.1",
+    "@smartcompanion/engraft": "^0.2.2",
     "@smartcompanion/native-audio-player": "^0.4.0",
     "@smartcompanion/services": "^0.8.0",
     "@smartcompanion/ui": "^0.8.0",

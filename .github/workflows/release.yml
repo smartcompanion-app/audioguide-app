@@ -43,10 +43,7 @@ jobs:
       - run: mv www animals
 
       # Build "leon" variant via engraft
-      # NOTE: invoking via `node ...cli.js` (not `npx engraft`) — npm bin
-      # symlink trips a broken isMain() check in @smartcompanion/engraft@0.2.1
-      # and the CLI silently exits 0 without applying anything.
-      - run: node ./node_modules/@smartcompanion/engraft/dist/cli.js apply --template engraft.template.yml --values customization/leon/engraft.variables.yml
+      - run: npx engraft apply --template engraft.template.yml --values customization/leon/engraft.variables.yml
       - run: grep -q 'Leon Audioguide' src/index.html
       - run: npm run build
       - run: |
