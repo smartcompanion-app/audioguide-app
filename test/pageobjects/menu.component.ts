@@ -55,6 +55,24 @@ class MenuComponent {
   async clickLanguage() {
     await this.clickMenuItem(2);
   }
+
+  async clickShare() {
+    await this.open();
+    await browser.waitUntil(
+      async () => (await this.menuItems).length >= 4,
+      { timeout: 15000, timeoutMsg: 'Share menu item did not appear' },
+    );
+    const items = await this.menuItems;
+    await browser.waitUntil(
+      async () => {
+        const text = await browser.execute((el: Element) => el.textContent || '', items[3] as any);
+        return !text.trim().startsWith('menu-');
+      },
+      { timeout: 10000, timeoutMsg: 'Share label translation not loaded' },
+    );
+    await items[3].click();
+    await browser.pause(300);
+  }
 }
 
 export default new MenuComponent();

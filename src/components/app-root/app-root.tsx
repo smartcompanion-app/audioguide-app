@@ -49,6 +49,7 @@ export class AppRoot {
   }
 
   async shareApp() {
+    await serviceFacade.getMenuService().close();
     await Share.share({
       title: this.translationMenuShareApp,
       url: serviceFacade.getShareService().getShare(),
