@@ -22,17 +22,19 @@ class MenuComponent {
 
   async getMenuItemLabel(index: number, notExpected?: string): Promise<string> {
     await this.open();
-    const labels = await this.menuLabels;
     await browser.waitUntil(
       async () => {
+        const labels = await this.menuLabels;
+        if (!labels[index]) return false;
         const text = await browser.execute((el: Element) => el.textContent || '', labels[index] as any);
         const trimmed = text.trim();
         if (trimmed.startsWith('menu-')) return false;
         if (notExpected && trimmed === notExpected) return false;
         return true;
       },
-      { timeout: 10000, timeoutMsg: 'Menu label translation not loaded' },
+      { timeout: 15000, timeoutMsg: 'Menu label translation not loaded' },
     );
+    const labels = await this.menuLabels;
     const text = await browser.execute((el: Element) => el.textContent || '', labels[index] as any);
     return text.trim();
   }
