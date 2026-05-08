@@ -1,4 +1,5 @@
 import { Component, State, h } from '@stencil/core';
+import { Share } from '@capacitor/share';
 import { serviceFacade } from '../../services';
 
 @Component({
@@ -10,7 +11,9 @@ export class AppRoot {
   @State() translationMenuOverview = serviceFacade.__('menu-overview');
   @State() translationMenuSelection = serviceFacade.__('menu-selection');
   @State() translationMenuLanguage = serviceFacade.__('menu-language');
+  @State() translationMenuShareApp = serviceFacade.__('menu-share-app');
   @State() requireLanguageSelection = true;
+  @State() requireShareLink = false;
 
   async componentDidLoad() {
     // update language of menu items, whenever navigation goes to default page
@@ -24,11 +27,16 @@ export class AppRoot {
     this.translationMenuOverview = serviceFacade.__('menu-overview');
     this.translationMenuSelection = serviceFacade.__('menu-selection');
     this.translationMenuLanguage = serviceFacade.__('menu-language');
+    this.translationMenuShareApp = serviceFacade.__('menu-share-app');
 
     const languages = serviceFacade.getLanguageService().getLanguages();
     if (languages.length <= 1) {
       this.requireLanguageSelection = false;
     }
+
+    Share.canShare().then((result) => {
+      this.requireShareLink = result.value && serviceFacade.getShareService().hasShare();
+    });
   }
 
   async navigate(route: string) {
@@ -38,6 +46,15 @@ export class AppRoot {
     if (!(route == 'stations/default' && /#\/stations\/.+/.exec(window.location.hash))) {
       await serviceFacade.getRoutingService().pushReplaceCurrent(`/${route}`);
     }
+  }
+
+  async shareApp() {
+    await serviceFacade.getMenuService().close();
+    await Share.share({
+      title: this.translationMenuShareApp,
+      url: serviceFacade.getShareService().getShare(),
+      dialogTitle: this.translationMenuShareApp
+    });
   }
 
   render() {
@@ -100,6 +117,12 @@ export class AppRoot {
                   <ion-item onClick={() => this.navigate("language")}>
                     <ion-icon name="chatbubbles" slot="start"></ion-icon>
                     <ion-label>{this.translationMenuLanguage}</ion-label>
+                  </ion-item>
+                )}
+                {this.requireShareLink && (
+                  <ion-item onClick={() => this.shareApp()}>
+                    <ion-icon name="share-social-outline" slot="start"></ion-icon>
+                    <ion-label>{this.translationMenuShareApp}</ion-label>
                   </ion-item>
                 )}
               </ion-list>

@@ -1,4 +1,4 @@
-importScripts('workbox-v7.4.0/workbox-sw.js');
+importScripts('workbox-v7.4.1/workbox-sw.js');
 
 const { precaching, routing, strategies } = workbox;
 

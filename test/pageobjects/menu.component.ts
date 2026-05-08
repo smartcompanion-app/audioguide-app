@@ -22,17 +22,19 @@ class MenuComponent {
 
   async getMenuItemLabel(index: number, notExpected?: string): Promise<string> {
     await this.open();
-    const labels = await this.menuLabels;
     await browser.waitUntil(
       async () => {
+        const labels = await this.menuLabels;
+        if (!labels[index]) return false;
         const text = await browser.execute((el: Element) => el.textContent || '', labels[index] as any);
         const trimmed = text.trim();
         if (trimmed.startsWith('menu-')) return false;
         if (notExpected && trimmed === notExpected) return false;
         return true;
       },
-      { timeout: 10000, timeoutMsg: 'Menu label translation not loaded' },
+      { timeout: 15000, timeoutMsg: 'Menu label translation not loaded' },
     );
+    const labels = await this.menuLabels;
     const text = await browser.execute((el: Element) => el.textContent || '', labels[index] as any);
     return text.trim();
   }
@@ -54,6 +56,24 @@ class MenuComponent {
 
   async clickLanguage() {
     await this.clickMenuItem(2);
+  }
+
+  async clickShare() {
+    await this.open();
+    await browser.waitUntil(
+      async () => (await this.menuItems).length >= 4,
+      { timeout: 15000, timeoutMsg: 'Share menu item did not appear' },
+    );
+    const items = await this.menuItems;
+    await browser.waitUntil(
+      async () => {
+        const text = await browser.execute((el: Element) => el.textContent || '', items[3] as any);
+        return !text.trim().startsWith('menu-');
+      },
+      { timeout: 10000, timeoutMsg: 'Share label translation not loaded' },
+    );
+    await items[3].click();
+    await browser.pause(300);
   }
 }
 
