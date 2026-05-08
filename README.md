@@ -48,7 +48,13 @@ npm run test:dev   # Continuous test watching
 
 ## Customization
 
-Customization is handled via [engraft](https://github.com/smartcompanion-app/engraft) using the `engraft.template.yml` file. All configurable variables are listed below:
+Customization is handled via [engraft](https://github.com/smartcompanion-app/engraft), which is included as the `@smartcompanion/engraft` devDependency. After `npm install`, apply a values file with:
+
+```bash
+npx engraft apply --template engraft.template.yml --values customization/leon/engraft.variables.yml
+```
+
+A ready-to-use example lives in [`customization/leon/`](customization/leon/) — copy that directory to start your own variant. All configurable variables defined in `engraft.template.yml` are listed below:
 
 | Variable | Description | Default |
 |---|---|---|
