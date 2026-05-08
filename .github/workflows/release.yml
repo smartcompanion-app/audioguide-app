@@ -44,6 +44,7 @@ jobs:
 
       # Build "leon" variant via engraft
       - run: npx engraft apply --template engraft.template.yml --values customization/leon/engraft.variables.yml
+      - run: grep -q 'Leon Audioguide' src/index.html
       - run: npm run build
       - run: |
           sed -i 's|"/build/|"build/|g' www/index.html
