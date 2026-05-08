@@ -10,11 +10,12 @@
     "test:offline": "npm run build:offline && TEST_OFFLINE=true wdio run wdio.conf.ts"
   },
   "devDependencies": {
+    "@capacitor/share": "^8.0.1",
     "@ionic/core": "^8.6.0",
-    "@smartcompanion/data": "^0.7.3",
+    "@smartcompanion/data": "^0.8.0",
     "@smartcompanion/native-audio-player": "^0.4.0",
-    "@smartcompanion/services": "^0.7.3",
-    "@smartcompanion/ui": "^0.7.3",
+    "@smartcompanion/services": "^0.8.0",
+    "@smartcompanion/ui": "^0.8.0",
     "@stencil/core": "^4.39.0",
     "@stencil/sass": "^3.0.12",
     "@types/mocha": "^10.0.10",
