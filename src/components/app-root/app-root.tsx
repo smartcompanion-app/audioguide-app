@@ -64,9 +64,10 @@ export class AppRoot {
           <ion-route
             url="/"
             component="sc-page-loading"
-            componentProps={{ 
-              facade: serviceFacade, 
-              image: "assets/logo.png"
+            componentProps={{
+              facade: serviceFacade,
+              image: "assets/logo.png",
+              imageDark: "assets/logo-dark.png"
             }}
           />
           <ion-route
