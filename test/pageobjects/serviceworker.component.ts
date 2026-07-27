@@ -3,12 +3,12 @@ class ServiceWorkerComponent {
     await browser.waitUntil(
       async () => {
         const swState: string = await browser.execute(() => {
-          return new Promise<string>((resolve) => {
+          return new Promise<string>(resolve => {
             if (!('serviceWorker' in navigator)) {
               resolve('unsupported');
               return;
             }
-            navigator.serviceWorker.getRegistration().then((reg) => {
+            navigator.serviceWorker.getRegistration().then(reg => {
               if (reg && reg.active) {
                 resolve('activated');
               } else if (reg && reg.installing) {

@@ -3,7 +3,6 @@ import playerPage from '../pageobjects/player.page.js';
 import menu from '../pageobjects/menu.component.js';
 
 describe('Language selection', () => {
-
   before(async () => {
     await browser.url('/');
     await languagePage.waitForPage();
@@ -37,5 +36,4 @@ describe('Language selection', () => {
     const label = await menu.getMenuItemLabel(0, 'Übersicht');
     expect(label).toBe('Overview');
   });
-
 });

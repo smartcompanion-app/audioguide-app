@@ -2,7 +2,7 @@ import { Env } from '@stencil/core';
 import { ServiceFacade } from '@smartcompanion/services';
 
 const isServiceWorkerReady = () =>
-  new Promise<void>((resolve) => {
+  new Promise<void>(resolve => {
     if (!('serviceWorker' in navigator)) {
       resolve();
       return;
@@ -10,7 +10,7 @@ const isServiceWorkerReady = () =>
 
     navigator.serviceWorker
       .getRegistration()
-      .then((registration) => {
+      .then(registration => {
         if (!registration) {
           console.warn('No service worker registration found.');
           resolve();
@@ -50,11 +50,8 @@ serviceFacade.registerDefaultServices();
 serviceFacade.registerCollectibleAudioPlayerService(Env.TITLE);
 
 if (Env.MESSAGING_SUPPORT === 'enabled') {
-  globalThis.addEventListener('message', (event) => {  
-    if (
-      event?.data?.type === 'UPDATE_CSS_VARIABLES' &&
-      typeof event?.data?.payload === 'object'
-    ) {
+  globalThis.addEventListener('message', event => {
+    if (event?.data?.type === 'UPDATE_CSS_VARIABLES' && typeof event?.data?.payload === 'object') {
       const payload = event.data.payload;
 
       for (const [variable, value] of Object.entries(payload)) {
@@ -62,10 +59,7 @@ if (Env.MESSAGING_SUPPORT === 'enabled') {
           document.documentElement.style.setProperty(variable, value);
         }
       }
-    } else if (
-      event?.data?.type === 'UPDATE_MENU_IMAGE' &&
-      typeof event?.data?.payload === 'object'
-    ) {
+    } else if (event?.data?.type === 'UPDATE_MENU_IMAGE' && typeof event?.data?.payload === 'object') {
       const { light, dark } = event.data.payload;
       if (typeof light === 'string') {
         const lightImage = document.querySelector('#main-menu-image-light') as HTMLImageElement;
@@ -75,17 +69,14 @@ if (Env.MESSAGING_SUPPORT === 'enabled') {
         const darkImage = document.querySelector('#main-menu-image-dark') as HTMLImageElement;
         darkImage.src = dark;
       }
-    } else if (
-      event?.data?.type === 'UPDATE_DARK_MODE' &&
-      typeof event?.data?.payload === 'string'
-    ) {
+    } else if (event?.data?.type === 'UPDATE_DARK_MODE' && typeof event?.data?.payload === 'string') {
       const prefersDarkMode = event.data.payload === 'dark';
       if (prefersDarkMode) {
         document.documentElement.classList.add('ion-palette-dark');
       } else {
         document.documentElement.classList.remove('ion-palette-dark');
       }
-    }  
+    }
   });
 }
 
@@ -93,17 +84,17 @@ if (Env.OFFLINE_SUPPORT === 'enabled') {
   serviceFacade.registerOfflineLoadService(
     () =>
       fetch(Env.DATA_URL)
-        .then((response) => {
+        .then(response => {
           if (!response.ok) throw new Error(`Data fetch failed: ${response.status}`);
           return response.json();
         })
-        .catch((error) => {
+        .catch(error => {
           console.error('Failed to load data:', error);
           throw error;
         }),
     (url: string) =>
       isServiceWorkerReady().then(() =>
-        fetch(url).then((response) => {
+        fetch(url).then(response => {
           if (!response.ok) throw new Error(`Asset fetch failed: ${response.status}`);
           return response.text();
         }),
@@ -116,7 +107,7 @@ if (Env.OFFLINE_SUPPORT === 'enabled') {
   serviceFacade.registerOnlineLoadService(() =>
     fetch(Env.DATA_URL, {
       cache: 'no-store',
-    }).then((response) => response.json()),
+    }).then(response => response.json()),
   );
 }
 
