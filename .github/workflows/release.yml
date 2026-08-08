@@ -118,9 +118,23 @@ jobs:
       # for index.html unchanged and clients would never pick the new version up.
       # The grep fails the deploy if the placeholder is ever renamed, which would
       # otherwise silently ship "dev" to production.
+      #
+      # Tags from before changesets (vYYYY-MM-DD) have neither a version in
+      # package.json nor the placeholder, and rolling back to one has to keep
+      # working -- the release before the first CalVer one is a date tag, so it
+      # is the first thing a rollback would ever reach for. The absent version
+      # is what identifies those refs. Testing that rather than the placeholder
+      # matters: a renamed placeholder still fails loudly here, because every
+      # ref that carries a version is held to the strict path.
       - name: Stamp version
         run: |
-          APP_VERSION=$(node -p "require('./package.json').version")
+          APP_VERSION=$(node -p "require('./package.json').version ?? ''")
+
+          if [ -z "$APP_VERSION" ]; then
+            echo "::warning::No version in package.json at $DEPLOY_REF -- a build from before changesets. Deploying it unstamped."
+            exit 0
+          fi
+
           echo "APP_VERSION=$APP_VERSION" >> "$GITHUB_ENV"
           sed -i "s|<meta name=\"version\" content=\"dev\" />|<meta name=\"version\" content=\"$APP_VERSION\" />|" src/index.html
           grep -q "<meta name=\"version\" content=\"$APP_VERSION\" />" src/index.html
@@ -135,10 +149,13 @@ jobs:
       # Build "leon" variant via engraft
       - run: npx engraft apply --template engraft.template.yml --values customization/leon/engraft.variables.yml
       # engraft rewrites src/index.html through an HTML parser, so the version
-      # meta tag is re-checked here rather than assumed to survive.
+      # meta tag is re-checked here rather than assumed to survive. Skipped when
+      # nothing was stamped, which is only ever a pre-changesets ref.
       - run: |
           grep -q 'Leon Audioguide' src/index.html
-          grep -q "name=\"version\" content=\"$APP_VERSION\"" src/index.html
+          if [ -n "${APP_VERSION:-}" ]; then
+            grep -q "name=\"version\" content=\"$APP_VERSION\"" src/index.html
+          fi
       - run: npm run build
       - run: |
           sed -i 's|"/build/|"build/|g' www/index.html
