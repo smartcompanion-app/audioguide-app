@@ -3,6 +3,14 @@ name: release
 on:
   release:
     types: [published]
+  # Redeploy an arbitrary tag on demand. The deploy rebuilds from that ref
+  # rather than re-serving a stored artifact, which only reproduces the original
+  # because `npm ci` resolves against that ref's package-lock.json.
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: 'Tag (or commit SHA) to deploy, e.g. v2026-05-08'
+        required: true
 
 # Two deploys racing each other would fight over the Pages environment, and
 # cancelling a half-finished one can leave the site mid-swap.
@@ -17,6 +25,10 @@ permissions:
 
 env:
   NODE_VERSION: 22
+  # A release event checks out the tagged commit by default, but a manual
+  # dispatch has no such default, so the ref is pinned explicitly for both. It
+  # doubles as the version stamped into the built pages.
+  DEPLOY_REF: ${{ github.event.inputs.ref || github.event.release.tag_name }}
 
 jobs:
   test:
@@ -25,6 +37,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          ref: ${{ env.DEPLOY_REF }}
 
       - name: Set up Node.js ${{ env.NODE_VERSION }}
         uses: actions/setup-node@v7
@@ -51,6 +65,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          ref: ${{ env.DEPLOY_REF }}
 
       - name: Set up Node.js ${{ env.NODE_VERSION }}
         uses: actions/setup-node@v7
@@ -61,6 +77,17 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # Stamped before either variant is built, and deliberately not afterwards:
+      # with OFFLINE_SUPPORT on, Workbox computes its precache revisions during
+      # the build, so editing www/index.html after it would leave the revision
+      # for index.html unchanged and clients would never pick the new version up.
+      # The grep fails the deploy if the placeholder is ever renamed, which would
+      # otherwise silently ship "dev" to production.
+      - name: Stamp version
+        run: |
+          sed -i "s|<meta name=\"version\" content=\"dev\" />|<meta name=\"version\" content=\"$DEPLOY_REF\" />|" src/index.html
+          grep -q "<meta name=\"version\" content=\"$DEPLOY_REF\" />" src/index.html
+
       # Build default "animals" variant
       - run: npm run build
       - run: |
@@ -70,7 +97,11 @@ jobs:
 
       # Build "leon" variant via engraft
       - run: npx engraft apply --template engraft.template.yml --values customization/leon/engraft.variables.yml
-      - run: grep -q 'Leon Audioguide' src/index.html
+      # engraft rewrites src/index.html through an HTML parser, so the version
+      # meta tag is re-checked here rather than assumed to survive.
+      - run: |
+          grep -q 'Leon Audioguide' src/index.html
+          grep -q "name=\"version\" content=\"$DEPLOY_REF\"" src/index.html
       - run: npm run build
       - run: |
           sed -i 's|"/build/|"build/|g' www/index.html
