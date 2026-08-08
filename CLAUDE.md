@@ -62,7 +62,8 @@ www/                        # Build output (gitignored)
 ### Service Pattern
 - **ServiceFacade** — single facade coordinates all services
 - Imported from `src/services/index.ts` as `serviceFacade`
-- Key methods: `__()` (i18n), `getRoutingService()`, `getMenuService()`, `canLoadRoute()`, `registerDefaultServices()`, `registerCollectibleAudioPlayerService()`, `registerOfflineLoadService()`, `registerOnlineLoadService()`
+- Key methods: `__()` (i18n), `getRoutingService()`, `getMenuService()`, `canLoadRoute()`, `registerCollectibleAudioPlayerService()`, `registerOfflineLoadService()`, `registerOnlineLoadService()`
+- Domain services, routing and menu are available directly from the facade — there is no registration step. `registerDefaultServices()` was removed in library 0.10.0; registering an audio player and a load service is still required.
 
 ### State Management
 - Stencil `@State()` for reactive component state

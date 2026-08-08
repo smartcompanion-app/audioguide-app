@@ -46,7 +46,6 @@ const isServiceWorkerReady = () =>
 
 const serviceFacade = new ServiceFacade();
 
-serviceFacade.registerDefaultServices();
 serviceFacade.registerCollectibleAudioPlayerService(Env.TITLE);
 
 if (Env.MESSAGING_SUPPORT === 'enabled') {
