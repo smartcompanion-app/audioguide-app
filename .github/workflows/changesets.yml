@@ -23,6 +23,22 @@ jobs:
     name: Version or release
     runs-on: ubuntu-24.04
     steps:
+      # RELEASE_TOKEN comes from the organization, and organization secrets can
+      # be scoped to a subset of repositories -- so it can be present for the
+      # organization and still absent here. Both uses below fall back to
+      # GITHUB_TOKEN, which keeps the workflow running but produces a release
+      # that never deploys, with nothing in the log to say why. This makes that
+      # state visible without failing a run that is otherwise fine.
+      - name: Check release token
+        env:
+          RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+        run: |
+          if [ -z "$RELEASE_TOKEN" ]; then
+            echo "::warning::RELEASE_TOKEN is not available to this repository, so GITHUB_TOKEN is used instead. Releases created with GITHUB_TOKEN do not trigger workflows, so the Pages deploy will NOT run for this release -- deploy it by hand from Actions, release, Run workflow. Check that the organization secret grants access to this repository."
+          else
+            echo "RELEASE_TOKEN is available."
+          fi
+
       # Tags are needed by the release step below, which checks whether this
       # run actually produced one.
       - name: Checkout
