@@ -35,20 +35,34 @@ jobs:
     name: Build and test
     runs-on: ubuntu-24.04
     steps:
-      # Releases are tagged by date, so a second release on the same day
-      # collides and has to carry a `.N` suffix. Checking the format here keeps
-      # that from being folklore: `.1` is known-good, and a near miss like
-      # v2026-05-08-1 fails instead of shipping under a tag nothing recognises.
+      # Versions are CalVer as YYYY.MINOR.MICRO, so the leading component is a
+      # claim about the calendar. Changesets only advances it on a major
+      # changeset, which is a thing a person has to remember once a year -- and
+      # forgetting is silent, leaving 2026.x shipping well into 2027. Checking
+      # it here is what makes the year trustworthy rather than aspirational.
+      #
+      # This assumes releases always come from main, which they do: there are no
+      # maintenance lines. A backport to an older year would fail this and would
+      # need the rule relaxed to match.
       #
       # The release is already published by the time this runs, so failing does
-      # not unpublish it -- it stops the deploy and leaves the tag to be fixed.
-      # Only checked for release events; a dispatch redeploys a ref that already
-      # exists and is allowed to be a plain commit SHA.
-      - name: Validate release tag
+      # not unpublish it -- it stops the deploy and leaves the release to be
+      # corrected. Only checked for release events; a dispatch redeploys a ref
+      # that already exists and is allowed to be a plain commit SHA.
+      - name: Verify release version
         if: github.event_name == 'release'
         run: |
-          if ! echo "$DEPLOY_REF" | grep -Eq '^v[0-9]{4}-[0-9]{2}-[0-9]{2}(\.[0-9]+)?$'; then
-            echo "::error::Release tag '$DEPLOY_REF' must be vYYYY-MM-DD, or vYYYY-MM-DD.N for a second release on the same day (e.g. v2026-05-08, v2026-05-08.1)."
+          if ! echo "$DEPLOY_REF" | grep -Eq '^v[0-9]{4}\.[0-9]+\.[0-9]+$'; then
+            echo "::error::Release tag '$DEPLOY_REF' must be vYYYY.MINOR.MICRO (e.g. v2026.1.0)."
+            exit 1
+          fi
+
+          TAG_YEAR="${DEPLOY_REF#v}"
+          TAG_YEAR="${TAG_YEAR%%.*}"
+          CURRENT_YEAR="$(date -u +%Y)"
+
+          if [ "$TAG_YEAR" != "$CURRENT_YEAR" ]; then
+            echo "::error::Release tag '$DEPLOY_REF' is for $TAG_YEAR but the current year is $CURRENT_YEAR. The year only advances on a major changeset -- add one with 'npx changeset' and release again."
             exit 1
           fi
 
@@ -94,6 +108,10 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # Read from package.json rather than from the tag, because changesets owns
+      # that field: it is right for a dispatch given a plain commit SHA, where
+      # the ref is not a version at all.
+      #
       # Stamped before either variant is built, and deliberately not afterwards:
       # with OFFLINE_SUPPORT on, Workbox computes its precache revisions during
       # the build, so editing www/index.html after it would leave the revision
@@ -102,8 +120,10 @@ jobs:
       # otherwise silently ship "dev" to production.
       - name: Stamp version
         run: |
-          sed -i "s|<meta name=\"version\" content=\"dev\" />|<meta name=\"version\" content=\"$DEPLOY_REF\" />|" src/index.html
-          grep -q "<meta name=\"version\" content=\"$DEPLOY_REF\" />" src/index.html
+          APP_VERSION=$(node -p "require('./package.json').version")
+          echo "APP_VERSION=$APP_VERSION" >> "$GITHUB_ENV"
+          sed -i "s|<meta name=\"version\" content=\"dev\" />|<meta name=\"version\" content=\"$APP_VERSION\" />|" src/index.html
+          grep -q "<meta name=\"version\" content=\"$APP_VERSION\" />" src/index.html
 
       # Build default "animals" variant
       - run: npm run build
@@ -118,7 +138,7 @@ jobs:
       # meta tag is re-checked here rather than assumed to survive.
       - run: |
           grep -q 'Leon Audioguide' src/index.html
-          grep -q "name=\"version\" content=\"$DEPLOY_REF\"" src/index.html
+          grep -q "name=\"version\" content=\"$APP_VERSION\"" src/index.html
       - run: npm run build
       - run: |
           sed -i 's|"/build/|"build/|g' www/index.html

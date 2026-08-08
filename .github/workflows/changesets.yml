@@ -1,0 +1,88 @@
+name: changesets
+
+on:
+  push:
+    branches:
+      - main
+
+# Two runs versioning the same branch would fight over the release pull request
+# and could tag twice.
+concurrency:
+  group: changesets
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+env:
+  NODE_VERSION: 22
+
+jobs:
+  changesets:
+    name: Version or release
+    runs-on: ubuntu-24.04
+    steps:
+      # Tags are needed by the release step below, which checks whether this
+      # run actually produced one.
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v7
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Opens (or updates) a "chore: release" pull request collecting the
+      # pending changesets. Merging that pull request runs this workflow again,
+      # at which point there are no changesets left and `release` runs instead,
+      # which tags rather than publishes -- the package is private and nothing
+      # goes to npm.
+      #
+      # RELEASE_TOKEN is a personal access token with contents and pull request
+      # write access, and is load-bearing here for two reasons: pull requests
+      # opened with the default GITHUB_TOKEN do not trigger workflows, so the
+      # release pull request would sit with no CI checks; and neither does the
+      # release created below, so the deploy would never fire.
+      - name: Create release pull request or tag
+        uses: changesets/action@v1
+        with:
+          github-token: ${{ secrets.RELEASE_TOKEN || secrets.GITHUB_TOKEN }}
+          version: npm run version
+          publish: npm run release
+          title: 'chore: release'
+          commit: 'chore: release'
+        env:
+          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN || secrets.GITHUB_TOKEN }}
+
+      # Bridges changesets to the deploy. Deliberately not gated on the
+      # action's `published` output: that output is derived from what
+      # `changeset publish` pushed to a registry, and this package publishes
+      # nothing, so it cannot be relied on here. Deriving the state from the
+      # repository instead makes the step idempotent -- it does nothing on the
+      # runs that only opened a release pull request.
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ secrets.RELEASE_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          TAG="v$VERSION"
+
+          if ! git rev-parse -q --verify "refs/tags/$TAG" >/dev/null; then
+            echo "No tag $TAG -- this run did not release. Nothing to do."
+            exit 0
+          fi
+
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "Release $TAG already exists. Nothing to do."
+            exit 0
+          fi
+
+          node scripts/changelog-section.mjs "$VERSION" > "$RUNNER_TEMP/notes.md"
+          gh release create "$TAG" --title "$VERSION" --notes-file "$RUNNER_TEMP/notes.md"
