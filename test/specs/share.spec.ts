@@ -21,10 +21,7 @@ describe('Share app', () => {
   it('closes the menu and invokes navigator.share with the configured URL', async () => {
     await shareStub.reset();
     await menu.clickShare();
-    await browser.waitUntil(
-      async () => (await shareStub.getCalls()).length === 1,
-      { timeout: 5000, timeoutMsg: 'navigator.share was not called' },
-    );
+    await browser.waitUntil(async () => (await shareStub.getCalls()).length === 1, { timeout: 5000, timeoutMsg: 'navigator.share was not called' });
     const [call] = await shareStub.getCalls();
     expect(call.opts.url).toBe('https://smartcompanion-app.github.io/audioguide-app/animals/');
     expect(call.opts.title).toBe('Recommend Audioguide');

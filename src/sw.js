@@ -14,7 +14,7 @@ routing.registerRoute(
   ({ url }) => url.pathname.endsWith('/data.json'),
   new strategies.NetworkFirst({
     cacheName: 'data-cache',
-  })
+  }),
 );
 
 // Cache assets directory with CacheFirst
@@ -22,7 +22,7 @@ routing.registerRoute(
   ({ request }) => request.url.match(/assets\/.+\..{2,}/),
   new strategies.CacheFirst({
     cacheName: 'assets-cache',
-  })
+  }),
 );
 
 // On activate, immediately claim all clients

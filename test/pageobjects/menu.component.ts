@@ -60,10 +60,7 @@ class MenuComponent {
 
   async clickShare() {
     await this.open();
-    await browser.waitUntil(
-      async () => (await this.menuItems).length >= 4,
-      { timeout: 15000, timeoutMsg: 'Share menu item did not appear' },
-    );
+    await browser.waitUntil(async () => (await this.menuItems).length >= 4, { timeout: 15000, timeoutMsg: 'Share menu item did not appear' });
     const items = await this.menuItems;
     await browser.waitUntil(
       async () => {

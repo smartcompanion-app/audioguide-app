@@ -4,7 +4,6 @@ import menu from '../pageobjects/menu.component.js';
 import selectionPage from '../pageobjects/selection.page.js';
 
 describe('Station selection via numpad', () => {
-
   before(async () => {
     await browser.url('/');
     await languagePage.waitForPage();
@@ -22,15 +21,11 @@ describe('Station selection via numpad', () => {
     await selectionPage.pressNumber(2);
     await selectionPage.pressConfirm();
     await playerPage.waitForPage();
-    await browser.waitUntil(
-      async () => await playerPage.isItemActive(1),
-      {
-        timeout: 5000,
-        timeoutMsg: 'Expected station 1 to become active after confirmation',
-      },
-    );
+    await browser.waitUntil(async () => await playerPage.isItemActive(1), {
+      timeout: 5000,
+      timeoutMsg: 'Expected station 1 to become active after confirmation',
+    });
     const isActive = await playerPage.isItemActive(1);
     expect(isActive).toBe(true);
   });
-
 });

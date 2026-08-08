@@ -1,0 +1,69 @@
+name: ci
+
+# Also runs on main: pull request checks alone leave a window where a merge
+# breaks the branch and nothing reports it until the next release.
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+# Superseded runs on the same branch are pointless once a newer commit exists.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  NODE_VERSION: 22
+
+jobs:
+  # Static checks only -- no Stencil build, no browser, so this reports back
+  # long before the test job finishes.
+  lint:
+    name: Lint
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v7
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run lint
+        run: npm run lint
+
+      - name: Check formatting
+        run: npm run format:check
+
+  test:
+    name: Build and test
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v7
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Both scripts build first: `test` runs the default build, `test:offline`
+      # rebuilds with OFFLINE_SUPPORT so the service worker specs have one.
+      - name: Run tests
+        run: npm test
+
+      - name: Run offline tests
+        run: npm run test:offline

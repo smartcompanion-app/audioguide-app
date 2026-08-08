@@ -1,4 +1,4 @@
-export default async () => {  
+export default async () => {
   const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
   const apply = (prefersDarkMode: boolean) => {
@@ -10,5 +10,5 @@ export default async () => {
   };
 
   apply(darkModeMediaQuery.matches);
-  darkModeMediaQuery.addEventListener('change', (event) => apply(event.matches));
+  darkModeMediaQuery.addEventListener('change', event => apply(event.matches));
 };

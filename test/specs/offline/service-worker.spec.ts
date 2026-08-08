@@ -44,13 +44,10 @@ describe('Service Worker Offline Support', () => {
       // Reset hash router state and reload so the SW intercepts all requests
       await sw.freshReload();
       await languagePage.waitForPage();
-      await browser.waitUntil(
-        async () => await sw.isCached('data.json'),
-        {
-          timeout: 30000,
-          timeoutMsg: 'data.json was not cached by the service worker within 30s',
-        }
-      );
+      await browser.waitUntil(async () => await sw.isCached('data.json'), {
+        timeout: 30000,
+        timeoutMsg: 'data.json was not cached by the service worker within 30s',
+      });
     });
 
     it('caches data.json after SW-controlled load', async () => {

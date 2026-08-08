@@ -1,0 +1,47 @@
+version: 2
+
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      # The library publishes data, services and ui in lockstep -- they always
+      # share a version number -- so they have to move together. Listing them
+      # ahead of the catch-all group keeps them in one pull request even when a
+      # release crosses a major boundary and would otherwise be split out below.
+      smartcompanion:
+        patterns:
+          - '@smartcompanion/*'
+
+      # Minors and patches only. Grouping majors in here too means a single
+      # incompatible one blocks every other update in the pull request, so each
+      # major arrives as its own pull request and is assessed on its own.
+      app-dependencies:
+        patterns:
+          - '*'
+        update-types:
+          - minor
+          - patch
+    ignore:
+      # Stencil majors change the www output target's shape, which the release
+      # workflow's path rewriting reads directly. That needs a deliberate
+      # migration with a verified deploy, not an automated bump.
+      - dependency-name: '@stencil/core'
+        update-types: [version-update:semver-major]
+
+      # Held back deliberately: typescript-eslint declares
+      # `peer typescript@">=4.8.4 <6.1.0"`, so TypeScript 7 cannot resolve
+      # against it and `npm ci` fails outright. Drop this rule once
+      # typescript-eslint widens that range.
+      - dependency-name: typescript
+        update-types: [version-update:semver-major]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      github-actions:
+        patterns:
+          - '*'
