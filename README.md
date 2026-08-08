@@ -95,6 +95,30 @@ A ready-to-use example lives in [`customization/leon/`](customization/leon/) —
 
 For `primary_color_shade` and `primary_color_tint`, use the [Ionic Color Creator](https://ionicframework.com/docs/theming/colors#new-color-creator) to calculate matching values.
 
+## Releases
+
+Publishing a GitHub release builds every app variant and deploys them to GitHub Pages. Releases are tagged by date rather than by semantic version — this is a deployed application, not a library, so what matters is how recent a build is, not what it promises about an API.
+
+Tags are `vYYYY-MM-DD`. A second release on the same day takes a `.N` suffix, starting at `.1`:
+
+```
+v2026-05-08
+v2026-05-08.1
+v2026-05-08.2
+```
+
+The release workflow rejects any other shape, so a mistyped tag stops the deploy instead of shipping under a name nothing recognises.
+
+The release tag is stamped into each build as a `version` meta tag, which is the quickest way to tell which build a device is actually running:
+
+```js
+document.querySelector('meta[name="version"]').content; // "v2026-05-08"
+```
+
+Local builds report `dev`.
+
+To roll back, run the `release` workflow manually (**Actions → release → Run workflow**) and give it the tag to redeploy. This rebuilds from that tag rather than re-serving a stored artifact, and browsers holding a cached service worker pick the change up on their next activation — so it is a fix-forward lever, not an instant kill switch.
+
 ## Contributing
 
 Contributions are welcome! Feel free to open issues or submit pull requests.
