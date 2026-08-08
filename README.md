@@ -25,6 +25,10 @@ The app is fully customizable, allowing you to adapt content, colors, text, and 
 |---|---|---|---|
 | ![Castle Tratzberg App](docs/tratzberg-app.png) | ![Museum Landeck App](docs/landeck-app.png) | ![Example App (Animals)](docs/animals-app.png) | ![Example App (Leon)](docs/leon-app.png) |
 
+## Browser Support
+
+Visitor devices need **Chrome/Edge 110+, Safari 16.4+ (iOS 16.4+), or Firefox 110+**. The station list and image slideshow are built on swiper 14, which sets this floor. If you need to support older devices, stay on a release before `@smartcompanion/ui` 1.0.0.
+
 ## Installation & Development
 
 - Fork and clone the repo
