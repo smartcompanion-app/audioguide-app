@@ -7,6 +7,7 @@ describe('Share app', () => {
   before(async () => {
     await shareStub.installStub();
     await browser.url('/');
+    await shareStub.assertInstalled();
     await languagePage.waitForPage();
     await languagePage.selectLanguageByText('ENGLISH');
     await playerPage.waitForPage();
