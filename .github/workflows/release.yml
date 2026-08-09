@@ -3,6 +3,14 @@ name: release
 on:
   release:
     types: [published]
+  # Redeploy an arbitrary tag on demand. The deploy rebuilds from that ref
+  # rather than re-serving a stored artifact, which only reproduces the original
+  # because `npm ci` resolves against that ref's package-lock.json.
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: 'Tag (or commit SHA) to deploy, e.g. v2026-05-08'
+        required: true
 
 # Two deploys racing each other would fight over the Pages environment, and
 # cancelling a half-finished one can leave the site mid-swap.
@@ -17,14 +25,51 @@ permissions:
 
 env:
   NODE_VERSION: 22
+  # A release event checks out the tagged commit by default, but a manual
+  # dispatch has no such default, so the ref is pinned explicitly for both. It
+  # doubles as the version stamped into the built pages.
+  DEPLOY_REF: ${{ github.event.inputs.ref || github.event.release.tag_name }}
 
 jobs:
   test:
     name: Build and test
     runs-on: ubuntu-24.04
     steps:
+      # Versions are CalVer as YYYY.MINOR.MICRO, so the leading component is a
+      # claim about the calendar. Changesets only advances it on a major
+      # changeset, which is a thing a person has to remember once a year -- and
+      # forgetting is silent, leaving 2026.x shipping well into 2027. Checking
+      # it here is what makes the year trustworthy rather than aspirational.
+      #
+      # This assumes releases always come from main, which they do: there are no
+      # maintenance lines. A backport to an older year would fail this and would
+      # need the rule relaxed to match.
+      #
+      # The release is already published by the time this runs, so failing does
+      # not unpublish it -- it stops the deploy and leaves the release to be
+      # corrected. Only checked for release events; a dispatch redeploys a ref
+      # that already exists and is allowed to be a plain commit SHA.
+      - name: Verify release version
+        if: github.event_name == 'release'
+        run: |
+          if ! echo "$DEPLOY_REF" | grep -Eq '^v[0-9]{4}\.[0-9]+\.[0-9]+$'; then
+            echo "::error::Release tag '$DEPLOY_REF' must be vYYYY.MINOR.MICRO (e.g. v2026.1.0)."
+            exit 1
+          fi
+
+          TAG_YEAR="${DEPLOY_REF#v}"
+          TAG_YEAR="${TAG_YEAR%%.*}"
+          CURRENT_YEAR="$(date -u +%Y)"
+
+          if [ "$TAG_YEAR" != "$CURRENT_YEAR" ]; then
+            echo "::error::Release tag '$DEPLOY_REF' is for $TAG_YEAR but the current year is $CURRENT_YEAR. The year only advances on a major changeset -- add one with 'npx changeset' and release again."
+            exit 1
+          fi
+
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          ref: ${{ env.DEPLOY_REF }}
 
       - name: Set up Node.js ${{ env.NODE_VERSION }}
         uses: actions/setup-node@v7
@@ -51,6 +96,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          ref: ${{ env.DEPLOY_REF }}
 
       - name: Set up Node.js ${{ env.NODE_VERSION }}
         uses: actions/setup-node@v7
@@ -61,6 +108,37 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # Read from package.json rather than from the tag, because changesets owns
+      # that field: it is right for a dispatch given a plain commit SHA, where
+      # the ref is not a version at all.
+      #
+      # Stamped before either variant is built, and deliberately not afterwards:
+      # with OFFLINE_SUPPORT on, Workbox computes its precache revisions during
+      # the build, so editing www/index.html after it would leave the revision
+      # for index.html unchanged and clients would never pick the new version up.
+      # The grep fails the deploy if the placeholder is ever renamed, which would
+      # otherwise silently ship "dev" to production.
+      #
+      # Tags from before changesets (vYYYY-MM-DD) have neither a version in
+      # package.json nor the placeholder, and rolling back to one has to keep
+      # working -- the release before the first CalVer one is a date tag, so it
+      # is the first thing a rollback would ever reach for. The absent version
+      # is what identifies those refs. Testing that rather than the placeholder
+      # matters: a renamed placeholder still fails loudly here, because every
+      # ref that carries a version is held to the strict path.
+      - name: Stamp version
+        run: |
+          APP_VERSION=$(node -p "require('./package.json').version ?? ''")
+
+          if [ -z "$APP_VERSION" ]; then
+            echo "::warning::No version in package.json at $DEPLOY_REF -- a build from before changesets. Deploying it unstamped."
+            exit 0
+          fi
+
+          echo "APP_VERSION=$APP_VERSION" >> "$GITHUB_ENV"
+          sed -i "s|<meta name=\"version\" content=\"dev\" />|<meta name=\"version\" content=\"$APP_VERSION\" />|" src/index.html
+          grep -q "<meta name=\"version\" content=\"$APP_VERSION\" />" src/index.html
+
       # Build default "animals" variant
       - run: npm run build
       - run: |
@@ -70,7 +148,14 @@ jobs:
 
       # Build "leon" variant via engraft
       - run: npx engraft apply --template engraft.template.yml --values customization/leon/engraft.variables.yml
-      - run: grep -q 'Leon Audioguide' src/index.html
+      # engraft rewrites src/index.html through an HTML parser, so the version
+      # meta tag is re-checked here rather than assumed to survive. Skipped when
+      # nothing was stamped, which is only ever a pre-changesets ref.
+      - run: |
+          grep -q 'Leon Audioguide' src/index.html
+          if [ -n "${APP_VERSION:-}" ]; then
+            grep -q "name=\"version\" content=\"$APP_VERSION\"" src/index.html
+          fi
       - run: npm run build
       - run: |
           sed -i 's|"/build/|"build/|g' www/index.html

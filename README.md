@@ -95,6 +95,52 @@ A ready-to-use example lives in [`customization/leon/`](customization/leon/) —
 
 For `primary_color_shade` and `primary_color_tint`, use the [Ionic Color Creator](https://ionicframework.com/docs/theming/colors#new-color-creator) to calculate matching values.
 
+## Releases
+
+Releases are managed with [changesets](https://github.com/changesets/changesets) and versioned as `YYYY.MINOR.MICRO` — the [CalVer](https://calver.org/) scheme PyCharm and Unity use. This is a deployed application, not a library, so a version says when a build is from rather than what it promises about an API.
+
+### Versioning
+
+The year is the only calendar claim; `MINOR` and `MICRO` are plain sequences within it:
+
+```
+2026.1.0 → 2026.1.1 → 2026.2.0 → … → 2027.0.0
+```
+
+Because the scheme is CalVer rather than semver, the bump levels mean something different from usual:
+
+| Bump | Meaning |
+|---|---|
+| `major` | a new calendar year — used once a year, nothing else |
+| `minor` | new features, and anything that breaks a fork's customization |
+| `patch` | fixes, dependency bumps, internal changes |
+
+Breaking changes are therefore described in the changelog rather than signalled by the version. That is deliberate: if you maintain a customized fork, "the engraft variable `x` was renamed to `y`" is something you can act on, whereas an incremented number is not.
+
+The release workflow checks that a release's year matches the current one, so the year cannot quietly fall behind if a major changeset is forgotten.
+
+### Making a change
+
+Add a changeset to any pull request that changes behaviour:
+
+```bash
+npx changeset
+```
+
+Pick a bump level and describe the change for the people who will read the release notes. Changesets collects these into a `chore: release` pull request; merging it applies the version, updates `CHANGELOG.md`, tags, and creates the GitHub release — which in turn builds every app variant and deploys them to GitHub Pages.
+
+### Identifying a build
+
+The version is stamped into each build as a `version` meta tag, which is the quickest way to tell which build a device is actually running:
+
+```js
+document.querySelector('meta[name="version"]').content; // "2026.1.0"
+```
+
+Local builds report `dev`.
+
+To roll back, run the `release` workflow manually (**Actions → release → Run workflow**) and give it the tag to redeploy. This rebuilds from that tag rather than re-serving a stored artifact, and browsers holding a cached service worker pick the change up on their next activation — so it is a fix-forward lever, not an instant kill switch.
+
 ## Contributing
 
 Contributions are welcome! Feel free to open issues or submit pull requests.

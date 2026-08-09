@@ -1,6 +1,8 @@
 {
   "name": "smartcompanion-audioguide-app",
   "description": "SmartCompanion - Single Tour Audioguide App",
+  "version": "2026.0.0",
+  "private": true,
   "scripts": {
     "build": "stencil build",
     "start": "stencil build --dev --watch --serve",
@@ -11,11 +13,16 @@
     "lint": "eslint src test",
     "format": "prettier --write src test",
     "format:check": "prettier --check src test",
+    "changeset": "changeset",
+    "version": "changeset version && npm install --package-lock-only",
+    "release": "changeset tag",
     "prepare": "husky"
   },
   "devDependencies": {
     "@capacitor/core": "^8.5.0",
     "@capacitor/share": "^8.0.1",
+    "@changesets/changelog-github": "^0.7.0",
+    "@changesets/cli": "^2.31.1",
     "@ionic/core": "^8.8.17",
     "@smartcompanion/data": "^1.0.0",
     "@smartcompanion/engraft": "^0.2.2",
