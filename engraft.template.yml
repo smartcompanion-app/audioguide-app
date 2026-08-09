@@ -50,30 +50,12 @@ variables:
   primary_color_contrast:
     description: Text color on primary color
     default: "#ffffff"
-  primary_color_shade:
-    description: Darker shade of primary color, use https://ionicframework.com/docs/theming/colors#new-color-creator to calculate
-    default: "#7ea9a6"
-  primary_color_tint:
-    description: Lighter tint of primary color, use https://ionicframework.com/docs/theming/colors#new-color-creator to calculate
-    default: "#9ac6c4"
   light_color:
     description: Light color
     default: "#faefdc"
   light_color_dark:
     description: Light color (dark mode)
     default: "#2a1f0f"
-  light_color_shade:
-    description: Darker shade of light color, use https://ionicframework.com/docs/theming/colors#new-color-creator to calculate
-    default: "#dcd2c2"
-  light_color_shade_dark:
-    description: Darker shade of light color (dark mode), use https://ionicframework.com/docs/theming/colors#new-color-creator to calculate
-    default: "#251b0d"
-  light_color_tint:
-    description: Lighter tint of light color, use https://ionicframework.com/docs/theming/colors#new-color-creator to calculate
-    default: "#fbf1e0"
-  light_color_tint_dark:
-    description: Lighter tint of light color (dark mode), use https://ionicframework.com/docs/theming/colors#new-color-creator to calculate
-    default: "#3f3527"
   logo:
     description: Path to app logo image
     default: src/assets/logo.png
@@ -156,22 +138,10 @@ customizations:
         variable: primary_color
       - selector: '(\$primary-color-contrast:\s*)(?P<value>[^;]+)'
         variable: primary_color_contrast
-      - selector: '(\$primary-color-shade:\s*)(?P<value>[^;]+)'
-        variable: primary_color_shade
-      - selector: '(\$primary-color-tint:\s*)(?P<value>[^;]+)'
-        variable: primary_color_tint
       - selector: '(\$light-color:\s*)(?P<value>[^;]+)'
         variable: light_color
       - selector: '(\$light-color-dark:\s*)(?P<value>[^;]+)'
         variable: light_color_dark
-      - selector: '(\$light-color-shade:\s*)(?P<value>[^;]+)'
-        variable: light_color_shade
-      - selector: '(\$light-color-shade-dark:\s*)(?P<value>[^;]+)'
-        variable: light_color_shade_dark
-      - selector: '(\$light-color-tint:\s*)(?P<value>[^;]+)'
-        variable: light_color_tint
-      - selector: '(\$light-color-tint-dark:\s*)(?P<value>[^;]+)'
-        variable: light_color_tint_dark
 
   - action: file_replace
     file: src/assets/logo.png

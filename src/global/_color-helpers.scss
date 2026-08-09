@@ -1,0 +1,49 @@
+// Derived-colour helpers for the theme in app.scss.
+//
+// Not affiliated with Ionic -- this is our own transcription into Sass of the
+// algorithm behind their colour generator, so that the values we compute match
+// the ones that tool would hand you:
+// https://github.com/ionic-team/ionic-docs/blob/main/src/components/page/theming/_utils/color.ts
+//
+// Ionic expects every themeable colour to come with a shade and a tint. Those
+// are pure functions of the base colour, so asking someone customizing the app
+// to paste them in by hand from a web tool is busywork that also lets the three
+// values drift apart. Computing them here means a customization only ever names
+// the base colour.
+//
+// The output is identical to the generator's, not merely close -- verified
+// against every shade/tint pair this repo previously hardcoded.
+
+@use 'sass:color';
+@use 'sass:math';
+
+// The reference implementation rounds each channel with Math.round. Dart Sass keeps channels
+// fractional, which is valid CSS and renders the same, but rounding is what
+// makes the output match the generator hex-for-hex.
+//
+// Rounded via `color.change` rather than by building a fresh `rgb()`: both give
+// the same colour, but a constructed `rgb()` serializes as `rgb(126, 169, 166)`
+// where `color.change` keeps the compact `#7ea9a6` form the stylesheet used to
+// emit.
+@function -round-channels($c) {
+  @return color.change(
+    $c,
+    $red: math.round(color.channel($c, 'red', $space: rgb)),
+    $green: math.round(color.channel($c, 'green', $space: rgb)),
+    $blue: math.round(color.channel($c, 'blue', $space: rgb))
+  );
+}
+
+// shade(weight = 0.12) -- mix towards black.
+//
+// The weight is the amount of the *first* colour. Leave `color.mix` on its
+// legacy sRGB interpolation: passing `$method` switches Sass to a different
+// colour space and the results stop matching the reference implementation.
+@function shade($c) {
+  @return -round-channels(color.mix(#000000, $c, 12%));
+}
+
+// tint(weight = 0.1) -- mix towards white.
+@function tint($c) {
+  @return -round-channels(color.mix(#ffffff, $c, 10%));
+}

@@ -1,4 +1,5 @@
 @use 'sass:color';
+@use 'color-helpers' as helpers;
 
 @use '~@ionic/core/css/core.css';
 @use '~@ionic/core/css/normalize.css';
@@ -23,22 +24,16 @@ $card-background-color-dark: #3d2e1a;
 $station-icon-progress-color-dark: #698e7c;
 $menu-border-color-dark: #4a3820;
 
-// Use Ionic color generator to calculate shade and tint:
-// https://ionicframework.com/docs/theming/colors#new-color-creator
+// Shades and tints are derived with Ionic's own algorithm (see _color-helpers.scss),
+// so only the base colour needs setting here.
 $primary-color: #8fc0bd;
 $primary-color-contrast: white;
-$primary-color-shade: #7ea9a6;
-$primary-color-tint: #9ac6c4;
 
 $light-color: #faefdc;
 $light-color-contrast: black;
-$light-color-shade: #dcd2c2;
-$light-color-tint: #fbf1e0;
 
 $light-color-dark: #2a1f0f;
 $light-color-contrast-dark: white;
-$light-color-shade-dark: #251b0d;
-$light-color-tint-dark: #3f3527;
 
 :root {
   --sc-background-color: #{$background-color};
@@ -55,8 +50,8 @@ $light-color-tint-dark: #3f3527;
   --sc-primary-color-contrast-rgb:
     #{color.channel($primary-color-contrast, 'red', $space: rgb)}, #{color.channel($primary-color-contrast, 'green', $space: rgb)},
     #{color.channel($primary-color-contrast, 'blue', $space: rgb)};
-  --sc-primary-color-shade: #{$primary-color-shade};
-  --sc-primary-color-tint: #{$primary-color-tint};
+  --sc-primary-color-shade: #{helpers.shade($primary-color)};
+  --sc-primary-color-tint: #{helpers.tint($primary-color)};
 
   --sc-light-color: #{$light-color};
   --sc-light-color-rgb:
@@ -65,8 +60,8 @@ $light-color-tint-dark: #3f3527;
   --sc-light-color-contrast-rgb:
     #{color.channel($light-color-contrast, 'red', $space: rgb)}, #{color.channel($light-color-contrast, 'green', $space: rgb)},
     #{color.channel($light-color-contrast, 'blue', $space: rgb)};
-  --sc-light-color-shade: #{$light-color-shade};
-  --sc-light-color-tint: #{$light-color-tint};
+  --sc-light-color-shade: #{helpers.shade($light-color)};
+  --sc-light-color-tint: #{helpers.tint($light-color)};
 }
 
 :root.ion-palette-dark,
@@ -87,8 +82,8 @@ $light-color-tint-dark: #3f3527;
   --sc-light-color-contrast-rgb:
     #{color.channel($light-color-contrast-dark, 'red', $space: rgb)}, #{color.channel($light-color-contrast-dark, 'green', $space: rgb)},
     #{color.channel($light-color-contrast-dark, 'blue', $space: rgb)};
-  --sc-light-color-shade: #{$light-color-shade-dark};
-  --sc-light-color-tint: #{$light-color-tint-dark};
+  --sc-light-color-shade: #{helpers.shade($light-color-dark)};
+  --sc-light-color-tint: #{helpers.tint($light-color-dark)};
 }
 
 :root,

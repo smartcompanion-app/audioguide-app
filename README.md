@@ -73,27 +73,21 @@ A ready-to-use example lives in [`customization/leon/`](customization/leon/) —
 | `background_color_dark` | App background color (dark mode) | `#2a1f0f` |
 | `card_background_color` | Card background color | `#f7e6c7` |
 | `card_background_color_dark` | Card background color (dark mode) | `#3d2e1a` |
-| `station_icon_progress_color` | Station icon progress color | `#305653` |
-| `station_icon_progress_color_dark` | Station icon progress color (dark mode) | `#1e3735` |
+| `station_icon_progress_color` | Station icon progress color | `#698e7c` |
+| `station_icon_progress_color_dark` | Station icon progress color (dark mode) | `#698e7c` |
 | `menu_border_color` | Menu item border color | `#f4dcb3` |
 | `menu_border_color_dark` | Menu item border color (dark mode) | `#4a3820` |
 | `primary_color` | Primary brand color | `#8fc0bd` |
 | `primary_color_contrast` | Text color on primary color | `#ffffff` |
-| `primary_color_shade` | Darker shade of primary color | `#7ea9a6` |
-| `primary_color_tint` | Lighter tint of primary color | `#9ac6c4` |
 | `light_color` | Light color | `#faefdc` |
 | `light_color_dark` | Light color (dark mode) | `#2a1f0f` |
-| `light_color_shade` | Darker shade of light color | `#dcd2c2` |
-| `light_color_shade_dark` | Darker shade of light color (dark mode) | `#251b0d` |
-| `light_color_tint` | Lighter tint of light color | `#fbf1e0` |
-| `light_color_tint_dark` | Lighter tint of light color (dark mode) | `#3f3527` |
 | `logo` | Path to app logo image | `src/assets/logo.png` |
 | `logo_dark` | Path to app logo image (dark mode) | `src/assets/logo-dark.png` |
 | `favicon` | Path to favicon file | `src/assets/icon/favicon.ico` |
 | `icon_192` | Path to 192x192 PWA icon | `src/assets/icon/icon-192.png` |
 | `icon_512` | Path to 512x512 PWA icon | `src/assets/icon/icon-512.png` |
 
-For `primary_color_shade` and `primary_color_tint`, use the [Ionic Color Creator](https://ionicframework.com/docs/theming/colors#new-color-creator) to calculate matching values.
+Shades and tints are not configurable because they are not choices — Ionic derives each one from its base color, and `src/global/_color-helpers.scss` reproduces that calculation at build time. Setting `primary_color` gives you `--sc-primary-color-shade` and `--sc-primary-color-tint` for free, matching the [Ionic Color Creator](https://ionicframework.com/docs/theming/colors#new-color-creator) exactly.
 
 ## Releases
 
