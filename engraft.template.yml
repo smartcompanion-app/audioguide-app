@@ -24,26 +24,19 @@ variables:
     description: App background color
     default: "#faefdc"
   background_color_dark:
-    description: App background color (dark mode)
-    default: "#2a1f0f"
+    description: App background color (dark mode), optional - derived from background_color when unset
   card_background_color:
-    description: Card background color
-    default: "#f7e6c7"
+    description: Card background color, optional - derived from background_color when unset
   card_background_color_dark:
-    description: Card background color (dark mode)
-    default: "#3d2e1a"
+    description: Card background color (dark mode), optional - derived from background_color_dark when unset
   station_icon_progress_color:
-    description: Station icon progress color
-    default: "#698e7c"
+    description: Station icon progress color, optional - derived from primary_color when unset
   station_icon_progress_color_dark:
-    description: Station icon progress color (dark mode)
-    default: "#698e7c"
+    description: Station icon progress color (dark mode), optional - derived from primary_color when unset
   menu_border_color:
-    description: Menu item border color
-    default: "#f4dcb3"
+    description: Menu item border color, optional - derived from background_color when unset
   menu_border_color_dark:
-    description: Menu item border color (dark mode)
-    default: "#4a3820"
+    description: Menu item border color (dark mode), optional - derived from background_color_dark when unset
   primary_color:
     description: Primary brand color
     default: "#8fc0bd"
@@ -51,11 +44,9 @@ variables:
     description: Text color on primary color
     default: "#ffffff"
   light_color:
-    description: Light color
-    default: "#faefdc"
+    description: Light color, optional - derived from background_color when unset
   light_color_dark:
-    description: Light color (dark mode)
-    default: "#2a1f0f"
+    description: Light color (dark mode), optional - derived from background_color_dark when unset
   logo:
     description: Path to app logo image
     default: src/assets/logo.png

@@ -70,24 +70,35 @@ A ready-to-use example lives in [`customization/leon/`](customization/leon/) —
 | `offline_support` | Enable offline support (true/false) | `false` |
 | `messaging_support` | Enable postMessage listener for iframe embedding (true/false) | `true` |
 | `background_color` | App background color | `#faefdc` |
-| `background_color_dark` | App background color (dark mode) | `#2a1f0f` |
-| `card_background_color` | Card background color | `#f7e6c7` |
-| `card_background_color_dark` | Card background color (dark mode) | `#3d2e1a` |
-| `station_icon_progress_color` | Station icon progress color | `#698e7c` |
-| `station_icon_progress_color_dark` | Station icon progress color (dark mode) | `#698e7c` |
-| `menu_border_color` | Menu item border color | `#f4dcb3` |
-| `menu_border_color_dark` | Menu item border color (dark mode) | `#4a3820` |
 | `primary_color` | Primary brand color | `#8fc0bd` |
 | `primary_color_contrast` | Text color on primary color | `#ffffff` |
-| `light_color` | Light color | `#faefdc` |
-| `light_color_dark` | Light color (dark mode) | `#2a1f0f` |
 | `logo` | Path to app logo image | `src/assets/logo.png` |
 | `logo_dark` | Path to app logo image (dark mode) | `src/assets/logo-dark.png` |
 | `favicon` | Path to favicon file | `src/assets/icon/favicon.ico` |
 | `icon_192` | Path to 192x192 PWA icon | `src/assets/icon/icon-192.png` |
 | `icon_512` | Path to 512x512 PWA icon | `src/assets/icon/icon-512.png` |
 
-Shades and tints are not configurable because they are not choices — Ionic derives each one from its base color, and `src/global/_color-helpers.scss` reproduces that calculation at build time. Setting `primary_color` gives you `--sc-primary-color-shade` and `--sc-primary-color-tint` for free, matching the [Ionic Color Creator](https://ionicframework.com/docs/theming/colors#new-color-creator) exactly.
+### Colors
+
+An app names two colors — `background_color` and `primary_color` — and the rest of the palette is computed from them at build time by [`src/global/_color-helpers.scss`](src/global/_color-helpers.scss). Surfaces step off the background (darker in light mode, lighter in dark mode), the dark palette is the light background at low lightness, and shades and tints match the [Ionic Color Creator](https://ionicframework.com/docs/theming/colors#new-color-creator) exactly.
+
+Every derived color can still be set explicitly. These variables have no default — name one in your values file and it wins, leave it out and it is derived:
+
+| Variable | Description | Derived from |
+|---|---|---|
+| `background_color_dark` | App background color (dark mode) | `background_color`, same hue at 11% lightness |
+| `card_background_color` | Card background color | `background_color`, one step off it |
+| `card_background_color_dark` | Card background color (dark mode) | `background_color_dark`, one step off it |
+| `menu_border_color` | Menu item border color | `background_color`, two steps off it |
+| `menu_border_color_dark` | Menu item border color (dark mode) | `background_color_dark`, two steps off it |
+| `station_icon_progress_color` | Station icon progress color | `primary_color`, pushed away from the background |
+| `station_icon_progress_color_dark` | Station icon progress color (dark mode) | `primary_color`, pushed away from the dark background |
+| `light_color` | Ionic's `light` color | `background_color` |
+| `light_color_dark` | Ionic's `light` color (dark mode) | `background_color_dark` |
+
+`primary_color_contrast` is the one color that is not derived: the same rule Ionic uses resolves the default primary to black text, so which text color sits on a brand color stays a design decision.
+
+The `theme-color` meta tags in `index.html` are the light background at build time and are kept on the active background color at runtime by `src/global/app.ts`, so they follow both the system palette and a palette forced with `UPDATE_DARK_MODE`.
 
 ## Releases
 
