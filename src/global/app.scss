@@ -1,4 +1,4 @@
-@use 'sass:color';
+@use 'color-helpers' as helpers;
 
 @use '~@ionic/core/css/core.css';
 @use '~@ionic/core/css/normalize.css';
@@ -12,83 +12,78 @@
 @use '~@ionic/core/css/display.css';
 @use '~@ionic/core/css/palettes/dark.class.css';
 
-// adapt colors for customization
-$background-color: #faefdc;
-$card-background-color: #f7e6c7;
-$station-icon-progress-color: #698e7c;
-$menu-border-color: #f4dcb3;
-
-$background-color-dark: #2a1f0f;
-$card-background-color-dark: #3d2e1a;
-$station-icon-progress-color-dark: #698e7c;
-$menu-border-color-dark: #4a3820;
-
-// Use Ionic color generator to calculate shade and tint:
-// https://ionicframework.com/docs/theming/colors#new-color-creator
+// Base colours -- the two a customization chooses. Everything below is derived
+// from them (see _color-helpers.scss), so a variant only ever names these two.
+//
+// Any derived colour can still be overridden by replacing its right-hand side
+// with a literal, which is exactly what engraft does when a values file names
+// the variable; the lines below it follow the override.
 $primary-color: #8fc0bd;
+$background-color: #faefdc;
+
+// Text on the primary colour. Deliberately not derived: helpers.contrast()
+// resolves the default primary to black, and flipping button text is a design
+// decision rather than a calculation.
 $primary-color-contrast: white;
-$primary-color-shade: #7ea9a6;
-$primary-color-tint: #9ac6c4;
 
-$light-color: #faefdc;
-$light-color-contrast: black;
-$light-color-shade: #dcd2c2;
-$light-color-tint: #fbf1e0;
+// Dark mode is the light background at low lightness, and the surfaces step off
+// whichever background is in play -- darker in light mode, lighter in dark mode.
+$background-color-dark: helpers.to-dark($background-color);
 
-$light-color-dark: #2a1f0f;
-$light-color-contrast-dark: white;
-$light-color-shade-dark: #251b0d;
-$light-color-tint-dark: #3f3527;
+$card-background-color: helpers.step($background-color, 5%);
+$card-background-color-dark: helpers.step($background-color-dark, 5%);
+
+$menu-border-color: helpers.step($background-color, 10%);
+$menu-border-color-dark: helpers.step($background-color-dark, 10%);
+
+// The progress ring is the primary colour pushed away from the background far
+// enough to stay legible on it.
+$station-icon-progress-color: helpers.step($primary-color, 18%, $background-color);
+$station-icon-progress-color-dark: helpers.step($primary-color, 18%, $background-color-dark);
+
+// Ionic's `light` colour is the page background, and its contrast follows.
+$light-color: $background-color;
+$light-color-dark: $background-color-dark;
+$light-color-contrast: helpers.contrast($light-color);
+$light-color-contrast-dark: helpers.contrast($light-color-dark);
 
 :root {
   --sc-background-color: #{$background-color};
-  --sc-background-color-rgb:
-    #{color.channel($background-color, 'red', $space: rgb)}, #{color.channel($background-color, 'green', $space: rgb)}, #{color.channel($background-color, 'blue', $space: rgb)};
+  --sc-background-color-rgb: #{helpers.rgb-channels($background-color)};
   --sc-card-background-color: #{$card-background-color};
   --sc-menu-border-color: #{$menu-border-color};
   --sc-station-icon-progress: #{$station-icon-progress-color};
 
   --sc-primary-color: #{$primary-color};
-  --sc-primary-color-rgb:
-    #{color.channel($primary-color, 'red', $space: rgb)}, #{color.channel($primary-color, 'green', $space: rgb)}, #{color.channel($primary-color, 'blue', $space: rgb)};
+  --sc-primary-color-rgb: #{helpers.rgb-channels($primary-color)};
   --sc-primary-color-contrast: #{$primary-color-contrast};
-  --sc-primary-color-contrast-rgb:
-    #{color.channel($primary-color-contrast, 'red', $space: rgb)}, #{color.channel($primary-color-contrast, 'green', $space: rgb)},
-    #{color.channel($primary-color-contrast, 'blue', $space: rgb)};
-  --sc-primary-color-shade: #{$primary-color-shade};
-  --sc-primary-color-tint: #{$primary-color-tint};
+  --sc-primary-color-contrast-rgb: #{helpers.rgb-channels($primary-color-contrast)};
+  --sc-primary-color-shade: #{helpers.shade($primary-color)};
+  --sc-primary-color-tint: #{helpers.tint($primary-color)};
 
   --sc-light-color: #{$light-color};
-  --sc-light-color-rgb:
-    #{color.channel($light-color, 'red', $space: rgb)}, #{color.channel($light-color, 'green', $space: rgb)}, #{color.channel($light-color, 'blue', $space: rgb)};
+  --sc-light-color-rgb: #{helpers.rgb-channels($light-color)};
   --sc-light-color-contrast: #{$light-color-contrast};
-  --sc-light-color-contrast-rgb:
-    #{color.channel($light-color-contrast, 'red', $space: rgb)}, #{color.channel($light-color-contrast, 'green', $space: rgb)},
-    #{color.channel($light-color-contrast, 'blue', $space: rgb)};
-  --sc-light-color-shade: #{$light-color-shade};
-  --sc-light-color-tint: #{$light-color-tint};
+  --sc-light-color-contrast-rgb: #{helpers.rgb-channels($light-color-contrast)};
+  --sc-light-color-shade: #{helpers.shade($light-color)};
+  --sc-light-color-tint: #{helpers.tint($light-color)};
 }
 
 :root.ion-palette-dark,
 :root.ion-palette-dark.ios,
 :root.ion-palette-dark.md {
   --sc-background-color: #{$background-color-dark};
-  --sc-background-color-rgb:
-    #{color.channel($background-color-dark, 'red', $space: rgb)}, #{color.channel($background-color-dark, 'green', $space: rgb)},
-    #{color.channel($background-color-dark, 'blue', $space: rgb)};
+  --sc-background-color-rgb: #{helpers.rgb-channels($background-color-dark)};
   --sc-card-background-color: #{$card-background-color-dark};
   --sc-menu-border-color: #{$menu-border-color-dark};
   --sc-station-icon-progress: #{$station-icon-progress-color-dark};
 
   --sc-light-color: #{$light-color-dark};
-  --sc-light-color-rgb:
-    #{color.channel($light-color-dark, 'red', $space: rgb)}, #{color.channel($light-color-dark, 'green', $space: rgb)}, #{color.channel($light-color-dark, 'blue', $space: rgb)};
+  --sc-light-color-rgb: #{helpers.rgb-channels($light-color-dark)};
   --sc-light-color-contrast: #{$light-color-contrast-dark};
-  --sc-light-color-contrast-rgb:
-    #{color.channel($light-color-contrast-dark, 'red', $space: rgb)}, #{color.channel($light-color-contrast-dark, 'green', $space: rgb)},
-    #{color.channel($light-color-contrast-dark, 'blue', $space: rgb)};
-  --sc-light-color-shade: #{$light-color-shade-dark};
-  --sc-light-color-tint: #{$light-color-tint-dark};
+  --sc-light-color-contrast-rgb: #{helpers.rgb-channels($light-color-contrast-dark)};
+  --sc-light-color-shade: #{helpers.shade($light-color-dark)};
+  --sc-light-color-tint: #{helpers.tint($light-color-dark)};
 }
 
 :root,

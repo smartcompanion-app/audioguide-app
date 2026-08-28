@@ -1,0 +1,117 @@
+// Derived-colour helpers for the theme in app.scss.
+//
+// app.scss names two colours -- a primary and a background -- and computes the
+// rest of the palette from them with the functions below. Anything computed
+// here is a value nobody actually chooses: a shade is a shade, a card sits one
+// step off the background, a dark palette is the light one at low lightness.
+// Asking a customization to supply them by hand is busywork that also lets the
+// values drift apart with nothing to catch it.
+//
+// `shade`, `tint` and `contrast` are our own transcription into Sass of the
+// algorithm behind Ionic's colour generator (we are not affiliated with them),
+// so that the values we compute match the ones that tool would hand you:
+// https://github.com/ionic-team/ionic-docs/blob/main/src/components/page/theming/_utils/color.ts
+//
+// Their output is identical to the generator's, not merely close -- verified
+// against every shade/tint pair this repo previously hardcoded. `step` and
+// `to-dark` are ours, fitted to the palettes this repo had hand-tuned.
+
+@use 'sass:color';
+@use 'sass:math';
+
+// The reference implementation rounds each channel with Math.round. Dart Sass keeps channels
+// fractional, which is valid CSS and renders the same, but rounding is what
+// makes the output match the generator hex-for-hex.
+//
+// Rounded via `color.change` rather than by building a fresh `rgb()`: both give
+// the same colour, but a constructed `rgb()` serializes as `rgb(126, 169, 166)`
+// where `color.change` keeps the compact `#7ea9a6` form the stylesheet used to
+// emit.
+@function -round-channels($c) {
+  @return color.change(
+    $c,
+    $red: math.round(color.channel($c, 'red', $space: rgb)),
+    $green: math.round(color.channel($c, 'green', $space: rgb)),
+    $blue: math.round(color.channel($c, 'blue', $space: rgb))
+  );
+}
+
+// shade(weight = 0.12) -- mix towards black.
+//
+// The weight is the amount of the *first* colour. Leave `color.mix` on its
+// legacy sRGB interpolation: passing `$method` switches Sass to a different
+// colour space and the results stop matching the reference implementation.
+@function shade($c) {
+  @return -round-channels(color.mix(#000000, $c, 12%));
+}
+
+// tint(weight = 0.1) -- mix towards white.
+@function tint($c) {
+  @return -round-channels(color.mix(#ffffff, $c, 10%));
+}
+
+// WCAG relative luminance, gamma correction and channel weights included, the
+// way the reference implementation computes it.
+@function -channel-luminance($v) {
+  $s: math.div($v, 255);
+
+  @if $s <= 0.03928 {
+    @return math.div($s, 12.92);
+  }
+  @return math.pow(math.div($s + 0.055, 1.055), 2.4);
+}
+
+@function -luminance($c) {
+  @return -channel-luminance(color.channel($c, 'red', $space: rgb)) * 0.2126 + -channel-luminance(color.channel($c, 'green', $space: rgb)) * 0.7152 +
+    -channel-luminance(color.channel($c, 'blue', $space: rgb)) * 0.0722;
+}
+
+// Black or white, whichever contrasts better with $c -- the reference
+// implementation compares the two WCAG contrast ratios and keeps the higher one.
+@function contrast($c) {
+  $luminance: -luminance($c);
+
+  @if math.div($luminance + 0.05, 0.05) >= math.div(1.05, $luminance + 0.05) {
+    @return #000000;
+  }
+  @return #ffffff;
+}
+
+// A colour is light when black text is the readable choice on it.
+@function is-light($c) {
+  @return contrast($c) == #000000;
+}
+
+// Move $c away from the page background by $amount of lightness: darker on a
+// light background, lighter on a dark one. One rule then serves both palettes --
+// a card is `step($background, 5%)` whichever mode it is in.
+//
+// $reference is the colour that decides the direction, and defaults to $c
+// itself. It matters when the two differ: the station icon's progress ring is a
+// step off the *primary* colour, but which way it steps depends on the
+// background it sits on.
+@function step($c, $amount, $reference: null) {
+  $ref: $c;
+  @if $reference != null {
+    $ref: $reference;
+  }
+
+  @if is-light($ref) {
+    @return -round-channels(color.adjust($c, $lightness: -$amount, $space: hsl));
+  }
+  @return -round-channels(color.adjust($c, $lightness: $amount, $space: hsl));
+}
+
+// The dark-mode counterpart of a light background: same hue, saturation pulled
+// back, lightness dropped to 11%. Fitted to the dark palettes this repo had
+// hand-tuned -- it reproduces #2a1f0f from #faefdc and #1a1a1a from #f5f5f5 to
+// within a point or two per channel.
+@function to-dark($c) {
+  @return -round-channels(color.change($c, $saturation: color.channel($c, 'saturation', $space: hsl) * 0.6, $lightness: 11%, $space: hsl));
+}
+
+// The bare `r, g, b` channel list Ionic's `--*-rgb` custom properties expect, so
+// that a component can build `rgba(var(--sc-primary-color-rgb), 0.5)` from them.
+@function rgb-channels($c) {
+  @return color.channel($c, 'red', $space: rgb), color.channel($c, 'green', $space: rgb), color.channel($c, 'blue', $space: rgb);
+}
