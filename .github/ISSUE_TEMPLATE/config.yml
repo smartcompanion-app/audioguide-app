@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Question or usage help
+    url: https://github.com/smartcompanion-app/audioguide-app/discussions
+    about: Ask here if something is unclear rather than opening an issue.
+  - name: Bug in a page, player or the data layer
+    url: https://github.com/smartcompanion-app/smartcompanion-library/issues/new/choose
+    about: This repo is the app shell. Most of what you see comes from the library packages.

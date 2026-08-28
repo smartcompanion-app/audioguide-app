@@ -2,11 +2,32 @@
   <img src="./docs/logo.png" width="280" />
 </div>
 
+<div align="center">
+
+[![Build](https://github.com/smartcompanion-app/audioguide-app/actions/workflows/ci.yml/badge.svg)](https://github.com/smartcompanion-app/audioguide-app/actions/workflows/ci.yml)
+[![License](https://img.shields.io/github/license/smartcompanion-app/audioguide-app)](LICENSE)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen)](CONTRIBUTING.md)
+
+</div>
+
 ---
 
 The SmartCompanion Audioguide App is a free and open-source Progressive Web App (PWA) that delivers interactive audioguide experiences for museums and cultural institutions. It runs seamlessly in any modern mobile browser — no installation required.
 
 The app is fully customizable, allowing you to adapt content, colors, text, and images to fit your institution's needs. It also includes offline functionality powered by a service worker, ensuring smooth use even without an internet connection.
+
+## Table of Contents
+
+- [Features](#features)
+- [Examples](#examples)
+- [Browser Support](#browser-support)
+- [Getting Started](#getting-started)
+- [Deployment Options](#deployment-options)
+- [Customization](#customization)
+- [Versioning](#versioning)
+- [Contributing](#contributing)
+- [License](#license)
+- [Links](#links)
 
 ## Features
 
@@ -29,18 +50,18 @@ The app is fully customizable, allowing you to adapt content, colors, text, and 
 
 Visitor devices need **Chrome/Edge 110+, Safari 16.4+ (iOS 16.4+), or Firefox 110+**. The station list and image slideshow are built on swiper 14, which sets this floor. If you need to support older devices, stay on a release before `@smartcompanion/ui` 1.0.0.
 
-## Installation & Development
+## Getting Started
 
-- Fork and clone the repo
-- Install all dependencies with `npm install`
-- Either build the project with `npm run build` or open a live preview within the browser with `npm start`
+Fork and clone the repo, then:
 
 ```bash
-npm start          # Dev server with hot reload
+npm install        # Install dependencies
+npm start          # Dev server with hot reload at http://localhost:3333
 npm run build      # Production build → www/
-npm test           # Run spec & e2e tests
-npm run test:dev   # Continuous test watching
+npm test           # Build, then run the end-to-end suite
 ```
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the rest of the scripts, how the offline test mode works, and how to work on the customization template.
 
 ## Deployment Options
 
@@ -100,11 +121,9 @@ Every derived color can still be set explicitly. These variables have no default
 
 The `theme-color` meta tags in `index.html` are the light background at build time and are kept on the active background color at runtime by `src/global/app.ts`, so they follow both the system palette and a palette forced with `UPDATE_DARK_MODE`.
 
-## Releases
+## Versioning
 
-Releases are managed with [changesets](https://github.com/changesets/changesets) and versioned as `YYYY.MINOR.MICRO` — the [CalVer](https://calver.org/) scheme PyCharm and Unity use. This is a deployed application, not a library, so a version says when a build is from rather than what it promises about an API.
-
-### Versioning
+Releases are versioned as `YYYY.MINOR.MICRO` — the [CalVer](https://calver.org/) scheme PyCharm and Unity use. This is a deployed application, not a library, so a version says when a build is from rather than what it promises about an API.
 
 The year is the only calendar claim; `MINOR` and `MICRO` are plain sequences within it:
 
@@ -122,20 +141,6 @@ Because the scheme is CalVer rather than semver, the bump levels mean something 
 
 Breaking changes are therefore described in the changelog rather than signalled by the version. That is deliberate: if you maintain a customized fork, "the engraft variable `x` was renamed to `y`" is something you can act on, whereas an incremented number is not.
 
-The release workflow checks that a release's year matches the current one, so the year cannot quietly fall behind if a major changeset is forgotten.
-
-### Making a change
-
-Add a changeset to any pull request that changes behaviour:
-
-```bash
-npx changeset
-```
-
-Pick a bump level and describe the change for the people who will read the release notes. Changesets collects these into a `chore: release` pull request; merging it applies the version, updates `CHANGELOG.md`, tags, and creates the GitHub release — which in turn builds every app variant and deploys them to GitHub Pages.
-
-### Identifying a build
-
 The version is stamped into each build as a `version` meta tag, which is the quickest way to tell which build a device is actually running:
 
 ```js
@@ -144,11 +149,11 @@ document.querySelector('meta[name="version"]').content; // "2026.1.0"
 
 Local builds report `dev`.
 
-To roll back, run the `release` workflow manually (**Actions → release → Run workflow**) and give it the tag to redeploy. This rebuilds from that tag rather than re-serving a stored artifact, and browsers holding a cached service worker pick the change up on their next activation — so it is a fix-forward lever, not an instant kill switch.
+How a release is cut, and how to redeploy an earlier tag, is covered in [CONTRIBUTING.md](CONTRIBUTING.md#releasing).
 
 ## Contributing
 
-Contributions are welcome! Feel free to open issues or submit pull requests.
+Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for the local setup, the two test modes, and how releases work. Everyone taking part is expected to follow the [Code of Conduct](CODE_OF_CONDUCT.md). Security issues go through [SECURITY.md](SECURITY.md), not the issue tracker.
 
 ## License
 
@@ -157,4 +162,5 @@ The SmartCompanion Audioguide App is licensed under the terms of the BSD 2-Claus
 ## Links
 
 - [Website](https://www.smartcompanion.app)
+- [SmartCompanion Library](https://github.com/smartcompanion-app/smartcompanion-library)
 - [Native Audio Capacitor Plugin](https://github.com/smartcompanion-app/native-audio-player)
