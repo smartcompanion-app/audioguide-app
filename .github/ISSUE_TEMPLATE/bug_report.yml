@@ -1,0 +1,90 @@
+name: Bug report
+description: Report something that does not work as documented.
+labels: ['bug']
+body:
+  - type: markdown
+    attributes:
+      value: >
+        This repository is the app shell. If the problem is in a page, the
+        player, the station list or the data layer, it likely belongs in
+        [smartcompanion-library](https://github.com/smartcompanion-app/smartcompanion-library/issues/new/choose).
+        If you are unsure, report it here.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What happens, and what did you expect to happen instead?
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: >
+        The smaller the reproduction, the faster this gets fixed. A link to a
+        deployment showing the problem, or a failing spec under `test/specs`,
+        is ideal.
+      placeholder: |
+        1. Open the app and pick a language
+        2. Enter station 3 on the numpad
+        3. ...
+    validations:
+      required: true
+
+  - type: dropdown
+    id: deployment
+    attributes:
+      label: Where does this happen?
+      options:
+        - Example app (animals)
+        - Example app (leon)
+        - My own fork or deployment
+        - Local dev server (npm start)
+        - Local production build (npm run build)
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: App version
+      description: >
+        Run `document.querySelector('meta[name="version"]').content` in the
+        browser console. Local builds report `dev`.
+      placeholder: '2026.1.0'
+    validations:
+      required: true
+
+  - type: dropdown
+    id: offline
+    attributes:
+      label: Offline support
+      description: >
+        Whether the build has the service worker (`OFFLINE_SUPPORT`). It changes
+        caching and startup enough to matter.
+      options:
+        - Enabled
+        - Disabled
+        - Not sure
+    validations:
+      required: true
+
+  - type: input
+    id: environment
+    attributes:
+      label: Device and browser
+      description: >
+        The device, its OS version and the browser. This is a mobile-first PWA,
+        so behaviour differs a lot between them.
+      placeholder: 'iPhone 15, iOS 18.3, Safari'
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      description: Relevant console output or stack traces.
+      render: shell

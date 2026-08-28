@@ -1,0 +1,45 @@
+name: Feature request
+description: Suggest a capability the app does not have yet.
+labels: ['enhancement']
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What are you trying to do that the app does not let you do today?
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: >
+        If you have a shape in mind, sketch it here. Note that this app is meant
+        to be forked and customized, so anything that adds a knob becomes part
+        of the customization surface every fork has to live with.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Where would this land?
+      description: >
+        This repository is the app shell — routing, the menu, global styles, the
+        build, the engraft template and the deployment. Pages, players, services
+        and the data layer live in
+        [smartcompanion-library](https://github.com/smartcompanion-app/smartcompanion-library).
+      options:
+        - The app shell (this repo)
+        - The customization surface (engraft template, colors, assets)
+        - The library packages
+        - Not sure
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Workarounds you have tried, or how you solve this today in your own fork.
