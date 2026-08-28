@@ -1,7 +1,7 @@
 {
   "name": "smartcompanion-audioguide-app",
   "description": "SmartCompanion - Single Tour Audioguide App",
-  "version": "2026.0.0",
+  "version": "2026.1.0",
   "private": true,
   "scripts": {
     "build": "stencil build",
