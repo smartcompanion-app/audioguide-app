@@ -21,7 +21,7 @@
   "dependencies": {
     "@capacitor/core": "^8.5.0",
     "@capacitor/share": "^8.0.1",
-    "@ionic/core": "^8.8.19",
+    "@ionic/core": "^9.0.1",
     "@smartcompanion/data": "^1.0.2",
     "@smartcompanion/native-audio-player": "^1.0.0",
     "@smartcompanion/services": "^1.0.2",
