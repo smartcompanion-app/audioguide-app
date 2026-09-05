@@ -2,7 +2,7 @@ title_short: Leon
 title: Leon Audioguide
 description: Leon - Audiotour durch die Ortschaft Bruck an der Glocknerstraße
 lang: de
-data_url: https://smartcompanion-app.github.io/data-format/leon/data.json
+data_url: customization/leon/data/data.json
 offline_support: "false"
 messaging_support: "false"
 
