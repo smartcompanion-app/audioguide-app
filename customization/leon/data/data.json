@@ -1,0 +1,361 @@
+{
+  "checksum": "365784568461",
+  "languages": [
+    {
+      "title": "Deutsch",
+      "language": "de"
+    }
+  ],
+  "texts": [
+    {
+      "language": "de",
+      "key": "menu-overview",
+      "value": "Übersicht"
+    },    
+    {
+      "language": "de",
+      "key": "menu-selection",
+      "value": "Auswahl"
+    },    
+    {
+      "language": "de",
+      "key": "no-internet",
+      "value": "Keine Internetverbindung"
+    },    
+    {
+      "language": "de",
+      "key": "try-again",
+      "value": "Wiederholen"
+    },    
+    {
+      "language": "de",
+      "key": "enter-pin",
+      "value": "Bitte geben Sie den PIN-Code ein, den Sie im Ticketshop erhalten haben."
+    },    
+    {
+      "language": "de",
+      "key": "pin-error",
+      "value": "Der eingegebene PIN-Code ist falsch."
+    },
+    {
+      "language": "de",
+      "key": "menu-share-app",
+      "value": "Audioguide empfehlen"
+    }    
+  ],
+  "stations": [
+    {
+      "id": "s1",
+      "language": "de",
+      "number": "1",
+      "title": "Einblick in meine Heimat",
+      "subtitle": "",
+      "description": "Setzen Sie sich Ihre Kopfhörer auf und hören Sie sich meine Tour über die Dorfgemeinde 'Bruck an der Großglocknerstraße' an. Es gibt natürlich viel mehr Sehenswertes, aber die gehören zu meinen favourites. Viel Spaß!",
+      "audios": [
+        "a1de"
+      ],
+      "images": [
+        "i11",
+        "i12"
+      ]
+    },
+    {
+      "id": "s2",
+      "language": "de",
+      "number": "2",
+      "title": "Bruck-Fusch Bahnhof",
+      "subtitle": "",
+      "description": "Wir starten unsere Reise am \"Knotenpunkt\" der Dorfgemeinde. Vor dem Bahnhof befindet sich ein Café, die Volks- und Hauptschule und das Hotel Gasthof Post. Alle Stationen sind zu Fuß erreichbar.",
+      "audios": [
+        "a2de"
+      ],
+      "images": [
+        "i21",
+        "i22"
+      ]
+    },
+    {
+      "id": "s3",
+      "language": "de",
+      "number": "3",
+      "title": "Das Gemeindezentrum",
+      "subtitle": "",
+      "description": "Weiß, edel und viel Glas. Der Mittelpunkt des Geschehens. Die Gemeinde hat alles im Blick und im Griff.",
+      "audios": [
+        "a3de"
+      ],
+      "images": [
+        "i31",
+        "i32"
+      ]
+    },
+    {
+      "id": "s4",
+      "language": "de",
+      "number": "4",
+      "title": "Die Marienkirche",
+      "subtitle": "",
+      "description": "Hier rede ich über eine unserer Kirchen aus dem 17 Jahrhundert. Wenn Sie mehr erfahren wollen, besuchen Sie doch die offizielle Homepage der Gemeinde.",
+      "audios": [
+        "a4de"
+      ],
+      "images": [
+        "i41",
+        "i42"
+      ]
+    },
+    {
+      "id": "s5",
+      "language": "de",
+      "number": "5",
+      "title": "Gasthof Lukashansl",
+      "subtitle": "",
+      "description": "Gasthof und Sporthotel. Ein großer Werdegang von einer Alm zum Hotel.",
+      "audios": [
+        "a5de"
+      ],
+      "images": [
+        "i51",
+        "i52"
+      ]
+    },
+    {
+      "id": "s6",
+      "language": "de",
+      "number": "6",
+      "title": "Schloss Fischhorn",
+      "subtitle": "",
+      "description": "Das enorme Anwesen ist seit langem unbewohnt, dient aber mit ihren Räumlichkeiten für diverse Vernissagen und Ausstellungen. Ganz beliebt bei den Einheimischen ist die Krippenausstellung im Winter.",
+      "audios": [
+        "a6de"
+      ],
+      "images": [
+        "i61",
+        "i62"
+      ]
+    },
+    {
+      "id": "s7",
+      "language": "de",
+      "number": "7",
+      "title": "Das Dieselkino",
+      "subtitle": "",
+      "description": "Ganz groß und modern. Ein weiterer Standort des großen Franchises nimmt seinen Platz mit 5 Kinosälen in Bruck ein.",
+      "audios": [
+        "a7de"
+      ],
+      "images": [
+        "i71",
+        "i72"
+      ]
+    },
+    {
+      "id": "s8",
+      "language": "de",
+      "number": "8",
+      "title": "Das Woferlgut",
+      "subtitle": "",
+      "description": "4 Sterne, eigener See, 10 Millionen Euro Schwimmbad und riesen Kampingplatz. Luxusreise mit Stil im Woferlgut.",
+      "audios": [
+        "a8de"
+      ],
+      "images": [
+        "i81",
+        "i82"
+      ]
+    },
+    {
+      "id": "s9",
+      "language": "de",
+      "number": "9",
+      "title": "Rodelbahn Kohlschnait",
+      "subtitle": "",
+      "description": "Kohlschnait hat viel mehr zu bieten als eine Rodelbahn. Berg-Urlaub im Naturschutzgebiet und kulinarische Erlebnisse in Bruck.",
+      "audios": [
+        "a9de"
+      ],
+      "images": [
+        "i91",
+        "i92"
+      ]
+    },
+    {
+      "id": "s10",
+      "language": "de",
+      "number": "10",
+      "title": "Danke fürs Zuhören!",
+      "subtitle": "",
+      "description": "Jetzt haben Sie etwas über meinen Heimatort erfahren. Ich hoffe ich habe Ihnen damit genüge getan. Wenn Sie noch mehr erfahren wollen, besuchen Sie doch einfach die WebSite meiner Gemeinde. Vielleicht überlegen Sie das nächste Mal Urlaub in Bruck zu machen!",
+      "audios": [
+        "a10de"
+      ],
+      "images": [
+        "i101",
+        "i102"
+      ]
+    }
+  ],
+  "assets": [
+    {
+      "id": "a1de",
+      "filename": "a1de.mp3",
+      "externalUrl": "data/assets/a1de.mp3",
+      "language": "de"
+    },
+    {
+      "id": "a2de",
+      "filename": "a2de.mp3",
+      "externalUrl": "data/assets/a2de.mp3",
+      "language": "de"
+    },
+    {
+      "id": "a3de",
+      "filename": "a3de.mp3",
+      "externalUrl": "data/assets/a3de.mp3",
+      "language": "de"
+    },
+    {
+      "id": "a4de",
+      "filename": "a4de.mp3",
+      "externalUrl": "data/assets/a4de.mp3",
+      "language": "de"
+    },
+    {
+      "id": "a5de",
+      "filename": "a5de.mp3",
+      "externalUrl": "data/assets/a5de.mp3",
+      "language": "de"
+    },
+    {
+      "id": "a6de",
+      "filename": "a6de.mp3",
+      "externalUrl": "data/assets/a6de.mp3",
+      "language": "de"
+    },
+    {
+      "id": "a7de",
+      "filename": "a7de.mp3",
+      "externalUrl": "data/assets/a7de.mp3",
+      "language": "de"
+    },
+    {
+      "id": "a8de",
+      "filename": "a8de.mp3",
+      "externalUrl": "data/assets/a8de.mp3",
+      "language": "de"
+    },
+    {
+      "id": "a9de",
+      "filename": "a9de.mp3",
+      "externalUrl": "data/assets/a9de.mp3",
+      "language": "de"
+    },
+    {
+      "id": "a10de",
+      "filename": "a10de.mp3",
+      "externalUrl": "data/assets/a10de.mp3",
+      "language": "de"
+    },
+    {
+      "id": "i11",
+      "filename": "i11.png",
+      "externalUrl": "data/assets/i11.png"
+    },
+    {
+      "id": "i12",
+      "filename": "i12.png",
+      "externalUrl": "data/assets/i12.png"
+    },
+    {
+      "id": "i21",
+      "filename": "i21.png",
+      "externalUrl": "data/assets/i21.png"
+    },
+    {
+      "id": "i22",
+      "filename": "i22.png",
+      "externalUrl": "data/assets/i22.png"
+    },
+    {
+      "id": "i31",
+      "filename": "i31.png",
+      "externalUrl": "data/assets/i31.png"
+    },
+    {
+      "id": "i32",
+      "filename": "i32.png",
+      "externalUrl": "data/assets/i32.png"
+    },
+    {
+      "id": "i41",
+      "filename": "i41.png",
+      "externalUrl": "data/assets/i41.png"
+    },
+    {
+      "id": "i42",
+      "filename": "i42.png",
+      "externalUrl": "data/assets/i42.png"
+    },
+    {
+      "id": "i51",
+      "filename": "i51.png",
+      "externalUrl": "data/assets/i51.png"
+    },
+    {
+      "id": "i52",
+      "filename": "i52.png",
+      "externalUrl": "data/assets/i52.png"
+    },
+    {
+      "id": "i61",
+      "filename": "i61.png",
+      "externalUrl": "data/assets/i61.png"
+    },
+    {
+      "id": "i62",
+      "filename": "i62.png",
+      "externalUrl": "data/assets/i62.png"
+    },
+    {
+      "id": "i71",
+      "filename": "i71.png",
+      "externalUrl": "data/assets/i71.png"
+    },
+    {
+      "id": "i72",
+      "filename": "i72.png",
+      "externalUrl": "data/assets/i72.png"
+    },
+    {
+      "id": "i81",
+      "filename": "i81.png",
+      "externalUrl": "data/assets/i81.png"
+    },
+    {
+      "id": "i82",
+      "filename": "i82.png",
+      "externalUrl": "data/assets/i82.png"
+    },
+    {
+      "id": "i91",
+      "filename": "i91.png",
+      "externalUrl": "data/assets/i91.png"
+    },
+    {
+      "id": "i92",
+      "filename": "i92.png",
+      "externalUrl": "data/assets/i92.png"
+    },
+    {
+      "id": "i101",
+      "filename": "i101.png",
+      "externalUrl": "data/assets/i101.png"
+    },
+    {
+      "id": "i102",
+      "filename": "i102.png",
+      "externalUrl": "data/assets/i102.png"
+    }
+  ],
+  "share": "https://smartcompanion-app.github.io/audioguide-app/leon/"
+}
