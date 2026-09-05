@@ -107,13 +107,13 @@ A ready-to-use example lives in [`customization/leon/`](customization/leon/) —
 data_url: customization/leon/data/data.json
 ```
 
-The folder holding that `data.json` is copied into the build and served from `/data`, wherever it happens to sit in the repo. Assets inside `data.json` are addressed by that served path, not by the repo path:
+The folder holding that `data.json` is copied into the build as its top-level `data/` folder, wherever it happens to sit in the repo, and the app addresses it as `data/data.json`. Assets inside `data.json` are addressed the same way — by the served path, not the repo path:
 
 ```json
 { "id": "i11", "filename": "i11.png", "externalUrl": "data/assets/i11.png" }
 ```
 
-The [`leon`](customization/leon/engraft.variables.yml) variant works this way, with its data in [`customization/leon/data/`](customization/leon/data/). To bundle your own, put `data.json` next to an `assets/` folder anywhere in the repo, write every `externalUrl` as `data/assets/<filename>`, and point `data_url` at the `data.json`. Those URLs are relative to the page, so this keeps working when the app is served from a subpath such as `https://<user>.github.io/<repo>/`.
+The [`leon`](customization/leon/engraft.variables.yml) variant works this way, with its data in [`customization/leon/data/`](customization/leon/data/). To bundle your own, put `data.json` next to an `assets/` folder anywhere in the repo, write every `externalUrl` as `data/assets/<filename>`, and point `data_url` at the `data.json`. Those URLs are relative to the page rather than rooted at `/`, so this keeps working when the app is served from a subpath such as `https://<user>.github.io/<repo>/`.
 
 With `offline_support: "true"` the bundled `data.json` and any `.png` beside it are also swept into the service worker precache. That makes the install larger but guarantees they are present offline; audio is still fetched by the offline load service, which is what reports download progress.
 

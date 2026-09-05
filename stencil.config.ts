@@ -8,14 +8,24 @@ const MESSAGING_SUPPORT = true;
 
 // DATA_URL is either an absolute URL to data hosted elsewhere, or a path to data committed
 // in this repo. In the second case the folder holding that data.json is copied into the
-// build and served from /data, so the app carries its own data and needs nothing but a
-// static host -- which is also why the asset URLs inside such a data.json read "data/...".
-const IS_LOCAL_DATA = !/^https?:\/\//.test(DATA_URL);
+// build as its top-level data/ folder, and the app addresses it as "data/data.json" --
+// relative to the page rather than rooted at /, so it still resolves when the app is served
+// from a subpath. That is why asset URLs inside such a data.json read "data/..." as well.
+const IS_LOCAL_DATA = !/^https?:\/\//i.test(DATA_URL);
 const LOCAL_DATA_DIR = IS_LOCAL_DATA ? DATA_URL.replace(/\/[^/]*$/, '') : null;
 const SERVED_DATA_URL = IS_LOCAL_DATA ? DATA_URL.replace(/^.*\//, 'data/') : DATA_URL;
 
-if (IS_LOCAL_DATA && (!LOCAL_DATA_DIR || LOCAL_DATA_DIR === DATA_URL)) {
-  throw new Error(`A repo-relative DATA_URL has to sit inside a folder, e.g. "customization/leon/data/data.json" -- got "${DATA_URL}".`);
+if (IS_LOCAL_DATA) {
+  // The path becomes the copy task's source, so one that is absolute or climbs out of the
+  // repo would pull unrelated files into a published build -- a single typo away, and
+  // invisible once deployed.
+  if (/^([/\\]|[a-z]:)/i.test(DATA_URL) || DATA_URL.includes('\\') || /(^|\/)\.\.(\/|$)/.test(DATA_URL)) {
+    throw new Error(`A repo-relative DATA_URL has to stay inside the repo and use forward slashes -- got "${DATA_URL}".`);
+  }
+
+  if (!LOCAL_DATA_DIR || LOCAL_DATA_DIR === DATA_URL) {
+    throw new Error(`A repo-relative DATA_URL has to sit inside a folder, e.g. "customization/leon/data/data.json" -- got "${DATA_URL}".`);
+  }
 }
 
 export const config: Config = {
