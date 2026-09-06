@@ -53,15 +53,11 @@ variables:
   logo_dark:
     description: Path to app logo image (dark mode)
     default: src/assets/logo-dark.png
-  favicon:
-    description: Path to favicon file
-    default: src/assets/icon/favicon.ico
-  icon_192:
-    description: Path to 192x192 PWA icon
-    default: src/assets/icon/icon-192.png
-  icon_512:
-    description: Path to 512x512 PWA icon
-    default: src/assets/icon/icon-512.png
+  icon_source:
+    description: Path to the source image the whole PWA icon set is generated from
+    default: src/icon.png
+  icon_background:
+    description: Colour behind the padded artwork on the maskable and Apple icons, optional - sampled from the source image when unset
 
 customizations:
   - action: regex_replace
@@ -142,14 +138,13 @@ customizations:
     file: src/assets/logo-dark.png
     variable: logo_dark
 
-  - action: file_replace
-    file: src/assets/icon/favicon.ico
-    variable: favicon
-
-  - action: file_replace
-    file: src/assets/icon/icon-192.png
-    variable: icon_192
-
-  - action: file_replace
-    file: src/assets/icon/icon-512.png
-    variable: icon_512
+  # The icons are generated from icon_source at build time rather than replaced as
+  # files, so this is a path written into the script -- repo-relative, like data_url,
+  # not relative to the values file the way file_replace paths are.
+  - action: regex_replace
+    file: scripts/generate-icons.mjs
+    replace:
+      - selector: '(const ICON_SOURCE\s*=\s*")(?P<value>[^"]*)'
+        variable: icon_source
+      - selector: '(const ICON_BACKGROUND\s*=\s*")(?P<value>[^"]*)'
+        variable: icon_background

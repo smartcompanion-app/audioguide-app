@@ -41,7 +41,10 @@ export const config: Config = {
   outputTargets: [
     {
       type: 'www',
-      copy: LOCAL_DATA_DIR ? [{ src: `../${LOCAL_DATA_DIR}`, dest: 'data' }] : [],
+      // The icon set is derived from a single source image by scripts/generate-icons.mjs,
+      // which the prebuild hook runs. None of it is committed, so it is copied in from
+      // the gitignored folder it lands in rather than living under src/assets.
+      copy: [{ src: '../.pwa-assets', dest: 'assets/icon' }, ...(LOCAL_DATA_DIR ? [{ src: `../${LOCAL_DATA_DIR}`, dest: 'data' }] : [])],
       serviceWorker: OFFLINE_SUPPORT ? {
         swSrc: 'src/sw.js',
         globPatterns: [

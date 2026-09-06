@@ -14,6 +14,4 @@ primary_color_contrast: "#ffffff"
 
 logo: assets/logo.png
 logo_dark: assets/logo.png
-favicon: assets/favicon.ico
-icon_192: assets/app-icon-192.png
-icon_512: assets/app-icon-512.png
+icon_source: customization/leon/assets/app-icon-512.png
