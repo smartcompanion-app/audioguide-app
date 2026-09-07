@@ -37,11 +37,15 @@ src/
 │   └── app.scss            # Global styles & CSS custom property (color) variables (light + dark)
 ├── services/
 │   └── index.ts            # ServiceFacade initialization & export
-├── assets/icon/            # PWA icons (favicon.ico, icon.png 512x512)
+├── assets/
+│   ├── logo.png            # Menu logo (light) — everything under assets/ is published
+│   └── logo-dark.png       # Menu logo (dark)
+├── icon.png                # Source image the whole PWA icon set is generated from
 ├── index.ts                # Entry point — imports Ionic & @smartcompanion/ui
 ├── index.html              # HTML shell
 ├── sw.js                   # Service worker (Workbox)
 └── manifest.json           # PWA manifest
+scripts/generate-icons.mjs  # Derives the icon set into .pwa-assets/ (gitignored, prebuild hook)
 stencil.config.ts           # Build config & runtime environment variables
 www/                        # Build output (gitignored)
 ```
@@ -96,7 +100,7 @@ All runtime configuration lives in **`stencil.config.ts`** (rebuild required to 
 2. **Title**: `index.html`, `manifest.json`, and `stencil.config.ts`
 3. **Data URL**: `stencil.config.ts` → `DATA_URL`
 4. **Offline**: `stencil.config.ts` → `OFFLINE_SUPPORT: "enabled"`
-5. **Icons**: Replace files in `src/assets/icon/`
+5. **Icons**: Replace `src/icon.png` — the whole set (manifest icons, a separately padded maskable icon, the Apple touch icon, `favicon.ico`) is generated from it by the `prebuild` hook and is never committed
 6. **Logo**: Replace `src/assets/logo.png` (light) and `src/assets/logo-dark.png` (dark)
 
 ## Code Conventions

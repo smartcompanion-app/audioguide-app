@@ -95,9 +95,7 @@ A ready-to-use example lives in [`customization/leon/`](customization/leon/) —
 | `primary_color_contrast` | Text color on primary color | `#ffffff` |
 | `logo` | Path to app logo image | `src/assets/logo.png` |
 | `logo_dark` | Path to app logo image (dark mode) | `src/assets/logo-dark.png` |
-| `favicon` | Path to favicon file | `src/assets/icon/favicon.ico` |
-| `icon_192` | Path to 192x192 PWA icon | `src/assets/icon/icon-192.png` |
-| `icon_512` | Path to 512x512 PWA icon | `src/assets/icon/icon-512.png` |
+| `icon_source` | Repo-relative path to the image the whole PWA icon set is generated from | `src/icon.png` |
 
 ### Bundling the data with the app
 
@@ -117,6 +115,27 @@ The [`leon`](customization/leon/engraft.variables.yml) variant works this way, w
 
 With `offline_support: "true"` the bundled `data.json` and any `.png` beside it are also swept into the service worker precache. That makes the install larger but guarantees they are present offline; audio is still fetched by the offline load service, which is what reports download progress.
 
+### Icons
+
+An app names one image — `icon_source` — and the whole icon set is generated from it at build time by [`scripts/generate-icons.mjs`](scripts/generate-icons.mjs), into a gitignored `.pwa-assets/` folder the build copies in as `assets/icon/`. Nothing derived is committed, so a variant carries one file rather than three that have to be kept in step:
+
+| Generated file | Purpose |
+|---|---|
+| `pwa-64x64.png`, `pwa-192x192.png`, `pwa-512x512.png` | Manifest icons, drawn whole |
+| `maskable-icon-512x512.png` | Manifest `maskable` icon — the artwork centered on a solid ground, filling 70% of the canvas so no mask shape crops it |
+| `apple-touch-icon-180x180.png` | iOS home screen. Full-bleed and opaque, because iOS applies its own mask and composites transparency onto black |
+| `favicon.ico` | 16, 32 and 48px frames |
+
+An SVG source is preferred — it is rasterized at full density for every size — but any format works. Use a square canvas: the artwork is never cropped, so whatever ground it sits on is what the icons show. `icon_source` is a repo-relative path, so a variant's image can live anywhere — the default is `src/icon.png`, while [`leon`](customization/leon/) keeps its own beside the rest of its files. It sits next to `src/assets/` rather than inside it because everything under `src/assets/` is published, and the source itself is only ever read at build time.
+
+`icon_background` fills the margin around the padded maskable and Apple icons. Left unset it is sampled from the source's own corners, which is what a full-bleed image wants; a source whose corners disagree (a photograph, a gradient) or are transparent falls back to `background_color`. The build logs which of the three applied:
+
+```
+icons: generated from src/icon.png on #8dbeba (sampled from the source's corners)
+```
+
+A maskable icon and a plain one are different images, and this is why they are generated separately rather than declared as the same file twice: the maskable one is cropped to the platform's shape within a safe zone, so an icon that fills its canvas would lose its edges.
+
 ### Colors
 
 An app names two colors — `background_color` and `primary_color` — and the rest of the palette is computed from them at build time by [`src/global/_color-helpers.scss`](src/global/_color-helpers.scss). Surfaces step off the background (darker in light mode, lighter in dark mode), the dark palette is the light background at low lightness, and shades and tints match the [Ionic Color Creator](https://ionicframework.com/docs/theming/colors#new-color-creator) exactly.
@@ -134,6 +153,7 @@ Every derived color can still be set explicitly. These variables have no default
 | `station_icon_progress_color_dark` | Station icon progress color (dark mode) | `primary_color`, pushed away from the dark background |
 | `light_color` | Ionic's `light` color | `background_color` |
 | `light_color_dark` | Ionic's `light` color (dark mode) | `background_color_dark` |
+| `icon_background` | Color behind the padded artwork on the maskable and Apple icons | `icon_source`, sampled from its corners |
 
 `primary_color_contrast` is the one color that is not derived: the same rule Ionic uses resolves the default primary to black text, so which text color sits on a brand color stays a design decision.
 
