@@ -8,7 +8,7 @@ variables:
   lang:
     description: Language code for manifest.json
   data_url:
-    description: URL to the audioguide data JSON
+    description: URL to the audioguide data JSON, or a path to bundle it - repo-relative, not relative to the values file
   offline_support:
     description: Enable offline support (true/false)
     default: "false"
@@ -41,11 +41,11 @@ variables:
   light_color_dark:
     description: Light color (dark mode), optional - derived from background_color_dark when unset
   logo:
-    description: Path to app logo image
+    description: Path to app logo image, relative to the values file (copied over src/assets/logo.png on apply)
   logo_dark:
-    description: Path to app logo image (dark mode)
+    description: Path to app logo image (dark mode), relative to the values file (copied over src/assets/logo-dark.png on apply)
   icon_source:
-    description: Path to the source image the whole PWA icon set is generated from
+    description: Path to the source image the whole PWA icon set is generated from - repo-relative, not relative to the values file
   icon_background_color:
     description: Color behind the padded artwork on the maskable and Apple icons, optional - sampled from the source image when unset
 

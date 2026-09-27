@@ -93,11 +93,16 @@ A ready-to-use example lives in [`customization/leon/`](customization/leon/) —
 | `background_color` | App background color | — |
 | `primary_color` | Primary brand color | — |
 | `primary_color_contrast` | Text color on primary color | `#ffffff` |
-| `logo` | Path to app logo image | — |
-| `logo_dark` | Path to app logo image (dark mode) | — |
+| `logo` | Path to app logo image, relative to the values file | — |
+| `logo_dark` | Path to app logo image (dark mode), relative to the values file | — |
 | `icon_source` | Repo-relative path to the image the whole PWA icon set is generated from | — |
 
-A variable marked `—` has no template default and is optional: leaving it out of the values file leaves its target untouched, so the app keeps the value already in the repo — the sample Animals app, e.g. `src/icon.png` for `icon_source`. Name every one of them to turn the repo into your own app.
+A variable marked `—` has no template default and is optional: leaving it out of the values file leaves its target untouched, so the app keeps the value already in the repo — the sample Animals app, e.g. `src/icon.png` for `icon_source`. Name every one of them to turn the repo into your own app. A variable with a default only needs naming when your value differs from it.
+
+Paths follow two rules, depending on when the file is read:
+
+- **Relative to the values file** — `logo` and `logo_dark`. `engraft apply` copies these files over `src/assets/` right away, so a variant can keep them next to its values file: `logo: assets/logo.png`.
+- **Relative to the repo root** — `data_url` and `icon_source`. These are written into the build config as paths and only read later by `npm run build`, which runs from the repo root: `icon_source: customization/leon/assets/app-icon-512.png`.
 
 ### Bundling the data with the app
 
