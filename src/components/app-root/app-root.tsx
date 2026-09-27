@@ -11,13 +11,14 @@ export class AppRoot {
   @State() translationMenuSelection = serviceFacade.__('menu-selection');
   @State() translationMenuLanguage = serviceFacade.__('menu-language');
   @State() translationMenuShareApp = serviceFacade.__('menu-share-app');
-  @State() requireLanguageSelection = true;
+  @State() requireLanguageSelection = false;
   @State() requireShareLink = false;
 
   async componentDidLoad() {
-    // update language of menu items, whenever navigation goes to default page
-    // this happens after language change
-    serviceFacade.getRoutingService().addRouteChangeListener('/stations/default', () => {
+    // update menu items on every route change: after loading, the app may land on
+    // a pending deep link (e.g. /stations/3) instead of /stations/default, and a
+    // language change reloads the data before navigating on
+    serviceFacade.getRoutingService().addRouteChangeListener('/*', () => {
       this.update();
     });
   }
@@ -28,10 +29,7 @@ export class AppRoot {
     this.translationMenuLanguage = serviceFacade.__('menu-language');
     this.translationMenuShareApp = serviceFacade.__('menu-share-app');
 
-    const languages = serviceFacade.getLanguageService().getLanguages();
-    if (languages.length <= 1) {
-      this.requireLanguageSelection = false;
-    }
+    this.requireLanguageSelection = serviceFacade.getLanguageService().getLanguages().length > 1;
 
     Share.canShare().then(result => {
       this.requireShareLink = result.value && serviceFacade.getShareService().hasShare();
