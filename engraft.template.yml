@@ -1,28 +1,22 @@
 variables:
   title_short:
     description: Short app title
-    default: Animals
   title:
     description: App title
-    default: Animals Audioguide
   description:
     description: App description
-    default: A sample audioguide app for animals
   lang:
     description: Language code for manifest.json
-    default: en
   data_url:
     description: URL to the audioguide data JSON
-    default: https://smartcompanion-app.github.io/data-format/animals/data.json
   offline_support:
     description: Enable offline support (true/false)
     default: "false"
   messaging_support:
     description: Enable messaging support / postMessage listener (true/false)
-    default: "true"
+    default: "false"
   background_color:
     description: App background color
-    default: "#faefdc"
   background_color_dark:
     description: App background color (dark mode), optional - derived from background_color when unset
   card_background_color:
@@ -39,7 +33,6 @@ variables:
     description: Menu item border color (dark mode), optional - derived from background_color_dark when unset
   primary_color:
     description: Primary brand color
-    default: "#8fc0bd"
   primary_color_contrast:
     description: Text color on primary color
     default: "#ffffff"
@@ -49,14 +42,11 @@ variables:
     description: Light color (dark mode), optional - derived from background_color_dark when unset
   logo:
     description: Path to app logo image
-    default: src/assets/logo.png
   logo_dark:
     description: Path to app logo image (dark mode)
-    default: src/assets/logo-dark.png
   icon_source:
     description: Path to the source image the whole PWA icon set is generated from
-    default: src/icon.png
-  icon_background:
+  icon_background_color:
     description: Colour behind the padded artwork on the maskable and Apple icons, optional - sampled from the source image when unset
 
 customizations:
@@ -146,5 +136,5 @@ customizations:
     replace:
       - selector: '(const ICON_SOURCE\s*=\s*")(?P<value>[^"]*)'
         variable: icon_source
-      - selector: '(const ICON_BACKGROUND\s*=\s*")(?P<value>[^"]*)'
-        variable: icon_background
+      - selector: '(const ICON_BACKGROUND_COLOR\s*=\s*")(?P<value>[^"]*)'
+        variable: icon_background_color

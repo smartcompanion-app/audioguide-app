@@ -83,19 +83,19 @@ A ready-to-use example lives in [`customization/leon/`](customization/leon/) —
 
 | Variable | Description | Default |
 |---|---|---|
-| `title_short` | Short app title | `Animals` |
-| `title` | App title | `Animals Audioguide` |
-| `description` | App description | `A sample audioguide app for animals` |
-| `lang` | Language code for manifest.json | `en` |
-| `data_url` | URL to the audioguide data JSON, or a repo-relative path to bundle it into the build | [Sample JSON](https://smartcompanion-app.github.io/data-format/animals/data.json) |
+| `title_short` | Short app title | — |
+| `title` | App title | — |
+| `description` | App description | — |
+| `lang` | Language code for manifest.json | — |
+| `data_url` | URL to the audioguide data JSON, or a repo-relative path to bundle it into the build | — |
 | `offline_support` | Enable offline support (true/false) | `false` |
-| `messaging_support` | Enable postMessage listener for iframe embedding (true/false) | `true` |
-| `background_color` | App background color | `#faefdc` |
-| `primary_color` | Primary brand color | `#8fc0bd` |
+| `messaging_support` | Enable postMessage listener for iframe embedding (true/false) | `false` |
+| `background_color` | App background color | — |
+| `primary_color` | Primary brand color | — |
 | `primary_color_contrast` | Text color on primary color | `#ffffff` |
-| `logo` | Path to app logo image | `src/assets/logo.png` |
-| `logo_dark` | Path to app logo image (dark mode) | `src/assets/logo-dark.png` |
-| `icon_source` | Repo-relative path to the image the whole PWA icon set is generated from | `src/icon.png` |
+| `logo` | Path to app logo image | — |
+| `logo_dark` | Path to app logo image (dark mode) | — |
+| `icon_source` | Repo-relative path to the image the whole PWA icon set is generated from | — |
 
 ### Bundling the data with the app
 
@@ -128,7 +128,7 @@ An app names one image — `icon_source` — and the whole icon set is generated
 
 An SVG source is preferred — it is rasterized at full density for every size — but any format works. Use a square canvas: the artwork is never cropped, so whatever ground it sits on is what the icons show. `icon_source` is a repo-relative path, so a variant's image can live anywhere — the default is `src/icon.png`, while [`leon`](customization/leon/) keeps its own beside the rest of its files. It sits next to `src/assets/` rather than inside it because everything under `src/assets/` is published, and the source itself is only ever read at build time.
 
-`icon_background` fills the margin around the padded maskable and Apple icons. Left unset it is sampled from the source's own corners, which is what a full-bleed image wants; a source whose corners disagree (a photograph, a gradient) or are transparent falls back to `background_color`. The build logs which of the three applied:
+`icon_background_color` fills the margin around the padded maskable and Apple icons. Left unset it is sampled from the source's own corners, which is what a full-bleed image wants; a source whose corners disagree (a photograph, a gradient) or are transparent falls back to `background_color`. The build logs which of the three applied:
 
 ```
 icons: generated from src/icon.png on #8dbeba (sampled from the source's corners)
@@ -153,7 +153,7 @@ Every derived color can still be set explicitly. These variables have no default
 | `station_icon_progress_color_dark` | Station icon progress color (dark mode) | `primary_color`, pushed away from the dark background |
 | `light_color` | Ionic's `light` color | `background_color` |
 | `light_color_dark` | Ionic's `light` color (dark mode) | `background_color_dark` |
-| `icon_background` | Color behind the padded artwork on the maskable and Apple icons | `icon_source`, sampled from its corners |
+| `icon_background_color` | Color behind the padded artwork on the maskable and Apple icons | `icon_source`, sampled from its corners |
 
 `primary_color_contrast` is the one color that is not derived: the same rule Ionic uses resolves the default primary to black text, so which text color sits on a brand color stays a design decision.
 

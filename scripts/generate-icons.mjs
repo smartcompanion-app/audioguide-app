@@ -20,7 +20,7 @@ const ICON_SOURCE = "src/icon.png";
 // Colour behind the padded artwork on the maskable and Apple icons. Left empty,
 // it is sampled from the source's own corners, which is right for full-bleed art
 // and is why no customization has had to name it yet.
-const ICON_BACKGROUND = "";
+const ICON_BACKGROUND_COLOR = "";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const OUT_DIR = path.join(ROOT, '.pwa-assets');
@@ -104,8 +104,8 @@ async function sampleCorners(image) {
 // Explicit override, else the source's own ground, else the app background --
 // which is the sensible ground for a mark that floats on transparency.
 async function resolveBackground(image) {
-  if (ICON_BACKGROUND) {
-    return { color: ICON_BACKGROUND, reason: 'icon_background' };
+  if (ICON_BACKGROUND_COLOR) {
+    return { color: ICON_BACKGROUND_COLOR, reason: 'icon_background_color' };
   }
 
   const sampled = await sampleCorners(image);
