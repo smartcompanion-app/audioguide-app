@@ -47,7 +47,7 @@ variables:
   icon_source:
     description: Path to the source image the whole PWA icon set is generated from
   icon_background_color:
-    description: Colour behind the padded artwork on the maskable and Apple icons, optional - sampled from the source image when unset
+    description: Color behind the padded artwork on the maskable and Apple icons, optional - sampled from the source image when unset
 
 customizations:
   - action: regex_replace

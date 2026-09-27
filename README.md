@@ -97,6 +97,8 @@ A ready-to-use example lives in [`customization/leon/`](customization/leon/) —
 | `logo_dark` | Path to app logo image (dark mode) | — |
 | `icon_source` | Repo-relative path to the image the whole PWA icon set is generated from | — |
 
+A variable marked `—` has no template default and is optional: leaving it out of the values file leaves its target untouched, so the app keeps the value already in the repo — the sample Animals app, e.g. `src/icon.png` for `icon_source`. Name every one of them to turn the repo into your own app.
+
 ### Bundling the data with the app
 
 `data_url` normally points at data hosted somewhere else. Point it at a **path inside this repo** instead and the data ships inside the build, so the deployed app needs nothing but its own static host:
