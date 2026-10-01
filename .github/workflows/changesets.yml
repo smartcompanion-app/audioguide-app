@@ -67,7 +67,7 @@ jobs:
       # release pull request would sit with no CI checks; and neither does the
       # release created below, so the deploy would never fire.
       - name: Create release pull request or tag
-        uses: changesets/action@v1
+        uses: changesets/action@v2
         with:
           github-token: ${{ secrets.RELEASE_TOKEN || secrets.GITHUB_TOKEN }}
           version: npm run version
