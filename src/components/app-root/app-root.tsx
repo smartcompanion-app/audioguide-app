@@ -70,7 +70,13 @@ export class AppRoot {
           <ion-route url="/language" component="sc-page-language" componentProps={{ facade: serviceFacade }} />
           <ion-route url="/selection" component="sc-page-selection" componentProps={{ facade: serviceFacade }} beforeEnter={() => serviceFacade.canLoadRoute()} />
           <ion-route url="/stations/:stationId" component="sc-page-stations" componentProps={{ facade: serviceFacade }} beforeEnter={() => serviceFacade.canLoadRoute()} />
-          <ion-route url="/pin" component="sc-page-pin" componentProps={{ facade: serviceFacade }} beforeEnter={() => serviceFacade.canLoadRoute()} />
+          {/* not canLoadRoute(): it requires a valid PIN, so the PIN page would redirect to itself */}
+          <ion-route
+            url="/pin"
+            component="sc-page-pin"
+            componentProps={{ facade: serviceFacade }}
+            beforeEnter={() => serviceFacade.getLanguageService().hasLanguage() || { redirect: '/' }}
+          />
           <ion-route url="/error" component="sc-page-error" componentProps={{ facade: serviceFacade }} />
         </ion-router>
 
