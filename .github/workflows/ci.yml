@@ -67,3 +67,6 @@ jobs:
 
       - name: Run offline tests
         run: npm run test:offline
+
+      - name: Run font tests
+        run: npm run test:fonts

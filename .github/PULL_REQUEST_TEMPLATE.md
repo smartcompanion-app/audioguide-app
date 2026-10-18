@@ -8,5 +8,6 @@
 - [ ] `npm run format:check` passes
 - [ ] `npm test` passes
 - [ ] `npm run test:offline` passes
+- [ ] `npm run test:fonts` passes
 - [ ] A changeset is included (`npx changeset`), unless this changes nothing user-visible
 - [ ] If `engraft.template.yml` or `src/index.html` changed: both the default and the `leon` variant still build

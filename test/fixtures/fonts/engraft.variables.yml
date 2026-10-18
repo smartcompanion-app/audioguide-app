@@ -1,0 +1,3 @@
+font_stylesheet: fonts.scss
+font_dir: test/fixtures/fonts/files
+font_family: "'Lobster', cursive"

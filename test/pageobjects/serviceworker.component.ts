@@ -84,20 +84,24 @@ class ServiceWorkerComponent {
     });
   }
 
-  async isCached(urlPattern: string): Promise<boolean> {
-    return browser.execute(async (pattern: string) => {
-      const names = await caches.keys();
-      for (const name of names) {
-        const cache = await caches.open(name);
-        const keys = await cache.keys();
-        for (const request of keys) {
-          if (request.url.includes(pattern)) {
-            return true;
+  async isCached(urlPattern: string, cacheNamePattern = ''): Promise<boolean> {
+    return browser.execute(
+      async (pattern: string, cacheNamePattern: string) => {
+        const names = (await caches.keys()).filter(name => name.includes(cacheNamePattern));
+        for (const name of names) {
+          const cache = await caches.open(name);
+          const keys = await cache.keys();
+          for (const request of keys) {
+            if (request.url.includes(pattern)) {
+              return true;
+            }
           }
         }
-      }
-      return false;
-    }, urlPattern);
+        return false;
+      },
+      urlPattern,
+      cacheNamePattern,
+    );
   }
 }
 
