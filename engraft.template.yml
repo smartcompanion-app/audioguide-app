@@ -48,6 +48,12 @@ variables:
     description: Path to the source image the whole PWA icon set is generated from - repo-relative, not relative to the values file
   icon_background_color:
     description: Color behind the padded artwork on the maskable and Apple icons, optional - sampled from the source image when unset
+  font_stylesheet:
+    description: Path to a .scss file with the app's @font-face rules or a font @import, relative to the values file (copied over src/global/_fonts.scss on apply)
+  font_dir:
+    description: Folder of font files copied into the build as assets/fonts/ - repo-relative, not relative to the values file
+  font_family:
+    description: CSS font-family for the app, e.g. "'RumSans', sans-serif", optional - Ionic's default font when unset
 
 customizations:
   - action: regex_replace
@@ -61,6 +67,8 @@ customizations:
         variable: offline_support
       - selector: '(const MESSAGING_SUPPORT\s*=\s*)(?P<value>\w+)'
         variable: messaging_support
+      - selector: '(const FONT_DIR\s*=\s*")(?P<value>[^"]*)'
+        variable: font_dir
 
   - action: html_replace
     file: src/index.html
@@ -119,6 +127,8 @@ customizations:
         variable: light_color
       - selector: '(\$light-color-dark:\s*)(?P<value>[^;]+)'
         variable: light_color_dark
+      - selector: '(\$font-family:\s*)(?P<value>[^;]+)'
+        variable: font_family
 
   - action: file_replace
     file: src/assets/logo.png
@@ -127,6 +137,10 @@ customizations:
   - action: file_replace
     file: src/assets/logo-dark.png
     variable: logo_dark
+
+  - action: file_replace
+    file: src/global/_fonts.scss
+    variable: font_stylesheet
 
   # The icons are generated from icon_source at build time rather than replaced as
   # files, so this is a path written into the script -- repo-relative, like data_url,

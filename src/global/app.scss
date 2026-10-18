@@ -1,3 +1,4 @@
+@use 'fonts';
 @use 'color-helpers' as helpers;
 
 @use '~@ionic/core/css/core.css';
@@ -46,6 +47,8 @@ $light-color: $background-color;
 $light-color-dark: $background-color-dark;
 $light-color-contrast: helpers.contrast($light-color);
 $light-color-contrast-dark: helpers.contrast($light-color-dark);
+
+$font-family: null;
 
 :root {
   --sc-background-color: #{$background-color};
@@ -107,6 +110,10 @@ $light-color-contrast-dark: helpers.contrast($light-color-dark);
   --ion-background-color-rgb: var(--sc-background-color-rgb);
   --ion-toolbar-background: var(--sc-background-color);
   --ion-item-background: var(--sc-background-color);
+
+  @if $font-family {
+    --ion-font-family: #{$font-family};
+  }
 }
 
 ion-card {

@@ -41,9 +41,9 @@ Stencil dev server with hot reload (`stencil build --dev --watch --serve`).
 
 Production build into `www/`. The `:offline` variant sets `OFFLINE_SUPPORT=true`, which is what makes [`stencil.config.ts`](stencil.config.ts) attach the Workbox `serviceWorker` config to the `www` output target. Without it no service worker is generated at all, so an offline bug can only ever reproduce against the offline build.
 
-#### `npm test` / `npm run test:offline`
+#### `npm test` / `npm run test:offline` / `npm run test:fonts`
 
-Both build first, then run WebdriverIO — see [Testing](#testing).
+All three build first, then run WebdriverIO — see [Testing](#testing).
 
 #### `npm run test:dev`
 
@@ -57,16 +57,19 @@ ESLint over `src` and `test`, and Prettier in write or check mode. CI runs `lint
 
 The suite is WebdriverIO with Mocha, driving Chrome through `puppeteer-core`. The configuration is [`wdio.conf.ts`](wdio.conf.ts); specs live in `test/specs` and the page objects they drive in `test/pageobjects`.
 
-There are two modes, and they do not overlap:
+There are three modes, and they do not overlap:
 
 | Command | Specs | Server | Build |
 | --- | --- | --- | --- |
 | `npm test` | `test/specs/**` except `offline/` | static server on `:4567` | `npm run build` |
 | `npm run test:offline` | `test/specs/offline/**` only | static server on `:4568` | `npm run build:offline` |
+| `npm run test:fonts` | `test/specs/fonts/**` only | static server on `:4569` | `scripts/build-variant.mjs test/fixtures/fonts` |
 
-`TEST_OFFLINE=true` is what flips `wdio.conf.ts` between them. The offline specs run **only** under `test:offline` — a plain `npm test` never touches `test/specs/offline/service-worker.spec.ts`. CI runs both, so run both before pushing.
+`TEST_OFFLINE=true` and `TEST_FONTS=true` are what flip `wdio.conf.ts` between them. The offline specs run **only** under `test:offline` — a plain `npm test` never touches `test/specs/offline/service-worker.spec.ts`. CI runs all three, so run all three before pushing.
 
-The non-offline run passes `--disable-web-security` to Chrome; the offline run deliberately does not, because the service worker needs a normal origin to register against.
+The font specs need a build the repo's own config never produces, so `scripts/build-variant.mjs` copies the repo to the gitignored `.variants/fonts/`, applies [`test/fixtures/fonts/engraft.variables.yml`](test/fixtures/fonts/engraft.variables.yml) there with engraft and builds it with offline support. The fixture self-hosts Lobster and imports Pacifico from Google Fonts, both under the SIL Open Font License (`test/fixtures/fonts/files/OFL.txt`).
+
+The default run passes `--disable-web-security` to Chrome; the offline and font runs deliberately do not, because the service worker needs a normal origin to register against.
 
 ## Customization and variants
 
@@ -116,7 +119,7 @@ Run the `release` workflow manually (**Actions → release → Run workflow**) a
 Run the full gate before pushing:
 
 ```shell
-npm run lint && npm run format:check && npm test && npm run test:offline
+npm run lint && npm run format:check && npm test && npm run test:offline && npm run test:fonts
 ```
 
 The pull request template lists the same checks plus the changeset. CI runs them on every pull request.

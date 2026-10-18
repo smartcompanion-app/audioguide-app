@@ -102,6 +102,7 @@ All runtime configuration lives in **`stencil.config.ts`** (rebuild required to 
 4. **Offline**: `stencil.config.ts` → `OFFLINE_SUPPORT: "enabled"`
 5. **Icons**: Replace `src/icon.png` — the whole set (manifest icons, a separately padded maskable icon, the Apple touch icon, `favicon.ico`) is generated from it by the `prebuild` hook and is never committed
 6. **Logo**: Replace `src/assets/logo.png` (light) and `src/assets/logo-dark.png` (dark)
+7. **Font**: `font_stylesheet` replaces `src/global/_fonts.scss` (`@font-face` rules or a font `@import`), `font_dir` is copied into the build as `assets/fonts/`, and `font_family` sets `--ion-font-family` via `$font-family` in `app.scss`
 
 ## Code Conventions
 
