@@ -50,7 +50,7 @@
     "png-to-ico": "^3.0.2",
     "prettier": "^3.9.9",
     "puppeteer-core": "^25.12.0",
-    "sharp": "^0.35.4",
+    "sharp": "^0.35.5",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.70.1",
     "workbox-build": "^7.4.1"
