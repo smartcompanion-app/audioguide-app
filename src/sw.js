@@ -25,6 +25,21 @@ routing.registerRoute(
   }),
 );
 
+// Cache Google Fonts, should an app link them from its font stylesheet
+routing.registerRoute(
+  ({ url }) => url.origin === 'https://fonts.googleapis.com',
+  new strategies.StaleWhileRevalidate({
+    cacheName: 'google-fonts-stylesheets',
+  }),
+);
+
+routing.registerRoute(
+  ({ url }) => url.origin === 'https://fonts.gstatic.com',
+  new strategies.CacheFirst({
+    cacheName: 'google-fonts-webfonts',
+  }),
+);
+
 // On activate, immediately claim all clients
 self.addEventListener('activate', event => {
   event.waitUntil(self.clients.claim());

@@ -5,6 +5,7 @@ const TITLE = "Animals";
 const DATA_URL = "https://smartcompanion-app.github.io/data-format/animals/data.json";
 const OFFLINE_SUPPORT = process.env.OFFLINE_SUPPORT === 'true' || false;
 const MESSAGING_SUPPORT = true;
+const FONT_DIR = "";
 
 // DATA_URL is either an absolute URL to data hosted elsewhere, or a path to data committed
 // in this repo. In the second case the folder holding that data.json is copied into the
@@ -15,17 +16,23 @@ const IS_LOCAL_DATA = !/^https?:\/\//i.test(DATA_URL);
 const LOCAL_DATA_DIR = IS_LOCAL_DATA ? DATA_URL.replace(/\/[^/]*$/, '') : null;
 const SERVED_DATA_URL = IS_LOCAL_DATA ? DATA_URL.replace(/^.*\//, 'data/') : DATA_URL;
 
+// A path that becomes a copy task's source must not be absolute or climb out of the
+// repo, as that would pull unrelated files into a published build -- a single typo away,
+// and invisible once deployed.
+const isRepoRelative = (path: string) => !(/^([/\\]|[a-z]:)/i.test(path) || path.includes('\\') || /(^|\/)\.\.(\/|$)/.test(path));
+
 if (IS_LOCAL_DATA) {
-  // The path becomes the copy task's source, so one that is absolute or climbs out of the
-  // repo would pull unrelated files into a published build -- a single typo away, and
-  // invisible once deployed.
-  if (/^([/\\]|[a-z]:)/i.test(DATA_URL) || DATA_URL.includes('\\') || /(^|\/)\.\.(\/|$)/.test(DATA_URL)) {
+  if (!isRepoRelative(DATA_URL)) {
     throw new Error(`A repo-relative DATA_URL has to stay inside the repo and use forward slashes -- got "${DATA_URL}".`);
   }
 
   if (!LOCAL_DATA_DIR || LOCAL_DATA_DIR === DATA_URL) {
     throw new Error(`A repo-relative DATA_URL has to sit inside a folder, e.g. "customization/leon/data/data.json" -- got "${DATA_URL}".`);
   }
+}
+
+if (FONT_DIR && !isRepoRelative(FONT_DIR)) {
+  throw new Error(`FONT_DIR has to stay inside the repo and use forward slashes -- got "${FONT_DIR}".`);
 }
 
 export const config: Config = {
@@ -44,11 +51,15 @@ export const config: Config = {
       // The icon set is derived from a single source image by scripts/generate-icons.mjs,
       // which the prebuild hook runs. None of it is committed, so it is copied in from
       // the gitignored folder it lands in rather than living under src/assets.
-      copy: [{ src: '../.pwa-assets', dest: 'assets/icon' }, ...(LOCAL_DATA_DIR ? [{ src: `../${LOCAL_DATA_DIR}`, dest: 'data' }] : [])],
+      copy: [
+        { src: '../.pwa-assets', dest: 'assets/icon' },
+        ...(LOCAL_DATA_DIR ? [{ src: `../${LOCAL_DATA_DIR}`, dest: 'data' }] : []),
+        ...(FONT_DIR ? [{ src: `../${FONT_DIR}`, dest: 'assets/fonts' }] : []),
+      ],
       serviceWorker: OFFLINE_SUPPORT ? {
         swSrc: 'src/sw.js',
         globPatterns: [
-          '**/*.{js,css,json,html,ico,png}',
+          '**/*.{js,css,json,html,ico,png,woff2,woff,ttf,otf}',
           '**/list.svg',
           '**/keypad.svg',
           '**/chatbubbles.svg',

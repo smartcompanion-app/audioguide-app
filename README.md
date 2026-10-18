@@ -96,13 +96,16 @@ A ready-to-use example lives in [`customization/leon/`](customization/leon/) —
 | `logo` | Path to app logo image, relative to the values file | — |
 | `logo_dark` | Path to app logo image (dark mode), relative to the values file | — |
 | `icon_source` | Repo-relative path to the image the whole PWA icon set is generated from | — |
+| `font_stylesheet` | Path to a `.scss` file with the app's `@font-face` rules or a font `@import`, relative to the values file | — |
+| `font_dir` | Repo-relative folder of font files, copied into the build as `assets/fonts/` | — |
+| `font_family` | CSS `font-family` for the app | — |
 
 A variable marked `—` has no template default and is optional: leaving it out of the values file leaves its target untouched, so the app keeps the value already in the repo — the sample Animals app, e.g. `src/icon.png` for `icon_source`. Name every one of them to turn the repo into your own app. A variable with a default only needs naming when your value differs from it.
 
 Paths follow two rules, depending on when the file is read:
 
-- **Relative to the values file** — `logo` and `logo_dark`. `engraft apply` copies these files over `src/assets/` right away, so a variant can keep them next to its values file: `logo: assets/logo.png`.
-- **Relative to the repo root** — `data_url` and `icon_source`. These are written into the build config as paths and only read later by `npm run build`, which runs from the repo root: `icon_source: customization/leon/assets/app-icon-512.png`.
+- **Relative to the values file** — `logo`, `logo_dark` and `font_stylesheet`. `engraft apply` copies these files into `src/` right away, so a variant can keep them next to its values file: `logo: assets/logo.png`.
+- **Relative to the repo root** — `data_url`, `icon_source` and `font_dir`. These are written into the build config as paths and only read later by `npm run build`, which runs from the repo root: `icon_source: customization/leon/assets/app-icon-512.png`.
 
 ### Bundling the data with the app
 
@@ -165,6 +168,39 @@ Every derived color can still be set explicitly. These variables have no default
 `primary_color_contrast` is the one color that is not derived: the same rule Ionic uses resolves the default primary to black text, so which text color sits on a brand color stays a design decision.
 
 The `theme-color` meta tags in `index.html` are the light background at build time and are kept on the active background color at runtime by `src/global/app.ts`, so they follow both the system palette and a palette forced with `UPDATE_DARK_MODE`.
+
+### Fonts
+
+The app uses Ionic's default system font. To use another one, name the font in `font_family` and declare it in `font_stylesheet`, a `.scss` file that replaces [`src/global/_fonts.scss`](src/global/_fonts.scss).
+
+Self-hosted font files go in a folder named by `font_dir`, which the build copies to `assets/fonts/`. The stylesheet refers to them as `../assets/fonts/<file>`, relative to the built CSS in `build/`:
+
+```yaml
+font_stylesheet: fonts.scss
+font_dir: customization/landeck/fonts
+font_family: "'QuaS', sans-serif"
+```
+
+```scss
+@font-face {
+  font-family: 'QuaS';
+  src: url('../assets/fonts/QuaSRg__.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'QuaS';
+  src: url('../assets/fonts/QuaSBd__.ttf') format('truetype');
+  font-weight: 700;
+}
+```
+
+A font from a service such as Google Fonts needs no `font_dir`; the stylesheet only imports it:
+
+```scss
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+```
+
+Prefer self-hosting. A linked font sends every visitor's IP address to the font service, which German courts have ruled a GDPR violation without consent (LG München I, 3 O 17493/20), and it is missing on a first visit without a connection. With offline support, self-hosted fonts are precached with the app and a linked Google Font is cached once it has loaded.
 
 ## Versioning
 
