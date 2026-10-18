@@ -61,6 +61,10 @@ class ServiceWorkerComponent {
     });
   }
 
+  async hasGlobalStyles(): Promise<boolean> {
+    return browser.execute(() => getComputedStyle(document.documentElement).getPropertyValue('--sc-background-color') !== '');
+  }
+
   async getCacheNames(): Promise<string[]> {
     return browser.execute(async () => {
       const names = await caches.keys();

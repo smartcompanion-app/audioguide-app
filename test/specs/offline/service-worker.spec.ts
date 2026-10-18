@@ -65,6 +65,15 @@ describe('Service Worker Offline Support', () => {
       expect(count).toBe(3);
     });
 
+    it('keeps the global styles when offline', async () => {
+      await sw.goOffline();
+
+      await sw.freshReload();
+      await languagePage.waitForPage();
+
+      expect(await sw.hasGlobalStyles()).toBe(true);
+    });
+
     it('navigates through cached app while offline', async () => {
       await sw.goOffline();
 
