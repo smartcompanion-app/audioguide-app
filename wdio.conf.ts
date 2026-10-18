@@ -1,5 +1,4 @@
 import { join } from 'node:path';
-import type { Options } from '@wdio/types';
 
 const isOffline = process.env.TEST_OFFLINE === 'true';
 const port = isOffline ? 4568 : 4567;
@@ -12,7 +11,7 @@ const chromeArgs = isOffline
   ? baseChromeArgs
   : [...baseChromeArgs, '--disable-web-security'];
 
-export const config: Options.Testrunner = {
+export const config: WebdriverIO.Config = {
   runner: 'local',
   specs: isOffline
     ? ['./test/specs/offline/**/*.spec.ts']

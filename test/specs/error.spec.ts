@@ -8,7 +8,7 @@ describe('No internet connection', () => {
 
   before(async () => {
     mock = await browser.mock(DATA_URL);
-    mock.abort('InternetDisconnected');
+    mock.abort();
 
     await browser.url('/');
   });

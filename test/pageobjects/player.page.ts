@@ -10,7 +10,7 @@ class PlayerPage {
   async isItemActive(index: number): Promise<boolean> {
     const item = await $(`[data-testid="player-list-item-${index}"]`);
     const className = await item.getAttribute('class');
-    return className.includes('active');
+    return className?.includes('active') ?? false;
   }
 
   async clickNext() {
