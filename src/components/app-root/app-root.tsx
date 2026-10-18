@@ -41,7 +41,7 @@ export class AppRoot {
 
     // ignore if navigation goes to stations/default and we are already on stations page
     if (!(route == 'stations/default' && /#\/stations\/.+/.exec(window.location.hash))) {
-      await serviceFacade.getRoutingService().pushReplaceCurrent(`/${route}`);
+      await serviceFacade.getRoutingService().replace(`/${route}`);
     }
   }
 
@@ -109,7 +109,7 @@ export class AppRoot {
               </ion-list>
             </ion-content>
           </ion-menu>
-          <ion-nav id="main" />
+          <ion-router-outlet swipeGesture={false} id="main" />
         </ion-split-pane>
       </ion-app>
     );

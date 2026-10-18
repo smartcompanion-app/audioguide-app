@@ -9,7 +9,7 @@ This repo is the **shell/wrapper application**. The bulk of functionality lives 
 ## Tech Stack
 
 - **Stencil.js** v4 — Web Components framework (JSX with `h` factory, Preact-style)
-- **Ionic Framework** v8 — UI components and routing
+- **Ionic Framework** v9 — UI components and routing (`ion-router` rendering into `ion-router-outlet`)
 - **TypeScript** — Target ES2022, strict unused locals/params enabled
 - **SCSS/SASS** — Styling with CSS custom properties
 - **Workbox** v7 — Service worker and offline caching (conditional)
