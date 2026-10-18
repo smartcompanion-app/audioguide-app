@@ -7,7 +7,6 @@ describe('No internet connection', () => {
   let mock: WebdriverIO.Mock;
 
   before(async () => {
-    // fail the data request the way Chrome does without a network connection
     mock = await browser.mock(DATA_URL);
     mock.abort('InternetDisconnected');
 

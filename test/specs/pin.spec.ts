@@ -8,7 +8,6 @@ const PIN = '1234';
 
 describe('PIN-protected app', () => {
   before(async () => {
-    // serve the sample data with a PIN, so the guide is locked until it is entered
     const data = await (await fetch(DATA_URL)).json();
     data.pins = [PIN];
     data.checksum = 'pin';
@@ -23,8 +22,6 @@ describe('PIN-protected app', () => {
   });
 
   it('goes to the PIN entry page after selecting a language', async () => {
-    // the /pin route must not require a valid PIN itself, otherwise it redirects
-    // back to the loading page, which forwards to /pin again
     await languagePage.selectLanguageByText('ENGLISH');
     await pinPage.waitForPage();
     await browser.waitUntil(async () => (await browser.getUrl()).endsWith('#/pin'), {
@@ -52,7 +49,6 @@ describe('PIN-protected app', () => {
   });
 
   it('enables the menu again on the station page', async () => {
-    // the PIN page disables the menu
     expect(await menu.getMenuItemLabel(0)).toBe('Overview');
   });
 });
