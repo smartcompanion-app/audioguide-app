@@ -67,22 +67,20 @@ jobs:
       # release pull request would sit with no CI checks; and neither does the
       # release created below, so the deploy would never fire.
       - name: Create release pull request or tag
-        uses: changesets/action@v1
+        uses: changesets/action@v2
         with:
           github-token: ${{ secrets.RELEASE_TOKEN || secrets.GITHUB_TOKEN }}
-          version: npm run version
-          publish: npm run release
-          title: 'chore: release'
-          commit: 'chore: release'
-        env:
-          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN || secrets.GITHUB_TOKEN }}
+          version-script: npm run version
+          publish-script: npm run release
+          pr-title: 'chore: release'
+          commit-message: 'chore: release'
+          create-github-releases: false
 
-      # Bridges changesets to the deploy. Deliberately not gated on the
-      # action's `published` output: that output is derived from what
-      # `changeset publish` pushed to a registry, and this package publishes
-      # nothing, so it cannot be relied on here. Deriving the state from the
-      # repository instead makes the step idempotent -- it does nothing on the
-      # runs that only opened a release pull request.
+      # Bridges changesets to the deploy. The action only pushes the tag
+      # (`create-github-releases: false`), so the release notes come from
+      # scripts/changelog-section.mjs. Deriving the state from the repository
+      # rather than the action's `published` output makes the step idempotent
+      # -- it does nothing on the runs that only opened a release pull request.
       - name: Create GitHub release
         env:
           GH_TOKEN: ${{ secrets.RELEASE_TOKEN || secrets.GITHUB_TOKEN }}

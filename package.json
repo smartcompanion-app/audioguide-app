@@ -19,7 +19,7 @@
     "format:check": "prettier --check src test",
     "changeset": "changeset",
     "version": "changeset version && npm install --package-lock-only",
-    "release": "changeset tag",
+    "release": "changeset git-tag",
     "prepare": "husky"
   },
   "dependencies": {
