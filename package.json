@@ -25,11 +25,11 @@
   "dependencies": {
     "@capacitor/core": "^8.5.2",
     "@capacitor/share": "^8.0.2",
-    "@ionic/core": "^8.8.19",
-    "@smartcompanion/data": "^1.0.2",
+    "@ionic/core": "^9.0.8",
+    "@smartcompanion/data": "^2.0.0",
     "@smartcompanion/native-audio-player": "^1.0.0",
-    "@smartcompanion/services": "^1.0.2",
-    "@smartcompanion/ui": "^1.0.2"
+    "@smartcompanion/services": "^2.0.0",
+    "@smartcompanion/ui": "^2.0.0"
   },
   "devDependencies": {
     "@changesets/changelog-github": "^1.0.1",
