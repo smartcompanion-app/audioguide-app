@@ -11,3 +11,7 @@ background_color: "#f5f5f5"
 logo: assets/logo.png
 logo_dark: assets/logo.png
 icon_source: customization/leon/assets/app-icon-512.png
+
+font_stylesheet: fonts.scss
+font_dir: customization/leon/fonts
+font_family: "'Alegreya Sans', sans-serif"
