@@ -1,5 +1,13 @@
 # smartcompanion-audioguide-app
 
+## 2026.1.1
+
+### Patch Changes
+
+- [#69](https://github.com/smartcompanion-app/audioguide-app/pull/69) [`9c25ee9`](https://github.com/smartcompanion-app/audioguide-app/commit/9c25ee9342ea8f648d48c667dd9b0a61114b8bbf) Thanks [@stefanhuber](https://github.com/stefanhuber)! - Give the Leon variant its own font: Alegreya Sans, self-hosted from `customization/leon/fonts/` in the weights 400, 500 and 700, under the SIL Open Font License.
+
+- [#71](https://github.com/smartcompanion-app/audioguide-app/pull/71) [`be160c7`](https://github.com/smartcompanion-app/audioguide-app/commit/be160c7b788c898ba77ba08493da059fa879d4f3) Thanks [@stefanhuber](https://github.com/stefanhuber)! - Precache the share icon of the menu's share item, which was missing in offline builds.
+
 ## 2026.1.0
 
 ### Minor Changes
