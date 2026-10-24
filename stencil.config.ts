@@ -72,6 +72,7 @@ export const config: Config = {
           '**/refresh-circle.svg',
           '**/backspace-outline.svg',
           '**/send-outline.svg',
+          '**/share-social-outline.svg',
         ]
       } : null,
       baseUrl: '/',

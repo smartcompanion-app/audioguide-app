@@ -48,7 +48,7 @@ The app is fully customizable, allowing you to adapt content, colors, text, and 
 
 ## Browser Support
 
-Visitor devices need **Chrome/Edge 110+, Safari 16.4+ (iOS 16.4+), or Firefox 110+**. The station list and image slideshow are built on swiper 14, which sets this floor. If you need to support older devices, stay on a release before `@smartcompanion/ui` 1.0.0.
+Visitor devices need **Chrome/Edge 110+, Safari 16.4+ (iOS 16.4+), or Firefox 110+**. The station list and image slideshow are built on swiper 14, which sets this floor.
 
 ## Getting Started
 
