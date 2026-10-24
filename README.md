@@ -16,18 +16,16 @@ The SmartCompanion Audioguide App is a free and open-source Progressive Web App 
 
 The app is fully customizable, allowing you to adapt content, colors, text, and images to fit your institution's needs. It also includes offline functionality powered by a service worker, ensuring smooth use even without an internet connection.
 
-## Table of Contents
+## Documentation
 
-- [Features](#features)
-- [Examples](#examples)
-- [Browser Support](#browser-support)
-- [Getting Started](#getting-started)
-- [Deployment Options](#deployment-options)
-- [Customization](#customization)
-- [Versioning](#versioning)
-- [Contributing](#contributing)
-- [License](#license)
-- [Links](#links)
+The full documentation lives at **[docs.smartcompanion.app](https://docs.smartcompanion.app/)**:
+
+- [Quickstart](https://docs.smartcompanion.app/quickstart) — from fork to deployed app
+- [Content](https://docs.smartcompanion.app/content) — the data format, stations, tours, languages and media
+- [Customization](https://docs.smartcompanion.app/customization) — engraft variables, colors, fonts, logos and icons
+- [Features](https://docs.smartcompanion.app/features) — audio, offline support, embedding and PWA installation
+- [Deployment](https://docs.smartcompanion.app/deployment) — GitHub Pages, Netlify, self-hosting or the managed plan
+- [Reference](https://docs.smartcompanion.app/reference) — configuration, scripts, browser support, versioning and troubleshooting
 
 ## Features
 
@@ -46,10 +44,6 @@ The app is fully customizable, allowing you to adapt content, colors, text, and 
 |---|---|---|---|
 | ![Castle Tratzberg App](docs/tratzberg-app.png) | ![Museum Landeck App](docs/landeck-app.png) | ![Example App (Animals)](docs/animals-app.png) | ![Example App (Leon)](docs/leon-app.png) |
 
-## Browser Support
-
-Visitor devices need **Chrome/Edge 110+, Safari 16.4+ (iOS 16.4+), or Firefox 110+**. The station list and image slideshow are built on swiper 14, which sets this floor.
-
 ## Getting Started
 
 Fork and clone the repo, then:
@@ -58,179 +52,9 @@ Fork and clone the repo, then:
 npm install        # Install dependencies
 npm start          # Dev server with hot reload at http://localhost:3333
 npm run build      # Production build → www/
-npm test           # Build, then run the end-to-end suite
 ```
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for the rest of the scripts, how the offline test mode works, and how to work on the customization template.
-
-## Deployment Options
-
-| Service | Description |
-|---|---|
-| [SmartCompanion](https://www.smartcompanion.app/) | We offer a hosting service including a content management system, continuous updates, security fixes, custom domains, support and further services. |
-| [GitHub Pages](https://docs.github.com/en/pages/quickstart) | GitHub Pages offers a free option for open source repositories and supports custom domains. The example apps are hosted on GitHub Pages. |
-| [Netlify](https://www.netlify.com/) | Netlify offers a free option and supports custom domains also for private GitHub repositories. |
-
-## Customization
-
-Customization is handled via [engraft](https://github.com/smartcompanion-app/engraft), which is included as the `@smartcompanion/engraft` devDependency. After `npm install`, apply a values file with:
-
-```bash
-npx engraft apply --template engraft.template.yml --values customization/leon/engraft.variables.yml
-```
-
-A ready-to-use example lives in [`customization/leon/`](customization/leon/) — copy that directory to start your own variant. All configurable variables defined in `engraft.template.yml` are listed below:
-
-| Variable | Description | Default |
-|---|---|---|
-| `title_short` | Short app title | — |
-| `title` | App title | — |
-| `description` | App description | — |
-| `lang` | Language code for manifest.json | — |
-| `data_url` | URL to the audioguide data JSON, or a repo-relative path to bundle it into the build | — |
-| `offline_support` | Enable offline support (true/false) | `false` |
-| `messaging_support` | Enable postMessage listener for iframe embedding (true/false) | `false` |
-| `background_color` | App background color | — |
-| `primary_color` | Primary brand color | — |
-| `primary_color_contrast` | Text color on primary color | `#ffffff` |
-| `logo` | Path to app logo image, relative to the values file | — |
-| `logo_dark` | Path to app logo image (dark mode), relative to the values file | — |
-| `icon_source` | Repo-relative path to the image the whole PWA icon set is generated from | — |
-| `font_stylesheet` | Path to a `.scss` file with the app's `@font-face` rules or a font `@import`, relative to the values file | — |
-| `font_dir` | Repo-relative folder of font files, copied into the build as `assets/fonts/` | — |
-| `font_family` | CSS `font-family` for the app | — |
-
-A variable marked `—` has no template default and is optional: leaving it out of the values file leaves its target untouched, so the app keeps the value already in the repo — the sample Animals app, e.g. `src/icon.png` for `icon_source`. Name every one of them to turn the repo into your own app. A variable with a default only needs naming when your value differs from it.
-
-Paths follow two rules, depending on when the file is read:
-
-- **Relative to the values file** — `logo`, `logo_dark` and `font_stylesheet`. `engraft apply` copies these files into `src/` right away, so a variant can keep them next to its values file: `logo: assets/logo.png`.
-- **Relative to the repo root** — `data_url`, `icon_source` and `font_dir`. These are written into the build config as paths and only read later by `npm run build`, which runs from the repo root: `icon_source: customization/leon/assets/app-icon-512.png`.
-
-### Bundling the data with the app
-
-`data_url` normally points at data hosted somewhere else. Point it at a **path inside this repo** instead and the data ships inside the build, so the deployed app needs nothing but its own static host:
-
-```yaml
-data_url: customization/leon/data/data.json
-```
-
-The folder holding that `data.json` is copied into the build as its top-level `data/` folder, wherever it happens to sit in the repo, and the app addresses it as `data/data.json`. Assets inside `data.json` are addressed the same way — by the served path, not the repo path:
-
-```json
-{ "id": "i11", "filename": "i11.png", "externalUrl": "data/assets/i11.png" }
-```
-
-The [`leon`](customization/leon/engraft.variables.yml) variant works this way, with its data in [`customization/leon/data/`](customization/leon/data/). To bundle your own, put `data.json` next to an `assets/` folder anywhere in the repo, write every `externalUrl` as `data/assets/<filename>`, and point `data_url` at the `data.json`. Those URLs are relative to the page rather than rooted at `/`, so this keeps working when the app is served from a subpath such as `https://<user>.github.io/<repo>/`.
-
-With `offline_support: "true"` the bundled `data.json` and any `.png` beside it are also swept into the service worker precache. That makes the install larger but guarantees they are present offline; audio is still fetched by the offline load service, which is what reports download progress.
-
-### Icons
-
-An app names one image — `icon_source` — and the whole icon set is generated from it at build time by [`scripts/generate-icons.mjs`](scripts/generate-icons.mjs), into a gitignored `.pwa-assets/` folder the build copies in as `assets/icon/`. Nothing derived is committed, so a variant carries one file rather than three that have to be kept in step:
-
-| Generated file | Purpose |
-|---|---|
-| `pwa-64x64.png`, `pwa-192x192.png`, `pwa-512x512.png` | Manifest icons, drawn whole |
-| `maskable-icon-512x512.png` | Manifest `maskable` icon — the artwork centered on a solid ground, filling 70% of the canvas so no mask shape crops it |
-| `apple-touch-icon-180x180.png` | iOS home screen. Full-bleed and opaque, because iOS applies its own mask and composites transparency onto black |
-| `favicon.ico` | 16, 32 and 48px frames |
-
-An SVG source is preferred — it is rasterized at full density for every size — but any format works. Use a square canvas: the artwork is never cropped, so whatever ground it sits on is what the icons show. `icon_source` is a repo-relative path, so a variant's image can live anywhere — the default is `src/icon.png`, while [`leon`](customization/leon/) keeps its own beside the rest of its files. It sits next to `src/assets/` rather than inside it because everything under `src/assets/` is published, and the source itself is only ever read at build time.
-
-`icon_background_color` fills the margin around the padded maskable and Apple icons. Left unset it is sampled from the source's own corners, which is what a full-bleed image wants; a source whose corners disagree (a photograph, a gradient) or are transparent falls back to `background_color`. The build logs which of the three applied:
-
-```
-icons: generated from src/icon.png on #8dbeba (sampled from the source's corners)
-```
-
-A maskable icon and a plain one are different images, and this is why they are generated separately rather than declared as the same file twice: the maskable one is cropped to the platform's shape within a safe zone, so an icon that fills its canvas would lose its edges.
-
-### Colors
-
-An app names two colors — `background_color` and `primary_color` — and the rest of the palette is computed from them at build time by [`src/global/_color-helpers.scss`](src/global/_color-helpers.scss). Surfaces step off the background (darker in light mode, lighter in dark mode), the dark palette is the light background at low lightness, and shades and tints match the [Ionic Color Creator](https://ionicframework.com/docs/theming/colors#new-color-creator) exactly.
-
-Every derived color can still be set explicitly. These variables have no default — name one in your values file and it wins, leave it out and it is derived:
-
-| Variable | Description | Derived from |
-|---|---|---|
-| `background_color_dark` | App background color (dark mode) | `background_color`, same hue at 11% lightness |
-| `card_background_color` | Card background color | `background_color`, one step off it |
-| `card_background_color_dark` | Card background color (dark mode) | `background_color_dark`, one step off it |
-| `menu_border_color` | Menu item border color | `background_color`, two steps off it |
-| `menu_border_color_dark` | Menu item border color (dark mode) | `background_color_dark`, two steps off it |
-| `station_icon_progress_color` | Station icon progress color | `primary_color`, pushed away from the background |
-| `station_icon_progress_color_dark` | Station icon progress color (dark mode) | `primary_color`, pushed away from the dark background |
-| `light_color` | Ionic's `light` color | `background_color` |
-| `light_color_dark` | Ionic's `light` color (dark mode) | `background_color_dark` |
-| `icon_background_color` | Color behind the padded artwork on the maskable and Apple icons | `icon_source`, sampled from its corners |
-
-`primary_color_contrast` is the one color that is not derived: the same rule Ionic uses resolves the default primary to black text, so which text color sits on a brand color stays a design decision.
-
-The `theme-color` meta tags in `index.html` are the light background at build time and are kept on the active background color at runtime by `src/global/app.ts`, so they follow both the system palette and a palette forced with `UPDATE_DARK_MODE`.
-
-### Fonts
-
-The app uses Ionic's default system font. To use another one, name the font in `font_family` and declare it in `font_stylesheet`, a `.scss` file that replaces [`src/global/_fonts.scss`](src/global/_fonts.scss).
-
-Self-hosted font files go in a folder named by `font_dir`, which the build copies to `assets/fonts/`. The stylesheet refers to them as `../assets/fonts/<file>`, relative to the built CSS in `build/`:
-
-```yaml
-font_stylesheet: fonts.scss
-font_dir: customization/landeck/fonts
-font_family: "'QuaS', sans-serif"
-```
-
-```scss
-@font-face {
-  font-family: 'QuaS';
-  src: url('../assets/fonts/QuaSRg__.ttf') format('truetype');
-}
-
-@font-face {
-  font-family: 'QuaS';
-  src: url('../assets/fonts/QuaSBd__.ttf') format('truetype');
-  font-weight: 700;
-}
-```
-
-A font from a service such as Google Fonts needs no `font_dir`; the stylesheet only imports it:
-
-```scss
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
-```
-
-Prefer self-hosting. A linked font sends every visitor's IP address to the font service, which German courts have ruled a GDPR violation without consent (LG München I, 3 O 17493/20), and it is missing on a first visit without a connection. With offline support, self-hosted fonts are precached with the app and a linked Google Font is cached once it has loaded.
-
-## Versioning
-
-Releases are versioned as `YYYY.MINOR.MICRO` — the [CalVer](https://calver.org/) scheme PyCharm and Unity use. This is a deployed application, not a library, so a version says when a build is from rather than what it promises about an API.
-
-The year is the only calendar claim; `MINOR` and `MICRO` are plain sequences within it:
-
-```
-2026.1.0 → 2026.1.1 → 2026.2.0 → … → 2027.0.0
-```
-
-Because the scheme is CalVer rather than semver, the bump levels mean something different from usual:
-
-| Bump | Meaning |
-|---|---|
-| `major` | a new calendar year — used once a year, nothing else |
-| `minor` | new features, and anything that breaks a fork's customization |
-| `patch` | fixes, dependency bumps, internal changes |
-
-Breaking changes are therefore described in the changelog rather than signalled by the version. That is deliberate: if you maintain a customized fork, "the engraft variable `x` was renamed to `y`" is something you can act on, whereas an incremented number is not.
-
-The version is stamped into each build as a `version` meta tag, which is the quickest way to tell which build a device is actually running:
-
-```js
-document.querySelector('meta[name="version"]').content; // "2026.1.0"
-```
-
-Local builds report `dev`.
-
-How a release is cut, and how to redeploy an earlier tag, is covered in [CONTRIBUTING.md](CONTRIBUTING.md#releasing).
+Turning the sample app into your own is covered in the [Quickstart](https://docs.smartcompanion.app/quickstart).
 
 ## Contributing
 
@@ -242,6 +66,8 @@ The SmartCompanion Audioguide App is licensed under the terms of the BSD 2-Claus
 
 ## Links
 
+- [Documentation](https://docs.smartcompanion.app/)
 - [Website](https://www.smartcompanion.app)
 - [SmartCompanion Library](https://github.com/smartcompanion-app/smartcompanion-library)
 - [Native Audio Capacitor Plugin](https://github.com/smartcompanion-app/native-audio-player)
+- [engraft](https://github.com/smartcompanion-app/engraft)

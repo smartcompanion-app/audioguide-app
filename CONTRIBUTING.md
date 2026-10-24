@@ -79,7 +79,7 @@ Customization goes through [engraft](https://github.com/smartcompanion-app/engra
 npx engraft apply --template engraft.template.yml --values customization/leon/engraft.variables.yml
 ```
 
-The variables are documented in the [README](README.md#customization).
+The variables are documented in the [customization docs](https://docs.smartcompanion.app/customization/variables).
 
 Two things follow from this that are easy to miss:
 
@@ -88,7 +88,7 @@ Two things follow from this that are easy to miss:
 
 ## Releasing
 
-Releases run on [changesets](https://github.com/changesets/changesets). Versions are CalVer (`YYYY.MINOR.MICRO`) — see [Versioning](README.md#versioning) in the README for what the bump levels mean.
+Releases run on [changesets](https://github.com/changesets/changesets). Versions are CalVer (`YYYY.MINOR.MICRO`) — see [Versioning](https://docs.smartcompanion.app/reference/versioning) in the docs for what the bump levels mean.
 
 1. **Add a changeset with your change.** Anything that alters behaviour needs one:
 
