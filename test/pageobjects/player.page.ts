@@ -7,6 +7,10 @@ class PlayerPage {
     await this.page.waitForExist({ timeout: 15000 });
   }
 
+  async getItemTitles(): Promise<string[]> {
+    return browser.execute(() => Array.from(document.querySelectorAll('[data-testid^="player-list-item-"] .title')).map(el => (el.textContent || '').trim()));
+  }
+
   async isItemActive(index: number): Promise<boolean> {
     const item = await $(`[data-testid="player-list-item-${index}"]`);
     const className = await item.getAttribute('class');
