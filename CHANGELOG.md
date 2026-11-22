@@ -1,5 +1,11 @@
 # smartcompanion-audioguide-app
 
+## 2026.2.1
+
+### Patch Changes
+
+- [#80](https://github.com/smartcompanion-app/audioguide-app/pull/80) [`5941a24`](https://github.com/smartcompanion-app/audioguide-app/commit/5941a24aefe385c68c73695a2c343e14e3d88970) Thanks [@stefanhuber](https://github.com/stefanhuber)! - Update the SmartCompanion library to 2.1.1. Stations deleted on the server disappear from the app after the next data update, also when a language lost all of its stations, instead of staying in the list and requesting their missing audio.
+
 ## 2026.2.0
 
 ### Minor Changes
