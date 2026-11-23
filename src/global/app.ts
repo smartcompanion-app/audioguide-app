@@ -1,4 +1,8 @@
+import { recoverAppRoot } from './app-root-recovery';
+
 export default async () => {
+  recoverAppRoot();
+
   const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
   // The theme-color metas can no longer be filled in at build time: the dark

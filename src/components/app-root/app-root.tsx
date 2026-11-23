@@ -21,6 +21,7 @@ export class AppRoot {
     serviceFacade.getRoutingService().addRouteChangeListener('/*', () => {
       this.update();
     });
+    this.update();
   }
 
   update() {
