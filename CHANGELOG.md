@@ -1,5 +1,17 @@
 # smartcompanion-audioguide-app
 
+## 2026.3.0
+
+### Minor Changes
+
+- [#85](https://github.com/smartcompanion-app/audioguide-app/pull/85) [`42759ca`](https://github.com/smartcompanion-app/audioguide-app/commit/42759ca6fbf5db2711ac51bbbc97be94ec059522) Thanks [@stefanhuber](https://github.com/stefanhuber)! - Audioguides on the same origin, e.g. under different paths, no longer overwrite each other's content, language and PIN state. Visitors who used the app before choose their language and enter the PIN again once, and their listening progress starts over.
+
+### Patch Changes
+
+- [#85](https://github.com/smartcompanion-app/audioguide-app/pull/85) [`42759ca`](https://github.com/smartcompanion-app/audioguide-app/commit/42759ca6fbf5db2711ac51bbbc97be94ec059522) Thanks [@stefanhuber](https://github.com/stefanhuber)! - Update the SmartCompanion library to 2.2.0 and the other dependencies. When the chosen language is removed from the data, the app asks for the language again, or selects the only one left, instead of showing no stations. Building the app requires Node 22 or newer.
+
+- [#82](https://github.com/smartcompanion-app/audioguide-app/pull/82) [`2806f37`](https://github.com/smartcompanion-app/audioguide-app/commit/2806f374439dc7ea970f52a4ed44e7c6c52c2575) Thanks [@stefanhuber](https://github.com/stefanhuber)! - Keep the language and share menu items after a reload.
+
 ## 2026.2.1
 
 ### Patch Changes
