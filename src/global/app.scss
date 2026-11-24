@@ -139,3 +139,16 @@ ion-item {
     display: block;
   }
 }
+
+#app-reload {
+  position: fixed;
+  inset: 0;
+  width: 72px;
+  height: 72px;
+  margin: auto;
+  border: 0;
+  border-radius: 50%;
+  background: var(--sc-primary-color);
+  color: var(--sc-primary-color-contrast);
+  font-size: 32px;
+}
