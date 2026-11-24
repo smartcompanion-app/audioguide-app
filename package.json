@@ -1,7 +1,7 @@
 {
   "name": "smartcompanion-audioguide-app",
   "description": "SmartCompanion - Single Tour Audioguide App",
-  "version": "2026.2.1",
+  "version": "2026.3.0",
   "private": true,
   "engines": {
     "node": ">=22"
