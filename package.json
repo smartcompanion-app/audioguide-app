@@ -3,6 +3,9 @@
   "description": "SmartCompanion - Single Tour Audioguide App",
   "version": "2026.2.1",
   "private": true,
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "icons": "node scripts/generate-icons.mjs",
     "prebuild": "npm run icons",
