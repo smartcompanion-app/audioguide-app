@@ -1,4 +1,5 @@
 import { Env } from '@stencil/core';
+import { BrowserStorage } from '@smartcompanion/data';
 import { ServiceFacade } from '@smartcompanion/services';
 
 const isServiceWorkerReady = () =>
@@ -44,7 +45,7 @@ const isServiceWorkerReady = () =>
       });
   });
 
-const serviceFacade = new ServiceFacade();
+const serviceFacade = new ServiceFacade(new BrowserStorage({ namespace: new URL(Env.DATA_URL, document.baseURI).href }));
 
 serviceFacade.registerCollectibleAudioPlayerService(Env.TITLE);
 
