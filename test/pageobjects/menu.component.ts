@@ -39,6 +39,16 @@ class MenuComponent {
     return text.trim();
   }
 
+  async getLabels(): Promise<string[]> {
+    return browser.execute(() => Array.from(document.querySelectorAll('ion-menu ion-label')).map(el => (el.textContent || '').trim()));
+  }
+
+  async expectLabels(expected: string[]) {
+    await this.waitForMenuVisible();
+    await browser.waitUntil(async () => JSON.stringify(await this.getLabels()) === JSON.stringify(expected), { timeout: 5000 }).catch(() => undefined);
+    expect(await this.getLabels()).toEqual(expected);
+  }
+
   async clickMenuItem(index: number) {
     await this.open();
     const items = await this.menuItems;
